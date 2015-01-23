@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:web="http://xmlns.jcp.org/xml/ns/javaee" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
+  <display-name>exemple formation</display-name>
+  <description>
+		exemple formation servlet et jsp
+	</description>
+  <filter>
+    <filter-name>portier</filter-name>
+    <filter-class>mesCommandes.MonFiltre</filter-class>
+  </filter>
+  <filter>
+    <filter-name>effaceCommande</filter-name>
+    <filter-class>mesCommandes.FiltreSortie</filter-class>
+  </filter>
+  
+  <servlet>
+    <servlet-name>inscrire</servlet-name>
+    <servlet-class>mesCommandes.InscriptionClient</servlet-class>
+  </servlet>
+  <servlet>
+    <servlet-name>connection</servlet-name>
+    <servlet-class>mesCommandes.ConnexionClient</servlet-class>
+  </servlet>
+  <servlet>
+    <servlet-name>acheter</servlet-name>
+    <servlet-class>mesCommandes.AfficherLesDisques</servlet-class>
+  </servlet>
+  <servlet>
+    <servlet-name>entrer</servlet-name>
+    <servlet-class>mesCommandes.EntreeMagasinDisque</servlet-class>
+  </servlet>
+  <servlet>
+    <servlet-name>commander</servlet-name>
+    <servlet-class>mesCommandes.CommanderUnDisque</servlet-class>
+  </servlet>
+  <servlet>
+    <servlet-name>enregistrer</servlet-name>
+    <servlet-class>mesCommandes.EnregistrerCommande</servlet-class>
+  </servlet>
+  <servlet>
+    <servlet-name>vider</servlet-name>
+    <servlet-class>mesCommandes.VidePanier</servlet-class>
+  </servlet>
+   <servlet>
+    <servlet-name>facturer</servlet-name>
+    <servlet-class>mesCommandes.Facturation</servlet-class>
+  </servlet>
+  
+  
+  <filter-mapping>
+    <filter-name>portier</filter-name>
+    <url-pattern>/servlet/filter/*</url-pattern>
+  </filter-mapping>
+  <filter-mapping>
+    <filter-name>effaceCommande</filter-name>
+    <url-pattern>/servlet/filter/enregistre</url-pattern>
+  </filter-mapping>
+  
+  <servlet-mapping>
+    <servlet-name>inscrire</servlet-name>
+    <url-pattern>/servlet/sinscrire</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>connection</servlet-name>
+    <url-pattern>/servlet/seconnecter</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>entrer</servlet-name>
+    <url-pattern>/servlet/entrer</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>acheter</servlet-name>
+    <url-pattern>/servlet/filter/achat</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>commander</servlet-name>
+    <url-pattern>/servlet/filter/commande</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>enregistrer</servlet-name>
+    <url-pattern>/servlet/filter/enregistre</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>vider</servlet-name>
+    <url-pattern>/servlet/filter/vider</url-pattern>
+  </servlet-mapping>
+   <servlet-mapping>
+    <servlet-name>facturer</servlet-name>
+    <url-pattern>/servlet/filter/facturer</url-pattern>
+  </servlet-mapping>
+</web-app>
