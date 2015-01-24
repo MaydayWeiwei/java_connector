@@ -74,5 +74,10 @@ public abstract class JAVAFileModelImpl extends FlexoObjectImpl implements JAVAF
 	public void setFatherFolder(JAVAFolderModel fatherFolder) {
 		this.fatherFolder = fatherFolder;
 	}
+    
+    @Override
+    public String getName() {
+    	return this.fileModel.getName();
+    }
 
 }

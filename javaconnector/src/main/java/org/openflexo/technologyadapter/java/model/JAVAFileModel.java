@@ -50,5 +50,7 @@ public interface JAVAFileModel extends TechnologyObject<JAVATechnologyAdapter>, 
     @Setter(value =  PARENT_ITEM_KEY)
     public void setFatherFolder(JAVAFolderModel fatherFolder);
     
+    public String getName();
+    
 
 }

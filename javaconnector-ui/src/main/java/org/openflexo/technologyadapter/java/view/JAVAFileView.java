@@ -20,12 +20,9 @@
 
 package org.openflexo.technologyadapter.java.view;
 
-import java.util.logging.Logger;
+import javax.swing.JTabbedPane;
 
-import javax.swing.JPanel;
-
-import org.openflexo.foundation.FlexoObject;
-import org.openflexo.technologyadapter.java.model.JAVAFolderModel;
+import org.openflexo.technologyadapter.java.model.JAVAFileModel;
 import org.openflexo.view.ModuleView;
 import org.openflexo.view.controller.FlexoController;
 import org.openflexo.view.controller.model.FlexoPerspective;
@@ -33,24 +30,26 @@ import org.openflexo.view.controller.model.FlexoPerspective;
 /**
  * Module view is typed with generally the resource data, but can be done with any TechnologyObject.
  */
-public class JAVAModuleView extends JPanel implements ModuleView<JAVAFolderModel>{
+@SuppressWarnings("serial")
+public class JAVAFileView extends JTabbedPane implements ModuleView<JAVAFileModel>{
 
 	private final FlexoController controller;
 
-	private final JAVAFolderModel representedObject;
+	private final JAVAFileModel javaFileModel;
 
 	private final FlexoPerspective perspective;
 	/**
 	 * Initialize needed attribute. All are final.
 	 *
 	 * @param controller The flexo controller
-	 * @param representedObject JAVAModel object that will be represented
+	 * @param javaFileModel JAVAModel object that will be represented
 	 * @param perspective
 	 */
-	public JAVAModuleView(JAVAFolderModel representedObject, FlexoController controller, FlexoPerspective perspective) {
+	public JAVAFileView(JAVAFileModel javaFileModel, FlexoController controller, FlexoPerspective perspective) {
 		this.controller = controller;
-		this.representedObject = representedObject;
+		this.javaFileModel = javaFileModel;
 		this.perspective = perspective;
+		
 	}
 
 	@Override
@@ -98,8 +97,8 @@ public class JAVAModuleView extends JPanel implements ModuleView<JAVAFolderModel
 	}
 
 	@Override
-	public JAVAFolderModel getRepresentedObject() {
-		return representedObject;
+	public JAVAFileModel getRepresentedObject() {
+		return javaFileModel;
 	}
 
 	@Override

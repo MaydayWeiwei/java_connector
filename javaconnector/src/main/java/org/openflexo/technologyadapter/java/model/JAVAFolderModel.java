@@ -66,4 +66,6 @@ public interface JAVAFolderModel extends TechnologyObject<JAVATechnologyAdapter>
     @Setter(value =  CHILDREN_FILE_KEY)
     public void setChildrenFiles(List<JAVAFileModel> childrenFiles);
 
+	public String getName();
+
 }

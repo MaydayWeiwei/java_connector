@@ -24,13 +24,12 @@ import java.util.logging.Logger;
 
 import javax.swing.ImageIcon;
 
-import org.openflexo.foundation.FlexoObject;
 import org.openflexo.foundation.technologyadapter.TechnologyObject;
 import org.openflexo.foundation.viewpoint.FlexoRole;
 import org.openflexo.rm.ResourceLocator;
 import org.openflexo.technologyadapter.java.JAVATechnologyAdapter;
 import org.openflexo.technologyadapter.java.library.JAVAIconLibrary;
-import org.openflexo.technologyadapter.java.view.JAVAModuleView;
+import org.openflexo.technologyadapter.java.view.JAVAFolderView;
 import org.openflexo.technologyadapter.java.model.JAVAFolderModel;
 import org.openflexo.view.EmptyPanel;
 import org.openflexo.view.ModuleView;
@@ -84,7 +83,7 @@ public class JAVAAdapterController extends TechnologyAdapterController<JAVATechn
 	public ModuleView<?> createModuleViewForObject(final TechnologyObject<JAVATechnologyAdapter> object, final FlexoController controller, final FlexoPerspective perspective) {
 		// TODO Auto-generated method stub : update your moduleView code to have somethig represented
 		if (object instanceof JAVAFolderModel){
-			return new JAVAModuleView((JAVAFolderModel) object, controller, perspective);
+			return new JAVAFolderView((JAVAFolderModel) object, controller, perspective);
 		}
 		return new EmptyPanel<TechnologyObject<JAVATechnologyAdapter>>(controller, perspective, object);
 	}

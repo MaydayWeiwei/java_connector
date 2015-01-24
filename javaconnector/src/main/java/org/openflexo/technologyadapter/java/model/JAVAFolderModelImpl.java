@@ -142,5 +142,10 @@ public abstract class JAVAFolderModelImpl extends FlexoObjectImpl implements
 	public void setChildrenFiles(List<JAVAFileModel> childrenFiles) {
 		this.childrenFiles = childrenFiles;
 	}
+	
+	@Override
+	public String getName() {
+		return this.folderModel.getName();
+	}
 
 }
