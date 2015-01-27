@@ -90,7 +90,7 @@ public class JAVATechnologyAdapter extends TechnologyAdapter {
         }
 
         for (final I item : resourceCenter) {
-            if (item instanceof File && ((File) item).isDirectory()) {
+            if (item instanceof File && ((File) item).isDirectory() && !((File) item).isHidden()) {
                 this.initializeJAVAFile(resourceCenter, (File) item);
             }
         }

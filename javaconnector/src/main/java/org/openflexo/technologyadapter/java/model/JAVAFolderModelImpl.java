@@ -44,8 +44,9 @@ import org.openflexo.technologyadapter.java.model.JAVAFileModelImpl;
  */
 public abstract class JAVAFolderModelImpl extends FlexoObjectImpl implements
 		JAVAFolderModel {
-	
-	private static final Logger LOGGER = Logger.getLogger(JAVAFolderModelImpl.class.getName());
+
+	private static final Logger LOGGER = Logger
+			.getLogger(JAVAFolderModelImpl.class.getName());
 
 	private JAVATechnologyAdapter technologyAdapter;
 
@@ -77,26 +78,30 @@ public abstract class JAVAFolderModelImpl extends FlexoObjectImpl implements
 	public void setFolderModel(File folderModel) {
 		this.folderModel = folderModel;
 		try {
-			
+
 			final List<JAVAFolderModel> childrenFolders = new ArrayList<JAVAFolderModel>();
 			final List<JAVAFileModel> childrenFiles = new ArrayList<JAVAFileModel>();
 			for (final File item : folderModel.listFiles()) {
-				if (item.isDirectory()) {
-					final ModelFactory factory = new ModelFactory(JAVAFolderModel.class);
-					final JAVAFolderModelImpl child = (JAVAFolderModelImpl) factory
-							.newInstance(JAVAFolderModel.class);
-					child.setTechnologyAdapter(this.getTechnologyAdapter());
-					child.setFatherFolder(this);
-					child.setFolderModel(item);
-					childrenFolders.add(child);
-				} else {
-					final ModelFactory factory = new ModelFactory(JAVAFileModel.class);
-					final JAVAFileModelImpl child = (JAVAFileModelImpl) factory
-							.newInstance(JAVAFileModel.class);
-					child.setTechnologyAdapter(this.getTechnologyAdapter());
-					child.setFatherFolder(this);
-					child.setFileModel(item);
-					childrenFiles.add(child);
+				if (!item.isHidden()) {
+					if (item.isDirectory()) {
+						final ModelFactory factory = new ModelFactory(
+								JAVAFolderModel.class);
+						final JAVAFolderModelImpl child = (JAVAFolderModelImpl) factory
+								.newInstance(JAVAFolderModel.class);
+						child.setTechnologyAdapter(this.getTechnologyAdapter());
+						child.setFatherFolder(this);
+						child.setFolderModel(item);
+						childrenFolders.add(child);
+					} else {
+						final ModelFactory factory = new ModelFactory(
+								JAVAFileModel.class);
+						final JAVAFileModelImpl child = (JAVAFileModelImpl) factory
+								.newInstance(JAVAFileModel.class);
+						child.setTechnologyAdapter(this.getTechnologyAdapter());
+						child.setFatherFolder(this);
+						child.setFileModel(item);
+						childrenFiles.add(child);
+					}
 				}
 			}
 			this.setChildrenFolders(childrenFolders);
@@ -142,7 +147,7 @@ public abstract class JAVAFolderModelImpl extends FlexoObjectImpl implements
 	public void setChildrenFiles(List<JAVAFileModel> childrenFiles) {
 		this.childrenFiles = childrenFiles;
 	}
-	
+
 	@Override
 	public String getName() {
 		return this.folderModel.getName();
