@@ -32,9 +32,9 @@ import org.openflexo.toolbox.ImageIconResource;
 public class JAVAIconLibrary {
 	private static final Logger logger = Logger.getLogger(JAVAIconLibrary.class.getPackage().getName());
 
-	public static final ImageIcon JAVA_TECHNOLOGY_BIG_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/java-text_big.gif"));
-	public static final ImageIcon JAVA_TECHNOLOGY_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/java-text.gif"));
-	public static final ImageIcon JAVA_FILE_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/java-text.gif"));
+	public static final ImageIcon JAVA_TECHNOLOGY_BIG_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/java.jpg"));
+	public static final ImageIcon JAVA_TECHNOLOGY_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/java-small.jpg"));
+	public static final ImageIcon JAVA_FILE_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/java.jpg"));
 
 	public static ImageIcon iconForObject(Class<? extends TechnologyObject> objectClass) {
 		return JAVA_TECHNOLOGY_ICON;

@@ -84,7 +84,7 @@ public interface JAVAFolderRole extends FlexoRole<JAVAFolderModel> {
          */
         @Override
         public ActorReference<JAVAFolderModel> makeActorReference(final JAVAFolderModel object, final FlexoConceptInstance epi) {
-            final VirtualModelInstanceModelFactory factory = epi.getFactory();
+        	final VirtualModelInstanceModelFactory factory = epi.getFactory();
             final ModelObjectActorReference<JAVAFolderModel> returned = factory.newInstance(ModelObjectActorReference.class);
             returned.setFlexoRole(this);
             returned.setFlexoConceptInstance(epi);

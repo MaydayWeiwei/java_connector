@@ -78,7 +78,6 @@ public abstract class JAVAFolderModelImpl extends FlexoObjectImpl implements
 	public void setFolderModel(File folderModel) {
 		this.folderModel = folderModel;
 		try {
-
 			final List<JAVAFolderModel> childrenFolders = new ArrayList<JAVAFolderModel>();
 			final List<JAVAFileModel> childrenFiles = new ArrayList<JAVAFileModel>();
 			for (final File item : folderModel.listFiles()) {
@@ -93,14 +92,17 @@ public abstract class JAVAFolderModelImpl extends FlexoObjectImpl implements
 						child.setFolderModel(item);
 						childrenFolders.add(child);
 					} else {
-						final ModelFactory factory = new ModelFactory(
-								JAVAFileModel.class);
-						final JAVAFileModelImpl child = (JAVAFileModelImpl) factory
-								.newInstance(JAVAFileModel.class);
-						child.setTechnologyAdapter(this.getTechnologyAdapter());
-						child.setFatherFolder(this);
-						child.setFileModel(item);
-						childrenFiles.add(child);
+						if (isValidJAVAFile(item)) {
+							final ModelFactory factory = new ModelFactory(
+									JAVAFileModel.class);
+							final JAVAFileModelImpl child = (JAVAFileModelImpl) factory
+									.newInstance(JAVAFileModel.class);
+							child.setTechnologyAdapter(this
+									.getTechnologyAdapter());
+							child.setFatherFolder(this);
+							child.setFileModel(item);
+							childrenFiles.add(child);
+						}
 					}
 				}
 			}
@@ -151,6 +153,11 @@ public abstract class JAVAFolderModelImpl extends FlexoObjectImpl implements
 	@Override
 	public String getName() {
 		return this.folderModel.getName();
+	}
+
+	private boolean isValidJAVAFile(File candidateFile) {
+		String fileName = candidateFile.getName();
+		return fileName.endsWith(".xml") || fileName.endsWith(".java") || fileName.endsWith(".jsp");
 	}
 
 }

@@ -91,7 +91,7 @@ public class JAVATechnologyAdapter extends TechnologyAdapter {
 
         for (final I item : resourceCenter) {
             if (item instanceof File && ((File) item).isDirectory() && !((File) item).isHidden()) {
-                this.initializeJAVAFile(resourceCenter, (File) item);
+                this.initializeJAVAFolder(resourceCenter, (File) item);
             }
         }
 
@@ -104,7 +104,7 @@ public class JAVATechnologyAdapter extends TechnologyAdapter {
      * @param resourceCenter
      * @param candidateFile
      */
-    private <I> void initializeJAVAFile(final FlexoResourceCenter<I> resourceCenter, final File candidateFile) {
+    private <I> void initializeJAVAFolder(final FlexoResourceCenter<I> resourceCenter, final File candidateFile) {
         final JAVAResourceImpl javaResourceFile = (JAVAResourceImpl) JAVAResourceImpl.retrieveJAVAResource(
                 candidateFile, this.getTechnologyContextManager());
         final JAVAResourceRepository resourceRepository = resourceCenter.getRepository(JAVAResourceRepository.class, this);
@@ -118,7 +118,6 @@ public class JAVATechnologyAdapter extends TechnologyAdapter {
                 LOGGER.log(Level.SEVERE, msg, e);
             }
         }
-
     } 
 
 
@@ -132,7 +131,7 @@ public class JAVATechnologyAdapter extends TechnologyAdapter {
     public <I> void contentsAdded(FlexoResourceCenter<I> resourceCenter, I contents) {
         // TODO Auto-generated method stub
         if (contents instanceof File) {
-            this.initializeJAVAFile(resourceCenter, (File) contents);
+            this.initializeJAVAFolder(resourceCenter, (File) contents);
         }
     }
 
