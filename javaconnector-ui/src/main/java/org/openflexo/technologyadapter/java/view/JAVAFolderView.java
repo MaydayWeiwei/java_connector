@@ -22,7 +22,6 @@ package org.openflexo.technologyadapter.java.view;
 
 import javax.swing.JTabbedPane;
 
-import org.openflexo.technologyadapter.java.model.JAVAFileModel;
 import org.openflexo.technologyadapter.java.model.JAVAFolderModel;
 import org.openflexo.view.ModuleView;
 import org.openflexo.view.controller.FlexoController;
@@ -51,13 +50,9 @@ public class JAVAFolderView extends JTabbedPane implements ModuleView<JAVAFolder
 		this.javaFolderModel = javaFolderModel;
 		this.perspective = perspective;
 		
-		for (JAVAFolderModel childrenFolder : javaFolderModel.getChildrenFolders()) {
-			addTab(childrenFolder.getName(), new JAVAFolderView(childrenFolder, controller, perspective));
-		}
+		JAVAVisualizationViewerConstructor constructor = new JAVAVisualizationViewerConstructor(javaFolderModel, this);
+		add(javaFolderModel.getName(), constructor.getJavaVisualizationViewer());
 		
-		for(JAVAFileModel childrenFile : javaFolderModel.getChildrenFiles()){
-			addTab(childrenFile.getName(), new JAVAFileView(childrenFile, controller, perspective));
-		}
 	}
 
 	@Override
