@@ -50,7 +50,7 @@ public class JAVAFolderView extends JTabbedPane implements ModuleView<JAVAFolder
 		this.javaFolderModel = javaFolderModel;
 		this.perspective = perspective;
 		
-		JAVAVisualizationViewerConstructor constructor = new JAVAVisualizationViewerConstructor(javaFolderModel, this);
+		JAVAFolderViewConstructor constructor = new JAVAFolderViewConstructor(javaFolderModel, this);
 		add(javaFolderModel.getName(), constructor.getJavaVisualizationViewer());
 		
 	}
@@ -108,5 +108,9 @@ public class JAVAFolderView extends JTabbedPane implements ModuleView<JAVAFolder
 	public boolean isAutoscrolled() {
 		// If you want to handle scrollable by yourself instead of letting Openflexo doing it, change return to true.
 		return false;
+	}
+
+	public FlexoController getController() {
+		return controller;
 	}
 }

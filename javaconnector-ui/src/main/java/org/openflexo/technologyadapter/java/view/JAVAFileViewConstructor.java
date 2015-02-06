@@ -17,8 +17,10 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.collections15.Transformer;
+import org.openflexo.technologyadapter.java.model.JAVAClassOrInterfaceModel;
+import org.openflexo.technologyadapter.java.model.JAVAFieldModel;
 import org.openflexo.technologyadapter.java.model.JAVAFileModel;
-import org.openflexo.technologyadapter.java.model.JAVAFolderModel;
+import org.openflexo.technologyadapter.java.model.JAVAMethodModel;
 
 import edu.uci.ics.jung.algorithms.layout.PolarPoint;
 import edu.uci.ics.jung.algorithms.layout.RadialTreeLayout;
@@ -29,12 +31,11 @@ import edu.uci.ics.jung.visualization.VisualizationModel;
 import edu.uci.ics.jung.visualization.VisualizationServer;
 import edu.uci.ics.jung.visualization.VisualizationViewer;
 import edu.uci.ics.jung.visualization.control.DefaultModalGraphMouse;
-import edu.uci.ics.jung.visualization.control.GraphMouseListener;
 import edu.uci.ics.jung.visualization.control.ModalGraphMouse.Mode;
 
-public class JAVAVisualizationViewerConstructor {
-
-	private JAVAFolderModel rootFolderModel;
+public class JAVAFileViewConstructor {
+	
+	private JAVAFileModel fileModel;
 
 	private VisualizationViewer<Object, Integer> javaVisualizationViewer;
 
@@ -42,11 +43,8 @@ public class JAVAVisualizationViewerConstructor {
 
 	private Transformer<Object, String> vertexlabel;
 	
-	private JAVAFolderView javaFolderView;
-
-	public JAVAVisualizationViewerConstructor(JAVAFolderModel rootFolderModel, JAVAFolderView javaFolderView) {
-		this.javaFolderView = javaFolderView;
-		this.rootFolderModel = rootFolderModel;
+	public JAVAFileViewConstructor(JAVAFileModel fileModel) {
+		this.fileModel = fileModel;
 		this.vertexcolor = createColorTransformer();
 		this.vertexlabel = createVertexLabelTransformer();
 		this.javaVisualizationViewer = createJAVAVisualizationView();
@@ -62,34 +60,38 @@ public class JAVAVisualizationViewerConstructor {
 	}
 
 	private VisualizationViewer<Object, Integer> createJAVAVisualizationView() {
-		List<JAVAFolderModel> folderModelList = new ArrayList<JAVAFolderModel>();
+		JAVAClassOrInterfaceModel rootClass = fileModel.getRootClass();
+		List<JAVAClassOrInterfaceModel> classList = new ArrayList<JAVAClassOrInterfaceModel>();
 		DelegateForest<Object, Integer> graph = new DelegateForest<Object, Integer>();
-		graph.addVertex(rootFolderModel);
-		graph.setRoot(rootFolderModel);
-		folderModelList.add(rootFolderModel);
-		return completeGraph(graph, folderModelList, 1);
+		graph.addVertex(rootClass);
+		graph.setRoot(rootClass);
+		classList.add(rootClass);
+		return completeGraph(graph, classList, 1);
 	}
 
-	@SuppressWarnings({ "unchecked", "rawtypes" })
 	private VisualizationViewer<Object, Integer> completeGraph(
 			DelegateForest<Object, Integer> graph,
-			List<JAVAFolderModel> folderModels, int number) {
+			List<JAVAClassOrInterfaceModel> classList, int number) {
 
-		List<JAVAFolderModel> newFolderModels = new ArrayList<JAVAFolderModel>();
+		List<JAVAClassOrInterfaceModel> newClassList = new ArrayList<JAVAClassOrInterfaceModel>();
 
-		if (folderModels.size() > 0 && graph.getHeight() < 15) {
-			for (JAVAFolderModel father : folderModels) {
-				for (JAVAFileModel file : father.getChildrenFiles()) {
-					graph.addEdge(number, father, file, EdgeType.DIRECTED);
+		if (classList.size() > 0 && graph.getHeight() < 15) {
+			for (JAVAClassOrInterfaceModel father : classList) {
+				for (JAVAClassOrInterfaceModel innerClass : father.getInnerClasses()) {
+					graph.addEdge(number, father, innerClass, EdgeType.DIRECTED);
+					number++;
+					newClassList.add(innerClass);
+				}
+				for (JAVAFieldModel field : father.getFields()) {
+					graph.addEdge(number, father, field, EdgeType.DIRECTED);
 					number++;
 				}
-				for (JAVAFolderModel folder : father.getChildrenFolders()) {
-					graph.addEdge(number, father, folder, EdgeType.DIRECTED);
+				for(JAVAMethodModel method : father.getMethods()) {
+					graph.addEdge(number, father, method, EdgeType.DIRECTED);
 					number++;
-					newFolderModels.add(folder);
 				}
 			}
-			completeGraph(graph, newFolderModels, number);
+			completeGraph(graph, newClassList, number);
 		}
 		RadialTreeLayout<Object, Integer> radialTreeLayout = new RadialTreeLayout<Object, Integer>(
 				graph);
@@ -104,11 +106,11 @@ public class JAVAVisualizationViewerConstructor {
 		vv.setVertexToolTipTransformer(vertexlabel);
 		
 		DefaultModalGraphMouse<Object, Integer> gm = new DefaultModalGraphMouse<Object, Integer>(); 
-		GraphMouseListener gel = new GraphVertexMouseListener(javaFolderView);
+//		GraphMouseListener gel = new GraphVertexMouseListener(javaFileView);
 		
 		gm.setMode(Mode.PICKING);
 		vv.addKeyListener(gm.getModeKeyListener());
-		vv.addGraphMouseListener(gel);
+//		vv.addGraphMouseListener(gel);
 		
 		
 	    vv.setGraphMouse(gm);
@@ -119,16 +121,10 @@ public class JAVAVisualizationViewerConstructor {
 	private Transformer<Object, Paint> createColorTransformer() {
 		Transformer<Object, Paint> vertexColor = new Transformer<Object, Paint>() {
 			public Paint transform(Object obj) {
-				if (obj instanceof JAVAFileModel) {
-					String fileName = ((JAVAFileModel) obj).getName()
-							.toLowerCase();
-					if (fileName.endsWith("xml")) {
-						return Color.GREEN;
-					} else if (fileName.endsWith("java")) {
-						return Color.BLUE;
-					} else if (fileName.endsWith("jsp")) {
-						return Color.PINK;
-					}
+				if (obj instanceof JAVAMethodModel) {
+					return Color.RED;
+				}else if(obj instanceof JAVAFieldModel) {
+					return Color.GREEN;
 				}
 				return Color.YELLOW;
 			}
@@ -139,9 +135,11 @@ public class JAVAVisualizationViewerConstructor {
 	private Transformer<Object, String> createVertexLabelTransformer() {
 		Transformer<Object, String> vertexLabel = new Transformer<Object, String>() {
 			public String transform(Object obj) {
-				if (obj instanceof JAVAFileModel)
-					return ((JAVAFileModel) obj).getName();
-				return ((JAVAFolderModel) obj).getName();
+				if (obj instanceof JAVAMethodModel)
+					return ((JAVAMethodModel) obj).getName();
+				else if(obj instanceof JAVAFieldModel)
+					return ((JAVAFieldModel) obj).getName();
+				return ((JAVAClassOrInterfaceModel) obj).getName();
 			}
 		};
 		return vertexLabel;
@@ -200,5 +198,6 @@ public class JAVAVisualizationViewerConstructor {
 			return true;
 		}
 	}
+
 
 }

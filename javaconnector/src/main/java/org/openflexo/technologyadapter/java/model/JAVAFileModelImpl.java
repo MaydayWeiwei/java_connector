@@ -20,12 +20,17 @@
 
 package org.openflexo.technologyadapter.java.model;
 
+import japa.parser.ast.body.ClassOrInterfaceDeclaration;
+
 import java.io.File;
+
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.Setter;
+import org.openflexo.model.factory.ModelFactory;
 import org.openflexo.foundation.FlexoObject.FlexoObjectImpl;
 import org.openflexo.technologyadapter.java.JAVATechnologyAdapter;
 import org.openflexo.technologyadapter.java.model.JAVAFolderModel;
+import org.openflexo.technologyadapter.java.utils.JAVAFileParser;
 
 /**
  * Abstract Simple implementation. Using Pamela.
@@ -33,51 +38,81 @@ import org.openflexo.technologyadapter.java.model.JAVAFolderModel;
  * @author SomeOne
  * 
  */
-public abstract class JAVAFileModelImpl extends FlexoObjectImpl implements JAVAFileModel {
+public abstract class JAVAFileModelImpl extends FlexoObjectImpl implements
+		JAVAFileModel {
 
-    private JAVATechnologyAdapter technologyAdapter;
-    private File fileModel;
-    private JAVAFolderModel fatherFolder;
-    	
-    public JAVAFileModelImpl() {
-    }
-    
-    public void setTechnologyAdapter(JAVATechnologyAdapter technologyAdapter) {
-         this.technologyAdapter = technologyAdapter;
-    }
+	private JAVATechnologyAdapter technologyAdapter;
+	private File fileModel;
+	private JAVAFolderModel fatherFolder;
+	private JAVAClassOrInterfaceModel rootClass;
 
-    @Override
-    public JAVATechnologyAdapter getTechnologyAdapter() {
-        return this.technologyAdapter;
-    }
+	public JAVAFileModelImpl() {
+	}
 
-    @Override
-    @Getter(value = MODEL_ITEM_KEY, ignoreType = true)
+	public void setTechnologyAdapter(JAVATechnologyAdapter technologyAdapter) {
+		this.technologyAdapter = technologyAdapter;
+	}
+
+	@Override
+	public JAVATechnologyAdapter getTechnologyAdapter() {
+		return this.technologyAdapter;
+	}
+
+	@Override
+	@Getter(value = MODEL_ITEM_KEY, ignoreType = true)
 	public File getFileModel() {
 		return fileModel;
 	}
 
-    @Override
-    @Setter(value =  MODEL_ITEM_KEY)
+	@Override
+	@Setter(value = MODEL_ITEM_KEY)
 	public void setFileModel(File fileModel) {
 		this.fileModel = fileModel;
+		if (fileModel.getName().toLowerCase().endsWith(".java")) {
+			try {
+				ClassOrInterfaceDeclaration javaClass = JAVAFileParser
+						.getRoot(fileModel);
+				final ModelFactory factory = new ModelFactory(
+						JAVAClassOrInterfaceModel.class);
+				final JAVAClassOrInterfaceModelImpl child = (JAVAClassOrInterfaceModelImpl) factory
+						.newInstance(JAVAClassOrInterfaceModel.class);
+				child.setTechnologyAdapter(this.getTechnologyAdapter());
+				child.setJavaFile(this);
+				child.setClassOrInterfaceModel(javaClass);
+				this.setRootClass(child);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
 	}
 
-    @Override
-    @Getter(value = PARENT_ITEM_KEY, ignoreType = true)
+	@Override
+	@Getter(value = PARENT_ITEM_KEY, ignoreType = true)
 	public JAVAFolderModel getFatherFolder() {
 		return fatherFolder;
 	}
 
-    @Override
-    @Setter(value =  PARENT_ITEM_KEY)
+	@Override
+	@Setter(value = PARENT_ITEM_KEY)
 	public void setFatherFolder(JAVAFolderModel fatherFolder) {
 		this.fatherFolder = fatherFolder;
 	}
-    
-    @Override
-    public String getName() {
-    	return this.fileModel.getName();
-    }
+
+	@Override
+	@Setter(value = CLASS_ITEM_KEY)
+	public void setRootClass(JAVAClassOrInterfaceModel rootClass) {
+		this.rootClass = rootClass;
+	}
+
+	@Override
+	@Getter(value = CLASS_ITEM_KEY, ignoreType = true)
+	public JAVAClassOrInterfaceModel getRootClass() {
+		return rootClass;
+	}
+
+	@Override
+	public String getName() {
+		return this.fileModel.getName();
+	}
 
 }

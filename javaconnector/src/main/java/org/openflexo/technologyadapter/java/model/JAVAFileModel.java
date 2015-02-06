@@ -37,6 +37,7 @@ public interface JAVAFileModel extends TechnologyObject<JAVATechnologyAdapter>, 
 
     public static final String MODEL_ITEM_KEY = "javaFile";
     public static final String PARENT_ITEM_KEY = "javaParentFolder";
+    public static final String CLASS_ITEM_KEY = "javaClass";
 
     @Getter(value = MODEL_ITEM_KEY, ignoreType = true)
     public File getFileModel();
@@ -46,9 +47,17 @@ public interface JAVAFileModel extends TechnologyObject<JAVATechnologyAdapter>, 
     
     @Getter(value = PARENT_ITEM_KEY, ignoreType = true)
     public JAVAFolderModel getFatherFolder();
-
+    
     @Setter(value =  PARENT_ITEM_KEY)
     public void setFatherFolder(JAVAFolderModel fatherFolder);
+
+    @Setter(value =  CLASS_ITEM_KEY)
+    public void setRootClass(JAVAClassOrInterfaceModel rootClass);
+    
+    @Getter(value = CLASS_ITEM_KEY, ignoreType = true)
+    public JAVAClassOrInterfaceModel getRootClass();
+
+
     
     public String getName();
     

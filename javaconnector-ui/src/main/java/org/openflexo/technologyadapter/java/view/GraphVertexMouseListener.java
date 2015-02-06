@@ -2,6 +2,7 @@ package org.openflexo.technologyadapter.java.view;
 
 import java.awt.event.MouseEvent;
 
+import org.openflexo.technologyadapter.java.model.JAVAFileModel;
 import org.openflexo.technologyadapter.java.model.JAVAFolderModel;
 
 import edu.uci.ics.jung.visualization.control.GraphMouseListener;
@@ -17,12 +18,20 @@ public class GraphVertexMouseListener implements GraphMouseListener {
 	}
 
 	public void graphClicked(Object obj, MouseEvent me) {
+		
+		System.out.println(obj.getClass());
 
 		if (obj instanceof JAVAFolderModel) {
 			JAVAFolderModel folderModel = (JAVAFolderModel) obj;
-			JAVAVisualizationViewerConstructor constructor = new JAVAVisualizationViewerConstructor(folderModel, javaFolderView);
+			JAVAFolderViewConstructor constructor = new JAVAFolderViewConstructor(folderModel, javaFolderView);
 			javaFolderView.removeAll();
 			javaFolderView.add(folderModel.getName(), constructor.getJavaVisualizationViewer());
+		} else if(obj instanceof JAVAFileModel) {
+			System.out.println("here");
+			JAVAFileModel fileModel = (JAVAFileModel) obj;
+			javaFolderView.removeAll();
+			JAVAFileViewConstructor constructor = new JAVAFileViewConstructor(fileModel);
+			javaFolderView.add(fileModel.getName(), constructor.getJavaVisualizationViewer());
 		}
 
 	}
