@@ -41,10 +41,11 @@ public class JAVAFolderViewConstructor {
 	private Transformer<Object, Paint> vertexcolor;
 
 	private Transformer<Object, String> vertexlabel;
-	
+
 	private JAVAModuleView javaFolderView;
 
-	public JAVAFolderViewConstructor(JAVAFolderModel rootFolderModel, JAVAModuleView javaFolderView) {
+	public JAVAFolderViewConstructor(JAVAFolderModel rootFolderModel,
+			JAVAModuleView javaFolderView) {
 		this.javaFolderView = javaFolderView;
 		this.rootFolderModel = rootFolderModel;
 		this.vertexcolor = createColorTransformer();
@@ -102,17 +103,18 @@ public class JAVAFolderViewConstructor {
 		vv.addPreRenderPaintable(rings);
 		vv.getRenderContext().setVertexFillPaintTransformer(vertexcolor);
 		vv.setVertexToolTipTransformer(vertexlabel);
-		
-		DefaultModalGraphMouse<Object, Integer> gm = new DefaultModalGraphMouse<Object, Integer>(); 
+
+		DefaultModalGraphMouse<Object, Integer> gm = new DefaultModalGraphMouse<Object, Integer>();
 		GraphMouseListener gel = new GraphVertexMouseListener(javaFolderView);
-		
+
 		gm.setMode(Mode.PICKING);
 		vv.addKeyListener(gm.getModeKeyListener());
 		vv.addGraphMouseListener(gel);
+		vv.setGraphMouse(gm);
 		
+		VisualizationServer.Paintable labels = new Labels();
+		vv.addPreRenderPaintable(labels);
 		
-	    vv.setGraphMouse(gm);
-	    
 		return vv;
 	}
 
@@ -122,15 +124,13 @@ public class JAVAFolderViewConstructor {
 				if (obj instanceof JAVAFileModel) {
 					String fileName = ((JAVAFileModel) obj).getName()
 							.toLowerCase();
-					if (fileName.endsWith("xml")) {
-						return Color.GREEN;
-					} else if (fileName.endsWith("java")) {
+					if (fileName.endsWith("java")) {
 						return Color.BLUE;
-					} else if (fileName.endsWith("jsp")) {
-						return Color.PINK;
+					} else {
+						return Color.GREEN;
 					}
 				}
-				return Color.YELLOW;
+				return Color.RED;
 			}
 		};
 		return vertexColor;
@@ -199,6 +199,29 @@ public class JAVAFolderViewConstructor {
 		public boolean useTransform() {
 			return true;
 		}
+	}
+	
+	class Labels implements VisualizationServer.Paintable {
+
+		@Override
+		public void paint(Graphics g) {
+			g.setColor(Color.RED);
+			g.fillArc(600, 10, 25, 25, 0, 360);
+			g.setFont(new Font("Lucida Grande", Font.TRUETYPE_FONT, 14));
+			g.drawString("Folder", 640, 25);
+			g.setColor(Color.BLUE);
+			g.fillArc(600, 50, 25, 25, 0, 360);
+			g.drawString(".java file", 640, 65);
+			g.setColor(Color.GREEN);
+			g.fillArc(600, 90, 25, 25, 0, 360);
+			g.drawString("Other file", 640, 105);
+		}
+
+		@Override
+		public boolean useTransform() {
+			return true;
+		}
+		
 	}
 
 }

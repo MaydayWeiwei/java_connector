@@ -34,7 +34,7 @@ import edu.uci.ics.jung.visualization.control.DefaultModalGraphMouse;
 import edu.uci.ics.jung.visualization.control.ModalGraphMouse.Mode;
 
 public class JAVAFileViewConstructor {
-	
+
 	private JAVAFileModel fileModel;
 
 	private VisualizationViewer<Object, Integer> javaVisualizationViewer;
@@ -42,7 +42,7 @@ public class JAVAFileViewConstructor {
 	private Transformer<Object, Paint> vertexcolor;
 
 	private Transformer<Object, String> vertexlabel;
-	
+
 	public JAVAFileViewConstructor(JAVAFileModel fileModel) {
 		this.fileModel = fileModel;
 		this.vertexcolor = createColorTransformer();
@@ -77,7 +77,8 @@ public class JAVAFileViewConstructor {
 
 		if (classList.size() > 0 && graph.getHeight() < 15) {
 			for (JAVAClassOrInterfaceModel father : classList) {
-				for (JAVAClassOrInterfaceModel innerClass : father.getInnerClasses()) {
+				for (JAVAClassOrInterfaceModel innerClass : father
+						.getInnerClasses()) {
 					graph.addEdge(number, father, innerClass, EdgeType.DIRECTED);
 					number++;
 					newClassList.add(innerClass);
@@ -86,7 +87,7 @@ public class JAVAFileViewConstructor {
 					graph.addEdge(number, father, field, EdgeType.DIRECTED);
 					number++;
 				}
-				for(JAVAMethodModel method : father.getMethods()) {
+				for (JAVAMethodModel method : father.getMethods()) {
 					graph.addEdge(number, father, method, EdgeType.DIRECTED);
 					number++;
 				}
@@ -104,17 +105,19 @@ public class JAVAFileViewConstructor {
 		vv.addPreRenderPaintable(rings);
 		vv.getRenderContext().setVertexFillPaintTransformer(vertexcolor);
 		vv.setVertexToolTipTransformer(vertexlabel);
-		
-		DefaultModalGraphMouse<Object, Integer> gm = new DefaultModalGraphMouse<Object, Integer>(); 
-//		GraphMouseListener gel = new GraphVertexMouseListener(javaFileView);
-		
+
+		DefaultModalGraphMouse<Object, Integer> gm = new DefaultModalGraphMouse<Object, Integer>();
+		// GraphMouseListener gel = new GraphVertexMouseListener(javaFileView);
+
 		gm.setMode(Mode.PICKING);
 		vv.addKeyListener(gm.getModeKeyListener());
-//		vv.addGraphMouseListener(gel);
-		
-		
-	    vv.setGraphMouse(gm);
-	    
+		// vv.addGraphMouseListener(gel);
+
+		vv.setGraphMouse(gm);
+
+		VisualizationServer.Paintable labels = new Labels();
+		vv.addPreRenderPaintable(labels);
+
 		return vv;
 	}
 
@@ -123,10 +126,10 @@ public class JAVAFileViewConstructor {
 			public Paint transform(Object obj) {
 				if (obj instanceof JAVAMethodModel) {
 					return Color.RED;
-				}else if(obj instanceof JAVAFieldModel) {
+				} else if (obj instanceof JAVAFieldModel) {
 					return Color.GREEN;
 				}
-				return Color.YELLOW;
+				return Color.BLUE;
 			}
 		};
 		return vertexColor;
@@ -137,7 +140,7 @@ public class JAVAFileViewConstructor {
 			public String transform(Object obj) {
 				if (obj instanceof JAVAMethodModel)
 					return ((JAVAMethodModel) obj).getName();
-				else if(obj instanceof JAVAFieldModel)
+				else if (obj instanceof JAVAFieldModel)
 					return ((JAVAFieldModel) obj).getName();
 				return ((JAVAClassOrInterfaceModel) obj).getName();
 			}
@@ -199,5 +202,27 @@ public class JAVAFileViewConstructor {
 		}
 	}
 
+	class Labels implements VisualizationServer.Paintable {
+
+		@Override
+		public void paint(Graphics g) {
+			g.setColor(Color.BLUE);
+			g.fillArc(600, 10, 25, 25, 0, 360);
+			g.setFont(new Font("Lucida Grande", Font.TRUETYPE_FONT, 14));
+			g.drawString("Class", 640, 25);
+			g.setColor(Color.GREEN);
+			g.fillArc(600, 50, 25, 25, 0, 360);
+			g.drawString("Field", 640, 65);
+			g.setColor(Color.RED);
+			g.fillArc(600, 90, 25, 25, 0, 360);
+			g.drawString("Method", 640, 105);
+		}
+
+		@Override
+		public boolean useTransform() {
+			return true;
+		}
+
+	}
 
 }
