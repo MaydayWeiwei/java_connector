@@ -132,13 +132,14 @@ public abstract class JAVAResourceImpl extends
 	public JAVAFolderModel loadResourceData(IProgress progress)
 			throws ResourceLoadingCancelledException, FileNotFoundException,
 			FlexoException {
+
 		final JAVAFolderModelImpl javaObject = (JAVAFolderModelImpl) MODEL_FACTORY
 				.newInstance(JAVAFolderModel.class);
-		javaObject.setFolderModel(((FileFlexoIODelegate) getFlexoIODelegate()).getFile());
-		
+		javaObject.setFolderModel(((FileFlexoIODelegate) getFlexoIODelegate())
+				.getFile());
+
 		javaObject.setTechnologyAdapter(getTechnologyAdapter());
 		javaObject.setResource(this);
-		// Now you have to add here your parsing and call the correct set.
 		return javaObject;
 	}
 
@@ -203,4 +204,5 @@ public abstract class JAVAResourceImpl extends
 	public Class<JAVAFolderModel> getResourceDataClass() {
 		return JAVAFolderModel.class;
 	}
+
 }

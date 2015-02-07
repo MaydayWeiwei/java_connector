@@ -40,7 +40,6 @@ import org.openflexo.technologyadapter.java.rm.JAVAResourceImpl;
 import org.openflexo.technologyadapter.java.JAVAModelSlot;
 import org.openflexo.technologyadapter.java.rm.JAVAResourceRepository;
 
-
 /**
  * This class defines and implements the JAVA technology adapter
  * 
@@ -49,118 +48,149 @@ import org.openflexo.technologyadapter.java.rm.JAVAResourceRepository;
  */
 
 @DeclareModelSlots({ // ModelSlot(s) declaration
-@DeclareModelSlot(FML = "JAVAModelSlot", modelSlotClass = JAVAModelSlot.class), 
-})
-@DeclareRepositoryType({JAVAResourceRepository.class })
+@DeclareModelSlot(FML = "JAVAModelSlot", modelSlotClass = JAVAModelSlot.class), })
+@DeclareRepositoryType({ JAVAResourceRepository.class })
 public class JAVATechnologyAdapter extends TechnologyAdapter {
 
-    private static final Logger LOGGER = Logger.getLogger(JAVATechnologyAdapter.class.getPackage().getName());
+	private static final Logger LOGGER = Logger
+			.getLogger(JAVATechnologyAdapter.class.getPackage().getName());
 
-    public JAVATechnologyAdapter() throws TechnologyAdapterInitializationException {
-    }
+	public JAVATechnologyAdapter()
+			throws TechnologyAdapterInitializationException {
+	}
 
-    @Override
-    public String getName() {
-        return new String("JAVA Technology Adapter");
-    }
+	@Override
+	public String getName() {
+		return new String("JAVA Technology Adapter");
+	}
 
-    @Override
-    public JAVATechnologyContextManager createTechnologyContextManager(FlexoResourceCenterService service) {
-        return new JAVATechnologyContextManager(this, service);
-    }
+	@Override
+	public JAVATechnologyContextManager createTechnologyContextManager(
+			FlexoResourceCenterService service) {
+		return new JAVATechnologyContextManager(this, service);
+	}
 
-    @Override
-    public JAVATechnologyContextManager getTechnologyContextManager() {
-        // TODO Auto-generated method stub
-        return (JAVATechnologyContextManager) super.getTechnologyContextManager();
-    }
+	@Override
+	public JAVATechnologyContextManager getTechnologyContextManager() {
+		// TODO Auto-generated method stub
+		return (JAVATechnologyContextManager) super
+				.getTechnologyContextManager();
+	}
 
-    @Override
-    public TechnologyAdapterBindingFactory getTechnologyAdapterBindingFactory() {
-        // TODO Auto-generated method stub
-        return null;
-    }
+	@Override
+	public TechnologyAdapterBindingFactory getTechnologyAdapterBindingFactory() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
-    @Override
-    public <I> void initializeResourceCenter(FlexoResourceCenter<I> resourceCenter) {
-        // TODO Auto-generated method stub
-        JAVAResourceRepository currentRepository = resourceCenter.getRepository(JAVAResourceRepository.class, this);
-        if (currentRepository == null) {
-            currentRepository = this.createNewJAVARepository(resourceCenter);
-        }
+	@Override
+	public <I> void initializeResourceCenter(
+			FlexoResourceCenter<I> resourceCenter) {
+		// TODO Auto-generated method stub
+		JAVAResourceRepository currentRepository = resourceCenter
+				.getRepository(JAVAResourceRepository.class, this);
+		if (currentRepository == null) {
+			currentRepository = this.createNewJAVARepository(resourceCenter);
+		}
 
-        for (final I item : resourceCenter) {
-            if (item instanceof File && ((File) item).isDirectory() && !((File) item).isHidden()) {
-                this.initializeJAVAFolder(resourceCenter, (File) item);
-            }
-        }
+		for (final I item : resourceCenter) {
+			if (item instanceof File) {
+				File folder = (File) item;
+				if (isValidateJAVAFolder(folder)) {
+					this.initializeJAVAFolder(resourceCenter, (File) item);
+				}
+			}
+		}
 
-    }
+	}
 
-    /**
-     * Register file if it is a JAVA file, and
-     * reference resource to <code>this</code>
-     * 
-     * @param resourceCenter
-     * @param candidateFile
-     */
-    private <I> void initializeJAVAFolder(final FlexoResourceCenter<I> resourceCenter, final File candidateFile) {
-        final JAVAResourceImpl javaResourceFile = (JAVAResourceImpl) JAVAResourceImpl.retrieveJAVAResource(
-                candidateFile, this.getTechnologyContextManager());
-        final JAVAResourceRepository resourceRepository = resourceCenter.getRepository(JAVAResourceRepository.class, this);
-        if (javaResourceFile != null) {
-            try {
-                final RepositoryFolder<JAVAResource> folder = resourceRepository.getRepositoryFolder(candidateFile, true);
-                resourceRepository.registerResource(javaResourceFile, folder);
-                this.referenceResource(javaResourceFile, resourceCenter);
-            } catch (final IOException e) {
-                final String msg = "Error during getting JAVA resource folder";
-                LOGGER.log(Level.SEVERE, msg, e);
-            }
-        }
-    } 
+	/**
+	 * Register file if it is a JAVA file, and reference resource to
+	 * <code>this</code>
+	 * 
+	 * @param resourceCenter
+	 * @param candidateFile
+	 */
+	private <I> void initializeJAVAFolder(
+			final FlexoResourceCenter<I> resourceCenter,
+			final File candidateFile) {
+		final JAVAResourceImpl javaResourceFile = (JAVAResourceImpl) JAVAResourceImpl
+				.retrieveJAVAResource(candidateFile,
+						this.getTechnologyContextManager());
+		final JAVAResourceRepository resourceRepository = resourceCenter
+				.getRepository(JAVAResourceRepository.class, this);
+		if (javaResourceFile != null) {
+			try {
+				final RepositoryFolder<JAVAResource> folder = resourceRepository
+						.getRepositoryFolder(candidateFile, true);
+				resourceRepository.registerResource(javaResourceFile, folder);
+				this.referenceResource(javaResourceFile, resourceCenter);
+			} catch (final IOException e) {
+				final String msg = "Error during getting JAVA resource folder";
+				LOGGER.log(Level.SEVERE, msg, e);
+			}
+		}
+	}
 
+	@Override
+	public <I> boolean isIgnorable(FlexoResourceCenter<I> resourceCenter,
+			I contents) {
+		// TODO Auto-generated method stub
+		return false;
+	}
 
-    @Override
-    public <I> boolean isIgnorable(FlexoResourceCenter<I> resourceCenter, I contents) {
-        // TODO Auto-generated method stub
-        return false;
-    }
+	@Override
+	public <I> void contentsAdded(FlexoResourceCenter<I> resourceCenter,
+			I contents) {
+		// TODO Auto-generated method stub
+		if (contents instanceof File) {
+			this.initializeJAVAFolder(resourceCenter, (File) contents);
+		}
+	}
 
-    @Override
-    public <I> void contentsAdded(FlexoResourceCenter<I> resourceCenter, I contents) {
-        // TODO Auto-generated method stub
-        if (contents instanceof File) {
-            this.initializeJAVAFolder(resourceCenter, (File) contents);
-        }
-    }
+	@Override
+	public <I> void contentsDeleted(FlexoResourceCenter<I> resourceCenter,
+			I contents) {
+		// TODO Auto-generated method stub
+	}
 
-    @Override
-    public <I> void contentsDeleted(FlexoResourceCenter<I> resourceCenter, I contents) {
-        // TODO Auto-generated method stub
-    }
-    
+	public JAVAResource createNewJAVAModel(FlexoProject project,
+			String filename, String modelUri) {
+		// TODO Auto-generated method stub
+		final File file = new File(
+				FlexoProject.getProjectSpecificModelsDirectory(project),
+				filename);
+		final JAVAResourceImpl javaResourceFile = (JAVAResourceImpl) JAVAResourceImpl
+				.makeJAVAResource(modelUri, file,
+						this.getTechnologyContextManager());
+		this.getTechnologyContextManager().registerResource(javaResourceFile);
+		return javaResourceFile;
+	}
 
-    public JAVAResource createNewJAVAModel(FlexoProject project, String filename, String modelUri) {
-        // TODO Auto-generated method stub
-        final File file = new File(FlexoProject.getProjectSpecificModelsDirectory(project), filename);
-        final JAVAResourceImpl javaResourceFile = (JAVAResourceImpl) JAVAResourceImpl.makeJAVAResource(modelUri, file, this.getTechnologyContextManager());
-        this.getTechnologyContextManager().registerResource(javaResourceFile);
-        return javaResourceFile;
-    }
+	/**
+	 * Create a new JAVAResourceRepository and register it in the given resource
+	 * center.
+	 * 
+	 * @param resourceCenter
+	 * @return the repository
+	 */
+	private JAVAResourceRepository createNewJAVARepository(
+			final FlexoResourceCenter<?> resourceCenter) {
+		final JAVAResourceRepository repo = new JAVAResourceRepository(this,
+				resourceCenter);
+		resourceCenter.registerRepository(repo, JAVAResourceRepository.class,
+				this);
+		return repo;
+	}
 
-     /**
-     * Create a new JAVAResourceRepository and register it in the given
-     * resource center.
-     * 
-     * @param resourceCenter
-     * @return the repository
-     */
-    private JAVAResourceRepository createNewJAVARepository(final FlexoResourceCenter<?> resourceCenter) {
-        final JAVAResourceRepository repo = new JAVAResourceRepository(this, resourceCenter);
-        resourceCenter.registerRepository(repo, JAVAResourceRepository.class, this);
-        return repo;
-    }
+	private boolean isValidateJAVAFolder(File folder) {
+		if (folder.isHidden()) {
+			return false;
+		} else if (folder.getParentFile() == null) {
+			return true;
+		} else {
+			return isValidateJAVAFolder(folder.getParentFile());
+		}
+	}
 
-    
 }

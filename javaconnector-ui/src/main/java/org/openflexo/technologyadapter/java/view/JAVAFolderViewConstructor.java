@@ -42,9 +42,9 @@ public class JAVAFolderViewConstructor {
 
 	private Transformer<Object, String> vertexlabel;
 	
-	private JAVAFolderView javaFolderView;
+	private JAVAModuleView javaFolderView;
 
-	public JAVAFolderViewConstructor(JAVAFolderModel rootFolderModel, JAVAFolderView javaFolderView) {
+	public JAVAFolderViewConstructor(JAVAFolderModel rootFolderModel, JAVAModuleView javaFolderView) {
 		this.javaFolderView = javaFolderView;
 		this.rootFolderModel = rootFolderModel;
 		this.vertexcolor = createColorTransformer();
@@ -77,7 +77,7 @@ public class JAVAFolderViewConstructor {
 
 		List<JAVAFolderModel> newFolderModels = new ArrayList<JAVAFolderModel>();
 
-		if (folderModels.size() > 0 && graph.getHeight() < 15) {
+		if (folderModels.size() > 0 && graph.getHeight() < 10) {
 			for (JAVAFolderModel father : folderModels) {
 				for (JAVAFileModel file : father.getChildrenFiles()) {
 					graph.addEdge(number, father, file, EdgeType.DIRECTED);

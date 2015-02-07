@@ -10,9 +10,9 @@ import edu.uci.ics.jung.visualization.control.GraphMouseListener;
 @SuppressWarnings("rawtypes")
 public class GraphVertexMouseListener implements GraphMouseListener {
 	
-	private JAVAFolderView javaFolderView;
+	private JAVAModuleView javaFolderView;
 
-	public GraphVertexMouseListener(JAVAFolderView javaFolderView) {
+	public GraphVertexMouseListener(JAVAModuleView javaFolderView) {
 		super();
 		this.javaFolderView = javaFolderView;
 	}

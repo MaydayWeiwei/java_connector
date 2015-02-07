@@ -22,7 +22,7 @@ package org.openflexo.technologyadapter.java.view;
 
 import javax.swing.JTabbedPane;
 
-import org.openflexo.technologyadapter.java.model.JAVAFileModel;
+import org.openflexo.technologyadapter.java.model.JAVAFolderModel;
 import org.openflexo.view.ModuleView;
 import org.openflexo.view.controller.FlexoController;
 import org.openflexo.view.controller.model.FlexoPerspective;
@@ -31,27 +31,27 @@ import org.openflexo.view.controller.model.FlexoPerspective;
  * Module view is typed with generally the resource data, but can be done with any TechnologyObject.
  */
 @SuppressWarnings("serial")
-public class JAVAFileView extends JTabbedPane implements ModuleView<JAVAFileModel>{
+public class JAVAModuleView extends JTabbedPane implements ModuleView<JAVAFolderModel>{
 
 	private final FlexoController controller;
 
-	private final JAVAFileModel javaFileModel;
+	private final JAVAFolderModel javaFolderModel;
 
 	private final FlexoPerspective perspective;
 	/**
 	 * Initialize needed attribute. All are final.
 	 *
 	 * @param controller The flexo controller
-	 * @param javaFileModel JAVAModel object that will be represented
+	 * @param javaFolderModel JAVAModel object that will be represented
 	 * @param perspective
 	 */
-	public JAVAFileView(JAVAFileModel javaFileModel, FlexoController controller, FlexoPerspective perspective) {
+	public JAVAModuleView(JAVAFolderModel javaFolderModel, FlexoController controller, FlexoPerspective perspective) {
 		this.controller = controller;
-		this.javaFileModel = javaFileModel;
+		this.javaFolderModel = javaFolderModel;
 		this.perspective = perspective;
 		
-		JAVAFileViewConstructor constructor = new JAVAFileViewConstructor(javaFileModel);
-		add(javaFileModel.getName(), constructor.getJavaVisualizationViewer());
+		JAVAFolderViewConstructor constructor = new JAVAFolderViewConstructor(javaFolderModel, this);
+		add(javaFolderModel.getName(), constructor.getJavaVisualizationViewer());
 		
 	}
 
@@ -100,13 +100,17 @@ public class JAVAFileView extends JTabbedPane implements ModuleView<JAVAFileMode
 	}
 
 	@Override
-	public JAVAFileModel getRepresentedObject() {
-		return javaFileModel;
+	public JAVAFolderModel getRepresentedObject() {
+		return javaFolderModel;
 	}
 
 	@Override
 	public boolean isAutoscrolled() {
 		// If you want to handle scrollable by yourself instead of letting Openflexo doing it, change return to true.
 		return false;
+	}
+
+	public FlexoController getController() {
+		return controller;
 	}
 }
