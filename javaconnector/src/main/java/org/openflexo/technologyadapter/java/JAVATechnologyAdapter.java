@@ -94,7 +94,7 @@ public class JAVATechnologyAdapter extends TechnologyAdapter {
 		}
 
 		for (final I item : resourceCenter) {
-			if (item instanceof File) {
+			if (item instanceof File && ((File) item).isDirectory()) {
 				File folder = (File) item;
 				if (isValidateJAVAFolder(folder, resourceCenter.getName())) {
 					this.initializeJAVAFolder(resourceCenter, (File) item);
@@ -184,7 +184,7 @@ public class JAVATechnologyAdapter extends TechnologyAdapter {
 	}
 
 	private boolean isValidateJAVAFolder(File folder, String resourceCenter) {
-		if (folder.isHidden()) {
+		if (folder.isHidden() || "target".equals(folder.getName())) {
 			return false;
 		} else if (resourceCenter.equals(folder.getParent())) {
 			return true;

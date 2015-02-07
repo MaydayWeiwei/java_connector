@@ -19,15 +19,12 @@ public class GraphVertexMouseListener implements GraphMouseListener {
 
 	public void graphClicked(Object obj, MouseEvent me) {
 		
-		System.out.println(obj.getClass());
-
 		if (obj instanceof JAVAFolderModel) {
 			JAVAFolderModel folderModel = (JAVAFolderModel) obj;
 			JAVAFolderViewConstructor constructor = new JAVAFolderViewConstructor(folderModel, javaFolderView);
 			javaFolderView.removeAll();
 			javaFolderView.add(folderModel.getName(), constructor.getJavaVisualizationViewer());
 		} else if(obj instanceof JAVAFileModel) {
-			System.out.println("here");
 			JAVAFileModel fileModel = (JAVAFileModel) obj;
 			javaFolderView.removeAll();
 			JAVAFileViewConstructor constructor = new JAVAFileViewConstructor(fileModel);

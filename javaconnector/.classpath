@@ -1,57 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-  <classpathentry kind="src" path="src/test/java" output="target/test-classes" including="**/*.java"/>
-  <classpathentry kind="src" path="src/test/resources" output="target/test-classes" excluding="**/*.java"/>
-  <classpathentry kind="src" path="src/main/java"/>
-  <classpathentry kind="src" path="src/main/resources" including="**/*" excluding="**/*.java"/>
-  <classpathentry kind="output" path="target/classes"/>
-  <classpathentry kind="var" path="M2_REPO/javax/inject/javax.inject/1/javax.inject-1.jar"/>
-  <classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.6"/>
-  <classpathentry kind="var" path="M2_REPO/org/openflexo/flexo-foundation/1.7.0-SNAPSHOT/flexo-foundation-1.7.0-SNAPSHOT.jar"/>
-  <classpathentry kind="var" path="M2_REPO/org/openflexo/diana-core/1.1/diana-core-1.1.jar"/>
-  <classpathentry kind="var" path="M2_REPO/org/openflexo/diana-api/1.1/diana-api-1.1.jar"/>
-  <classpathentry kind="var" path="M2_REPO/org/openflexo/pamela-core/1.1/pamela-core-1.1.jar"/>
-  <classpathentry kind="var" path="M2_REPO/org/openflexo/flexoutils/1.1/flexoutils-1.1.jar"/>
-  <classpathentry kind="var" path="M2_REPO/commons-io/commons-io/2.4/commons-io-2.4.jar"/>
-  <classpathentry kind="var" path="M2_REPO/jalopy/jalopy/1.5rc3/jalopy-1.5rc3.jar"/>
-  <classpathentry kind="var" path="M2_REPO/log4j/log4j/1.2.8/log4j-1.2.8.jar"/>
-  <classpathentry kind="var" path="M2_REPO/com/google/inject/guice/3.0/guice-3.0.jar"/>
-  <classpathentry kind="var" path="M2_REPO/aopalliance/aopalliance/1.0/aopalliance-1.0.jar"/>
-  <classpathentry kind="var" path="M2_REPO/com/google/guava/guava/13.0.1/guava-13.0.1.jar"/>
-  <classpathentry kind="var" path="M2_REPO/commons-collections/commons-collections/3.2/commons-collections-3.2.jar"/>
-  <classpathentry kind="var" path="M2_REPO/sablecc/sablecc/3.2-1/sablecc-3.2-1.jar"/>
-  <classpathentry kind="var" path="M2_REPO/org/apache/commons/commons-lang3/3.1/commons-lang3-3.1.jar"/>
-  <classpathentry kind="var" path="M2_REPO/org/jdom/jdom2/2.0.4/jdom2-2.0.4.jar"/>
-  <classpathentry kind="var" path="M2_REPO/xerces/xercesImpl/2.11.0/xercesImpl-2.11.0.jar"/>
-  <classpathentry kind="var" path="M2_REPO/xml-apis/xml-apis/1.4.01/xml-apis-1.4.01.jar"/>
-  <classpathentry kind="var" path="M2_REPO/com/google/code/findbugs/jsr305/2.0.1/jsr305-2.0.1.jar"/>
-  <classpathentry kind="var" path="M2_REPO/org/openflexo/connie-core/1.1/connie-core-1.1.jar"/>
-  <classpathentry kind="var" path="M2_REPO/org/javassist/javassist/3.18.0-GA/javassist-3.18.0-GA.jar"/>
-  <classpathentry kind="var" path="M2_REPO/org/openflexo/diana-geom/1.1/diana-geom-1.1.jar"/>
-  <classpathentry kind="var" path="M2_REPO/junit/junit/4.10/junit-4.10.jar"/>
-  <classpathentry kind="var" path="M2_REPO/org/hamcrest/hamcrest-core/1.1/hamcrest-core-1.1.jar"/>
-  <classpathentry kind="var" path="M2_REPO/org/openflexo/gina-core/1.1/gina-core-1.1.jar"/>
-  <classpathentry kind="var" path="M2_REPO/org/openflexo/flexographicutils/1.1/flexographicutils-1.1.jar"/>
-  <classpathentry kind="var" path="M2_REPO/org/openflexo/flexolocalization/1.1/flexolocalization-1.1.jar"/>
-  <classpathentry kind="var" path="M2_REPO/org/swinglabs/swingx/swingx-core/1.6.3/swingx-core-1.6.3.jar"/>
-  <classpathentry kind="var" path="M2_REPO/org/swinglabs/swingx/swingx-autocomplete/1.6.3/swingx-autocomplete-1.6.3.jar"/>
-  <classpathentry kind="var" path="M2_REPO/org/swinglabs/swingx/swingx-common/1.6.3/swingx-common-1.6.3.jar"/>
-  <classpathentry kind="var" path="M2_REPO/org/swinglabs/swingx/swingx-action/1.6.3/swingx-action-1.6.3.jar"/>
-  <classpathentry kind="var" path="M2_REPO/org/swinglabs/swingx/swingx-plaf/1.6.3/swingx-plaf-1.6.3.jar"/>
-  <classpathentry kind="var" path="M2_REPO/org/swinglabs/swingx/swingx-painters/1.6.3/swingx-painters-1.6.3.jar"/>
-  <classpathentry kind="var" path="M2_REPO/com/google/code/gson/gson/2.2.2/gson-2.2.2.jar"/>
-  <classpathentry kind="var" path="M2_REPO/batik/batik-svggen/1.6-1/batik-svggen-1.6-1.jar"/>
-  <classpathentry kind="var" path="M2_REPO/batik/batik-gvt/1.6-1/batik-gvt-1.6-1.jar"/>
-  <classpathentry kind="var" path="M2_REPO/batik/batik-awt-util/1.6-1/batik-awt-util-1.6-1.jar"/>
-  <classpathentry kind="var" path="M2_REPO/batik/batik-util/1.6-1/batik-util-1.6-1.jar"/>
-  <classpathentry kind="var" path="M2_REPO/batik/batik-gui-util/1.6-1/batik-gui-util-1.6-1.jar"/>
-  <classpathentry kind="var" path="M2_REPO/batik/batik-ext/1.6-1/batik-ext-1.6-1.jar"/>
-  <classpathentry kind="var" path="M2_REPO/xml-apis/xmlParserAPIs/2.0.2/xmlParserAPIs-2.0.2.jar"/>
-  <classpathentry kind="var" path="M2_REPO/batik/batik-svg-dom/1.6-1/batik-svg-dom-1.6-1.jar"/>
-  <classpathentry kind="var" path="M2_REPO/batik/batik-dom/1.6-1/batik-dom-1.6-1.jar"/>
-  <classpathentry kind="var" path="M2_REPO/batik/batik-css/1.6-1/batik-css-1.6-1.jar"/>
-  <classpathentry kind="var" path="M2_REPO/batik/batik-xml/1.6-1/batik-xml-1.6-1.jar"/>
-  <classpathentry kind="var" path="M2_REPO/batik/batik-parser/1.6-1/batik-parser-1.6-1.jar"/>
-  <classpathentry kind="var" path="M2_REPO/org/openflexo/flexo-foundation/1.7.0/flexo-foundation-1.7.0-tests.jar"/>
-  <classpathentry kind="var" path="M2_REPO/com/google/code/javaparser/javaparser/1.0.11/javaparser-1.0.11.jar"/>
+	<classpathentry kind="src" output="target/test-classes" path="src/test/java">
+		<attributes>
+			<attribute name="optional" value="true"/>
+			<attribute name="maven.pomderived" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry excluding="**/*.java" including="**/*.java" kind="src" output="target/test-classes" path="src/test/resources"/>
+	<classpathentry including="**/*.java" kind="src" output="target/classes" path="src/main/java">
+		<attributes>
+			<attribute name="optional" value="true"/>
+			<attribute name="maven.pomderived" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry excluding="**/*.java" including="**/*|**/*.java" kind="src" path="src/main/resources"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER">
+		<attributes>
+			<attribute name="maven.pomderived" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="con" path="org.eclipse.m2e.MAVEN2_CLASSPATH_CONTAINER">
+		<attributes>
+			<attribute name="maven.pomderived" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="output" path="target/classes"/>
 </classpath>
