@@ -31,7 +31,7 @@ public class JAVAResourceRepository extends TechnologyAdapterFileResourceReposit
         super(adapter, resourceCenter);
     }
 
-    private static final String DEFAULT_BASE_URI = "http://www.openflexo.org/JAVATechnologyAdapter/Models";
+    private static final String DEFAULT_BASE_URI = "http://www.openflexo.org/JAVATechnologyAdapter/JAVAFolderModels";
 
     @Override
     public String getDefaultBaseURI() {
