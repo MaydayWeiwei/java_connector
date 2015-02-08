@@ -184,7 +184,7 @@ public class JAVATechnologyAdapter extends TechnologyAdapter {
 	}
 
 	private boolean isValidateJAVAFolder(File folder, String resourceCenter) {
-		if (folder.isHidden() || "target".equals(folder.getName())) {
+		if (folder.isHidden() || "target".equals(folder.getName()) || "build".equals(folder.getName())) {
 			return false;
 		} else if (resourceCenter.equals(folder.getParent())) {
 			return true;
