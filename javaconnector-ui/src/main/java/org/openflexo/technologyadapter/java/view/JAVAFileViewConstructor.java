@@ -31,6 +31,7 @@ import edu.uci.ics.jung.visualization.VisualizationModel;
 import edu.uci.ics.jung.visualization.VisualizationServer;
 import edu.uci.ics.jung.visualization.VisualizationViewer;
 import edu.uci.ics.jung.visualization.control.DefaultModalGraphMouse;
+import edu.uci.ics.jung.visualization.control.GraphMouseListener;
 import edu.uci.ics.jung.visualization.control.ModalGraphMouse.Mode;
 
 public class JAVAFileViewConstructor {
@@ -42,8 +43,11 @@ public class JAVAFileViewConstructor {
 	private Transformer<Object, Paint> vertexcolor;
 
 	private Transformer<Object, String> vertexlabel;
+	
+	private JAVAModuleView javaModuleView;
 
-	public JAVAFileViewConstructor(JAVAFileModel fileModel) {
+	public JAVAFileViewConstructor(JAVAFileModel fileModel, JAVAModuleView javaModuleView) {
+		this.javaModuleView = javaModuleView;
 		this.fileModel = fileModel;
 		this.vertexcolor = createColorTransformer();
 		this.vertexlabel = createVertexLabelTransformer();
@@ -69,6 +73,7 @@ public class JAVAFileViewConstructor {
 		return completeGraph(graph, classList, 1);
 	}
 
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	private VisualizationViewer<Object, Integer> completeGraph(
 			DelegateForest<Object, Integer> graph,
 			List<JAVAClassOrInterfaceModel> classList, int number) {
@@ -107,12 +112,12 @@ public class JAVAFileViewConstructor {
 		vv.setVertexToolTipTransformer(vertexlabel);
 
 		DefaultModalGraphMouse<Object, Integer> gm = new DefaultModalGraphMouse<Object, Integer>();
-		// GraphMouseListener gel = new GraphVertexMouseListener(javaFileView);
+		GraphMouseListener gel = new GraphVertexMouseListener(javaModuleView);
+		
 
 		gm.setMode(Mode.PICKING);
 		vv.addKeyListener(gm.getModeKeyListener());
-		// vv.addGraphMouseListener(gel);
-
+		vv.addGraphMouseListener(gel);
 		vv.setGraphMouse(gm);
 
 		VisualizationServer.Paintable labels = new Labels();

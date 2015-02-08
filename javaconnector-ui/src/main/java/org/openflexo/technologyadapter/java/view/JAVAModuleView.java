@@ -49,10 +49,8 @@ public class JAVAModuleView extends JTabbedPane implements ModuleView<JAVAFolder
 		this.controller = controller;
 		this.javaFolderModel = javaFolderModel;
 		this.perspective = perspective;
-		
 		JAVAFolderViewConstructor constructor = new JAVAFolderViewConstructor(javaFolderModel, this);
-		add(javaFolderModel.getName(), constructor.getJavaVisualizationViewer());
-		
+		addTab(javaFolderModel.getName(), constructor.getJavaVisualizationViewer());
 	}
 
 	@Override

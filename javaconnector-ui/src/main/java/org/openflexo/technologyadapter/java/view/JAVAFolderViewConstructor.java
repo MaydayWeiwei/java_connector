@@ -42,11 +42,11 @@ public class JAVAFolderViewConstructor {
 
 	private Transformer<Object, String> vertexlabel;
 
-	private JAVAModuleView javaFolderView;
+	private JAVAModuleView javaModuleView;
 
 	public JAVAFolderViewConstructor(JAVAFolderModel rootFolderModel,
 			JAVAModuleView javaFolderView) {
-		this.javaFolderView = javaFolderView;
+		this.javaModuleView = javaFolderView;
 		this.rootFolderModel = rootFolderModel;
 		this.vertexcolor = createColorTransformer();
 		this.vertexlabel = createVertexLabelTransformer();
@@ -105,7 +105,7 @@ public class JAVAFolderViewConstructor {
 		vv.setVertexToolTipTransformer(vertexlabel);
 
 		DefaultModalGraphMouse<Object, Integer> gm = new DefaultModalGraphMouse<Object, Integer>();
-		GraphMouseListener gel = new GraphVertexMouseListener(javaFolderView);
+		GraphMouseListener gel = new GraphVertexMouseListener(javaModuleView);
 
 		gm.setMode(Mode.PICKING);
 		vv.addKeyListener(gm.getModeKeyListener());
@@ -114,7 +114,6 @@ public class JAVAFolderViewConstructor {
 		
 		VisualizationServer.Paintable labels = new Labels();
 		vv.addPreRenderPaintable(labels);
-		
 		return vv;
 	}
 
