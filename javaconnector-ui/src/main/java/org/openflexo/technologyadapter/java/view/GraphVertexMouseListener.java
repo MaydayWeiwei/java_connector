@@ -33,14 +33,17 @@ public class GraphVertexMouseListener implements GraphMouseListener {
 					constructor.getJavaVisualizationViewer());
 		} else if (obj instanceof JAVAFileModel) {
 			JAVAFileModel fileModel = (JAVAFileModel) obj;
-			javaModuleView.removeAll();
-			JAVAFileViewConstructor constructor = new JAVAFileViewConstructor(
-					fileModel, javaModuleView);
-			javaModuleView.add(fileModel.getName(),
-					constructor.getJavaVisualizationViewer());
+			if (fileModel.getName().toLowerCase().endsWith(".java")) {
+				javaModuleView.removeAll();
+				JAVAFileViewConstructor constructor = new JAVAFileViewConstructor(
+						fileModel, javaModuleView);
+				javaModuleView.add(fileModel.getName(),
+						constructor.getJavaVisualizationViewer());
+			}
 		} else if (obj instanceof JAVAClassOrInterfaceModel) {
 			JAVAClassOrInterfaceModel coi = (JAVAClassOrInterfaceModel) obj;
-			new JAVATextView(new JTextArea(coi.getClassOrInterfaceModel().toString()));
+			new JAVATextView(new JTextArea(coi.getClassOrInterfaceModel()
+					.toString()));
 		} else if (obj instanceof JAVAMethodModel) {
 			JAVAMethodModel mm = (JAVAMethodModel) obj;
 			new JAVATextView(new JTextArea(mm.getMethodModel().toString()));
