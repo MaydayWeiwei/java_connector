@@ -22,15 +22,17 @@ public class GraphVertexMouseListener implements GraphMouseListener {
 		this.javaModuleView = javaModuleView;
 	}
 
+	@Override
 	public void graphClicked(Object obj, MouseEvent me) {
 
 		if (obj instanceof JAVAFolderModel) {
 			JAVAFolderModel folderModel = (JAVAFolderModel) obj;
-			JAVAFolderViewConstructor constructor = new JAVAFolderViewConstructor(
-					folderModel, javaModuleView);
-			javaModuleView.removeAll();
-			javaModuleView.add(folderModel.getName(),
-					constructor.getJavaVisualizationViewer());
+			// JAVAFolderViewConstructor constructor = new
+			// JAVAFolderViewConstructor(
+			// folderModel, javaModuleView);
+			// javaModuleView.removeAll();
+			// javaModuleView.add(folderModel.getName(),
+			// constructor.getJavaVisualizationViewer());
 		} else if (obj instanceof JAVAFileModel) {
 			JAVAFileModel fileModel = (JAVAFileModel) obj;
 			if (fileModel.getName().toLowerCase().endsWith(".java")) {
@@ -54,11 +56,13 @@ public class GraphVertexMouseListener implements GraphMouseListener {
 
 	}
 
+	@Override
 	public void graphPressed(Object v, MouseEvent me) {
 		// TODO Auto-generated method stub
 
 	}
 
+	@Override
 	public void graphReleased(Object v, MouseEvent me) {
 		// TODO Auto-generated method stub
 

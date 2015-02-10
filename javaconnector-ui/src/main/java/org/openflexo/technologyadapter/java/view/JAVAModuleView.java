@@ -28,40 +28,49 @@ import org.openflexo.view.controller.FlexoController;
 import org.openflexo.view.controller.model.FlexoPerspective;
 
 /**
- * Module view is typed with generally the resource data, but can be done with any TechnologyObject.
+ * Module view is typed with generally the resource data, but can be done with
+ * any TechnologyObject.
  */
 @SuppressWarnings("serial")
-public class JAVAModuleView extends JTabbedPane implements ModuleView<JAVAFolderModel>{
+public class JAVAModuleView extends JTabbedPane implements
+		ModuleView<JAVAFolderModel> {
 
 	private final FlexoController controller;
 
 	private final JAVAFolderModel javaFolderModel;
 
 	private final FlexoPerspective perspective;
+
 	/**
 	 * Initialize needed attribute. All are final.
 	 *
-	 * @param controller The flexo controller
-	 * @param javaFolderModel JAVAModel object that will be represented
+	 * @param controller
+	 *            The flexo controller
+	 * @param javaFolderModel
+	 *            JAVAModel object that will be represented
 	 * @param perspective
 	 */
-	public JAVAModuleView(JAVAFolderModel javaFolderModel, FlexoController controller, FlexoPerspective perspective) {
+	public JAVAModuleView(JAVAFolderModel javaFolderModel,
+			FlexoController controller, FlexoPerspective perspective) {
 		this.controller = controller;
 		this.javaFolderModel = javaFolderModel;
 		this.perspective = perspective;
-		JAVAFolderViewConstructor constructor = new JAVAFolderViewConstructor(javaFolderModel, this);
-		addTab(javaFolderModel.getName(), constructor.getJavaVisualizationViewer());
+		JAVAFolderViewConstructor constructor = new JAVAFolderViewConstructor(
+				javaFolderModel);
+		add(javaFolderModel.getName(), constructor.showPanel());
 	}
 
 	@Override
-	public void show(FlexoController flexoController, FlexoPerspective flexoPerspective) {
-		// If you want to add right and left panels to your module view, do it here. Un comment following code with your component.
+	public void show(FlexoController flexoController,
+			FlexoPerspective flexoPerspective) {
+		// If you want to add right and left panels to your module view, do it
+		// here. Un comment following code with your component.
 		// SwingUtilities.invokeLater(new Runnable() {
-		//		@Override
-		//		public void run() {
-		//			perspective.setTopRightView(customJComponent);
-		//			controller.getControllerModel().setRightViewVisible(true);
-		//			}
+		// @Override
+		// public void run() {
+		// perspective.setTopRightView(customJComponent);
+		// controller.getControllerModel().setRightViewVisible(true);
+		// }
 		// });
 	}
 
@@ -104,7 +113,8 @@ public class JAVAModuleView extends JTabbedPane implements ModuleView<JAVAFolder
 
 	@Override
 	public boolean isAutoscrolled() {
-		// If you want to handle scrollable by yourself instead of letting Openflexo doing it, change return to true.
+		// If you want to handle scrollable by yourself instead of letting
+		// Openflexo doing it, change return to true.
 		return false;
 	}
 

@@ -1,205 +1,119 @@
 package org.openflexo.technologyadapter.java.view;
 
-import java.awt.BasicStroke;
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Paint;
-import java.awt.Shape;
-import java.awt.geom.Ellipse2D;
-import java.awt.geom.Point2D;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
-import org.apache.commons.collections15.Transformer;
+import javax.swing.JMenuItem;
+import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
+import javax.swing.JScrollPane;
+
+import org.openflexo.fge.FGEModelFactory;
+import org.openflexo.fge.FGEModelFactoryImpl;
+import org.openflexo.fge.swing.JDianaInteractiveEditor;
+import org.openflexo.fge.swing.SwingViewFactory;
+import org.openflexo.fge.swing.control.SwingToolFactory;
+import org.openflexo.fge.swing.control.tools.JDianaScaleSelector;
+import org.openflexo.model.exceptions.ModelDefinitionException;
 import org.openflexo.technologyadapter.java.model.JAVAFileModel;
 import org.openflexo.technologyadapter.java.model.JAVAFolderModel;
+import org.openflexo.technologyadapter.java.view.composant.CircularDrawing;
+import org.openflexo.technologyadapter.java.view.composant.JAVAGraph;
+import org.openflexo.technologyadapter.java.view.composant.JAVAGraphNode;
 
-import edu.uci.ics.jung.algorithms.layout.PolarPoint;
-import edu.uci.ics.jung.algorithms.layout.RadialTreeLayout;
-import edu.uci.ics.jung.graph.DelegateForest;
-import edu.uci.ics.jung.graph.util.EdgeType;
-import edu.uci.ics.jung.visualization.DefaultVisualizationModel;
-import edu.uci.ics.jung.visualization.VisualizationModel;
 import edu.uci.ics.jung.visualization.VisualizationServer;
-import edu.uci.ics.jung.visualization.VisualizationViewer;
-import edu.uci.ics.jung.visualization.control.DefaultModalGraphMouse;
-import edu.uci.ics.jung.visualization.control.GraphMouseListener;
-import edu.uci.ics.jung.visualization.control.ModalGraphMouse.Mode;
 
 public class JAVAFolderViewConstructor {
 
 	private JAVAFolderModel rootFolderModel;
 
-	private VisualizationViewer<Object, Integer> javaVisualizationViewer;
-
-	private Transformer<Object, Paint> vertexcolor;
-
-	private Transformer<Object, String> vertexlabel;
-
-	private JAVAModuleView javaModuleView;
-
-	public JAVAFolderViewConstructor(JAVAFolderModel rootFolderModel,
-			JAVAModuleView javaFolderView) {
-		this.javaModuleView = javaFolderView;
+	public JAVAFolderViewConstructor(JAVAFolderModel rootFolderModel) {
 		this.rootFolderModel = rootFolderModel;
-		this.vertexcolor = createColorTransformer();
-		this.vertexlabel = createVertexLabelTransformer();
-		this.javaVisualizationViewer = createJAVAVisualizationView();
 	}
 
-	public VisualizationViewer<Object, Integer> getJavaVisualizationViewer() {
-		return javaVisualizationViewer;
+	public JPanel showPanel() {
+
+		JPanel panel = new JPanel(new BorderLayout());
+
+		final CircularDrawing d = makeDrawing();
+		final TestDrawingController dc = new TestDrawingController(d);
+		dc.getDrawingView().setName("[NO_CACHE]");
+		panel.add(new JScrollPane(dc.getDrawingView()), BorderLayout.CENTER);
+		panel.add(dc.scaleSelector.getComponent(), BorderLayout.NORTH);
+
+		panel.validate();
+		return panel;
 	}
 
-	public void setJavaVisualizationViewer(
-			VisualizationViewer<Object, Integer> javaVisualizationViewer) {
-		this.javaVisualizationViewer = javaVisualizationViewer;
-	}
-
-	private VisualizationViewer<Object, Integer> createJAVAVisualizationView() {
+	public CircularDrawing makeDrawing() {
+		FGEModelFactory factory = null;
+		try {
+			factory = new FGEModelFactoryImpl();
+		} catch (ModelDefinitionException e) {
+			e.printStackTrace();
+		}
 		List<JAVAFolderModel> folderModelList = new ArrayList<JAVAFolderModel>();
-		DelegateForest<Object, Integer> graph = new DelegateForest<Object, Integer>();
-		graph.addVertex(rootFolderModel);
-		graph.setRoot(rootFolderModel);
+		List<JAVAGraphNode> graphNodeList = new ArrayList<JAVAGraphNode>();
+		JAVAGraph graph = new JAVAGraph();
+		JAVAGraphNode node = new JAVAGraphNode(rootFolderModel.getName(), graph);
 		folderModelList.add(rootFolderModel);
-		return completeGraph(graph, folderModelList, 1);
+		graphNodeList.add(node);
+		completeDrawing(graph, graphNodeList, folderModelList, 1, 0);
+		CircularDrawing circularDrawing = new CircularDrawing(graph, factory);
+		circularDrawing.printGraphicalObjectHierarchy();
+		return circularDrawing;
 	}
 
-	@SuppressWarnings({ "unchecked", "rawtypes" })
-	private VisualizationViewer<Object, Integer> completeGraph(
-			DelegateForest<Object, Integer> graph,
-			List<JAVAFolderModel> folderModels, int number) {
+	private void completeDrawing(JAVAGraph graph,
+			List<JAVAGraphNode> graphNodeList,
+			List<JAVAFolderModel> folderModelList, int size, int height) {
 
-		List<JAVAFolderModel> newFolderModels = new ArrayList<JAVAFolderModel>();
+		List<JAVAFolderModel> newFolderModelList = new ArrayList<JAVAFolderModel>();
+		List<JAVAGraphNode> newGraphNodeList = new ArrayList<JAVAGraphNode>();
 
-		if (folderModels.size() > 0 && graph.getHeight() < 10) {
-			for (JAVAFolderModel father : folderModels) {
-				for (JAVAFileModel file : father.getChildrenFiles()) {
-					graph.addEdge(number, father, file, EdgeType.DIRECTED);
-					number++;
+		if (size > 0 && height < 2) {
+			for (int i = 0; i < size; i++) {
+				JAVAGraphNode parent = graphNodeList.get(i);
+				JAVAFolderModel folderModel = folderModelList.get(i);
+				for (JAVAFileModel file : folderModel.getChildrenFiles()) {
+					JAVAGraphNode node = new JAVAGraphNode(file.getName(),
+							graph);
+					parent.connectTo(node);
 				}
-				for (JAVAFolderModel folder : father.getChildrenFolders()) {
-					graph.addEdge(number, father, folder, EdgeType.DIRECTED);
-					number++;
-					newFolderModels.add(folder);
-				}
-			}
-			completeGraph(graph, newFolderModels, number);
-		}
-		RadialTreeLayout<Object, Integer> radialTreeLayout = new RadialTreeLayout<Object, Integer>(
-				graph);
-		final VisualizationModel<Object, Integer> visualizationModel = new DefaultVisualizationModel<Object, Integer>(
-				radialTreeLayout);
-		VisualizationViewer<Object, Integer> vv = new VisualizationViewer<Object, Integer>(
-				visualizationModel);
-		VisualizationServer.Paintable rings = new Rings(radialTreeLayout,
-				graph, vv);
-		vv.addPreRenderPaintable(rings);
-		vv.getRenderContext().setVertexFillPaintTransformer(vertexcolor);
-		vv.setVertexToolTipTransformer(vertexlabel);
-
-		DefaultModalGraphMouse<Object, Integer> gm = new DefaultModalGraphMouse<Object, Integer>();
-		GraphMouseListener gel = new GraphVertexMouseListener(javaModuleView);
-
-		gm.setMode(Mode.PICKING);
-		vv.addKeyListener(gm.getModeKeyListener());
-		vv.addGraphMouseListener(gel);
-		vv.setGraphMouse(gm);
-		
-		VisualizationServer.Paintable labels = new Labels();
-		vv.addPreRenderPaintable(labels);
-		return vv;
-	}
-
-	private Transformer<Object, Paint> createColorTransformer() {
-		Transformer<Object, Paint> vertexColor = new Transformer<Object, Paint>() {
-			public Paint transform(Object obj) {
-				if (obj instanceof JAVAFileModel) {
-					String fileName = ((JAVAFileModel) obj).getName()
-							.toLowerCase();
-					if (fileName.endsWith("java")) {
-						return Color.BLUE;
-					} else {
-						return Color.GREEN;
-					}
-				}
-				return Color.RED;
-			}
-		};
-		return vertexColor;
-	}
-
-	private Transformer<Object, String> createVertexLabelTransformer() {
-		Transformer<Object, String> vertexLabel = new Transformer<Object, String>() {
-			public String transform(Object obj) {
-				if (obj instanceof JAVAFileModel)
-					return ((JAVAFileModel) obj).getName();
-				return ((JAVAFolderModel) obj).getName();
-			}
-		};
-		return vertexLabel;
-	}
-
-	class Rings implements VisualizationServer.Paintable {
-
-		Collection<Double> depths;
-		RadialTreeLayout<Object, Integer> radialLayout;
-		DelegateForest<Object, Integer> graphe;
-		VisualizationViewer<Object, Integer> vv;
-
-		public Rings(RadialTreeLayout<Object, Integer> radialLayout,
-				DelegateForest<Object, Integer> graph,
-				VisualizationViewer<Object, Integer> vv) {
-			this.radialLayout = radialLayout;
-			this.graphe = graph;
-			this.vv = vv;
-			depths = getDepths();
-		}
-
-		private Collection<Double> getDepths() {
-			Set<Double> depths = new HashSet<Double>();
-			Map<Object, PolarPoint> polarLocations = radialLayout
-					.getPolarLocations();
-			for (Object v : graphe.getVertices()) {
-				if (!graphe.isRoot(v)) {
-					PolarPoint pp = polarLocations.get(v);
-					depths.add(pp.getRadius());
+				for (JAVAFolderModel folder : folderModel.getChildrenFolders()) {
+					JAVAGraphNode node = new JAVAGraphNode(folder.getName(),
+							graph);
+					parent.connectTo(node);
+					newGraphNodeList.add(node);
+					newFolderModelList.add(folder);
 				}
 			}
-			return depths;
+			completeDrawing(graph, newGraphNodeList, newFolderModelList,
+					newFolderModelList.size(), ++height);
 		}
 
-		public void paint(Graphics g) {
-			g.setColor(Color.gray);
-
-			g.setFont(new Font("Lucida Grande", Font.TRUETYPE_FONT, 11));
-			Graphics2D g2d = (Graphics2D) g;
-			final float dash1[] = { 10.0f };
-			g2d.setStroke(new BasicStroke(1.0f, BasicStroke.CAP_BUTT,
-					BasicStroke.JOIN_MITER, 10.0f, dash1, 0.0f));
-			Point2D center = radialLayout.getCenter();
-
-			Ellipse2D ellipse = new Ellipse2D.Double();
-			for (double d : depths) {
-				ellipse.setFrameFromDiagonal(center.getX() - d, center.getY()
-						- d, center.getX() + d, center.getY() + d);
-				Shape shape = vv.getRenderContext().getMultiLayerTransformer()
-						.transform(ellipse);
-				g2d.draw(shape);
-			}
-		}
-
-		public boolean useTransform() {
-			return true;
-		}
 	}
-	
+
+	public class TestDrawingController extends
+			JDianaInteractiveEditor<JAVAGraph> {
+		private final JPopupMenu contextualMenu;
+		private final JDianaScaleSelector scaleSelector;
+
+		public TestDrawingController(CircularDrawing aDrawing) {
+			super(aDrawing, aDrawing.getFactory(), SwingViewFactory.INSTANCE,
+					SwingToolFactory.DEFAULT);
+			scaleSelector = (JDianaScaleSelector) getToolFactory()
+					.makeDianaScaleSelector(this);
+			contextualMenu = new JPopupMenu();
+			contextualMenu.add(new JMenuItem("Item"));
+		}
+
+	}
+
 	class Labels implements VisualizationServer.Paintable {
 
 		@Override
@@ -220,7 +134,7 @@ public class JAVAFolderViewConstructor {
 		public boolean useTransform() {
 			return true;
 		}
-		
+
 	}
 
 }
