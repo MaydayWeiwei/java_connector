@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>org.openflexo.technologyadapter</groupId>
 		<artifactId>java</artifactId>
-		<version>1.7.0-SNAPSHOT</version>
+		<version>1.7.1-SNAPSHOT</version>
 	</parent>
 	<artifactId>javaconnector-ui</artifactId>
 	<description>technology Adapter graphical interface for JAVA data</description>
@@ -14,7 +14,7 @@
 		<dependency>
 			<groupId>org.openflexo.technologyadapter</groupId>
 			<artifactId>javaconnector</artifactId>
-			<version>1.7.0-SNAPSHOT</version>
+			<version>1.7.1-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>org.openflexo</groupId>
@@ -39,13 +39,7 @@
 			<artifactId>fest-swing</artifactId>
 			<version>1.2.1</version>
 			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.openflexo</groupId>
-			<artifactId>flexoviewpointmodeler</artifactId>
-			<version>${flexomodules.testversion}</version>
-			<scope>test</scope>
-		</dependency>
+		</dependency> 
 		<dependency>
 			<groupId>org.openflexo</groupId>
 			<artifactId>flexo-ui</artifactId>

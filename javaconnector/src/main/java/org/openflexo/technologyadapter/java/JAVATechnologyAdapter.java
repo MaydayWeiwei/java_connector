@@ -26,18 +26,16 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.openflexo.foundation.FlexoProject;
+import org.openflexo.foundation.fml.annotations.DeclareModelSlots;
+import org.openflexo.foundation.fml.annotations.DeclareRepositoryType;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.resource.FlexoResourceCenterService;
 import org.openflexo.foundation.resource.RepositoryFolder;
-import org.openflexo.foundation.technologyadapter.DeclareModelSlot;
-import org.openflexo.foundation.technologyadapter.DeclareModelSlots;
-import org.openflexo.foundation.technologyadapter.DeclareRepositoryType;
 import org.openflexo.foundation.technologyadapter.TechnologyAdapter;
 import org.openflexo.foundation.technologyadapter.TechnologyAdapterBindingFactory;
 import org.openflexo.foundation.technologyadapter.TechnologyAdapterInitializationException;
 import org.openflexo.technologyadapter.java.rm.JAVAResource;
 import org.openflexo.technologyadapter.java.rm.JAVAResourceImpl;
-import org.openflexo.technologyadapter.java.JAVAModelSlot;
 import org.openflexo.technologyadapter.java.rm.JAVAResourceRepository;
 
 /**
@@ -47,8 +45,7 @@ import org.openflexo.technologyadapter.java.rm.JAVAResourceRepository;
  * 
  */
 
-@DeclareModelSlots({ // ModelSlot(s) declaration
-@DeclareModelSlot(FML = "JAVAModelSlot", modelSlotClass = JAVAModelSlot.class), })
+@DeclareModelSlots({ JAVAModelSlot.class })
 @DeclareRepositoryType({ JAVAResourceRepository.class })
 public class JAVATechnologyAdapter extends TechnologyAdapter {
 

@@ -22,20 +22,18 @@ package org.openflexo.technologyadapter.java;
 
 import java.lang.reflect.Type;
 
-import org.openflexo.foundation.technologyadapter.DeclareEditionActions;
-import org.openflexo.foundation.technologyadapter.DeclareFetchRequests;
-import org.openflexo.foundation.technologyadapter.DeclarePatternRole;
-import org.openflexo.foundation.technologyadapter.DeclarePatternRoles;
+import org.openflexo.foundation.fml.FlexoRole;
+import org.openflexo.foundation.fml.annotations.DeclareEditionActions;
+import org.openflexo.foundation.fml.annotations.DeclareFetchRequests;
+import org.openflexo.foundation.fml.annotations.DeclareFlexoRoles;
+import org.openflexo.foundation.fml.rt.action.CreateVirtualModelInstance;
 import org.openflexo.foundation.technologyadapter.FreeModelSlot;
-import org.openflexo.foundation.view.action.CreateVirtualModelInstance;
-import org.openflexo.foundation.viewpoint.FlexoRole;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.XMLElement;
-import org.openflexo.technologyadapter.java.JAVATechnologyAdapter;
-import org.openflexo.technologyadapter.java.model.JAVAFolderModel;
 import org.openflexo.technologyadapter.java.fml.JAVAFileRole;
 import org.openflexo.technologyadapter.java.fml.JAVAFolderRole;
+import org.openflexo.technologyadapter.java.model.JAVAFolderModel;
 
 /**
  * Implementation of the ModelSlot class for the JAVA technology adapter<br>
@@ -44,57 +42,60 @@ import org.openflexo.technologyadapter.java.fml.JAVAFolderRole;
  * @author SomeOne
  * 
  */
-@DeclarePatternRoles({ // All pattern roles available through this model slot
-        @DeclarePatternRole(flexoRoleClass = JAVAFolderRole.class, FML = "JAVAFolderRole"),
-        @DeclarePatternRole(flexoRoleClass = JAVAFileRole.class, FML = "JAVAFileRole"),
-    })
-@DeclareEditionActions({ // All edition actions available through this model slot
-    })
+@DeclareFlexoRoles({ JAVAFolderRole.class, JAVAFileRole.class })
+@DeclareEditionActions({ // All edition actions available through this model
+// slot
+})
 @DeclareFetchRequests({ // All requests available through this model slot
-    })
+})
 @ModelEntity
 @ImplementationClass(JAVAModelSlot.JAVAModelSlotImpl.class)
 @XMLElement
 public interface JAVAModelSlot extends FreeModelSlot<JAVAFolderModel> {
 
-    @Override
-    public JAVATechnologyAdapter getTechnologyAdapter();
+	@Override
+	public JAVATechnologyAdapter getModelSlotTechnologyAdapter();
 
-    public static abstract class JAVAModelSlotImpl extends FreeModelSlotImpl<JAVAFolderModel> implements JAVAModelSlot {
+	public static abstract class JAVAModelSlotImpl extends
+			FreeModelSlotImpl<JAVAFolderModel> implements JAVAModelSlot {
 
-        @Override
-        public Class<JAVATechnologyAdapter> getTechnologyAdapterClass() {
-            return JAVATechnologyAdapter.class;
-        }
+		@Override
+		public Class<JAVATechnologyAdapter> getTechnologyAdapterClass() {
+			return JAVATechnologyAdapter.class;
+		}
 
-        /**
-         * Instanciate a new model slot instance configuration for this model slot
-         */
-        @Override
-        public JAVAModelSlotInstanceConfiguration createConfiguration(CreateVirtualModelInstance action) {
-            return new JAVAModelSlotInstanceConfiguration(this, action);
-        }
+		/**
+		 * Instanciate a new model slot instance configuration for this model
+		 * slot
+		 */
+		@Override
+		public JAVAModelSlotInstanceConfiguration createConfiguration(
+				CreateVirtualModelInstance action) {
+			return new JAVAModelSlotInstanceConfiguration(this, action);
+		}
 
-        @Override
-        public <PR extends FlexoRole<?>> String defaultFlexoRoleName(Class<PR> patternRoleClass) {
-            if (JAVAFolderRole.class.isAssignableFrom(patternRoleClass)) {
-                return "JavaFolder";
-        	}
-            if (JAVAFileRole.class.isAssignableFrom(patternRoleClass)) {
-                return "JavaFile";
-        	}
-            return null;
-        }
+		@Override
+		public <PR extends FlexoRole<?>> String defaultFlexoRoleName(
+				Class<PR> patternRoleClass) {
+			if (JAVAFolderRole.class.isAssignableFrom(patternRoleClass)) {
+				return "JavaFolder";
+			}
+			if (JAVAFileRole.class.isAssignableFrom(patternRoleClass)) {
+				return "JavaFile";
+			}
+			return null;
+		}
 
-        @Override
-        public Type getType() {
-            return JAVAFolderModel.class;
-        }
+		@Override
+		public Type getType() {
+			return JAVAFolderModel.class;
+		}
 
-        @Override
-        public JAVATechnologyAdapter getTechnologyAdapter() {
-            return (JAVATechnologyAdapter) super.getTechnologyAdapter();
-        }
+		@Override
+		public JAVATechnologyAdapter getModelSlotTechnologyAdapter() {
+			return (JAVATechnologyAdapter) super
+					.getModelSlotTechnologyAdapter();
+		}
 
-    }
+	}
 }

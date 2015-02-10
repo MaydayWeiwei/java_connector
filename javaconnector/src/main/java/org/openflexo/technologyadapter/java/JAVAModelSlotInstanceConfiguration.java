@@ -18,23 +18,24 @@
  *
  */
 
-
 package org.openflexo.technologyadapter.java;
 
+import org.openflexo.foundation.fml.rt.action.CreateVirtualModelInstance;
 import org.openflexo.foundation.technologyadapter.FreeModelSlotInstanceConfiguration;
-import org.openflexo.foundation.view.action.CreateVirtualModelInstance;
 import org.openflexo.technologyadapter.java.model.JAVAFolderModel;
 
-public class JAVAModelSlotInstanceConfiguration extends FreeModelSlotInstanceConfiguration< JAVAFolderModel, JAVAModelSlot> {
+public class JAVAModelSlotInstanceConfiguration extends
+		FreeModelSlotInstanceConfiguration<JAVAFolderModel, JAVAModelSlot> {
 
-    protected JAVAModelSlotInstanceConfiguration(JAVAModelSlot ms, CreateVirtualModelInstance<?> action) {
-        super(ms, action);
-    }
+	protected JAVAModelSlotInstanceConfiguration(JAVAModelSlot ms,
+			CreateVirtualModelInstance<?> action) {
+		super(ms, action);
+	}
 
-    @Override
-    public void setOption(ModelSlotInstanceConfigurationOption option) {
-        super.setOption(option);
-        // TODO : add specific options here
-    }
+	@Override
+	public void setOption(ModelSlotInstanceConfigurationOption option) {
+		super.setOption(option);
+		// TODO : add specific options here
+	}
 
 }

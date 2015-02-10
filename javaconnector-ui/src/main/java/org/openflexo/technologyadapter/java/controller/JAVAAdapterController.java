@@ -25,12 +25,11 @@ import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 
 import org.openflexo.foundation.technologyadapter.TechnologyObject;
-import org.openflexo.foundation.viewpoint.FlexoRole;
 import org.openflexo.rm.ResourceLocator;
 import org.openflexo.technologyadapter.java.JAVATechnologyAdapter;
 import org.openflexo.technologyadapter.java.library.JAVAIconLibrary;
-import org.openflexo.technologyadapter.java.view.JAVAModuleView;
 import org.openflexo.technologyadapter.java.model.JAVAFolderModel;
+import org.openflexo.technologyadapter.java.view.JAVAModuleView;
 import org.openflexo.view.EmptyPanel;
 import org.openflexo.view.ModuleView;
 import org.openflexo.view.controller.ControllerActionInitializer;
@@ -38,9 +37,11 @@ import org.openflexo.view.controller.FlexoController;
 import org.openflexo.view.controller.TechnologyAdapterController;
 import org.openflexo.view.controller.model.FlexoPerspective;
 
-public class JAVAAdapterController extends TechnologyAdapterController<JAVATechnologyAdapter> {
-    
-	static final Logger LOGGER = Logger.getLogger(JAVAAdapterController.class.getPackage().getName());
+public class JAVAAdapterController extends
+		TechnologyAdapterController<JAVATechnologyAdapter> {
+
+	static final Logger LOGGER = Logger.getLogger(JAVAAdapterController.class
+			.getPackage().getName());
 
 	@Override
 	public Class<JAVATechnologyAdapter> getTechnologyAdapterClass() {
@@ -49,8 +50,11 @@ public class JAVAAdapterController extends TechnologyAdapterController<JAVATechn
 
 	@Override
 	public void initializeActions(ControllerActionInitializer actionInitializer) {
-		actionInitializer.getController().getModuleInspectorController()
-				.loadDirectory(ResourceLocator.locateResource("Inspectors/JAVA"));
+		actionInitializer
+				.getController()
+				.getModuleInspectorController()
+				.loadDirectory(
+						ResourceLocator.locateResource("Inspectors/JAVA"));
 	}
 
 	@Override
@@ -74,38 +78,44 @@ public class JAVAAdapterController extends TechnologyAdapterController<JAVATechn
 	}
 
 	@Override
-	public ImageIcon getIconForTechnologyObject(final Class<? extends TechnologyObject<JAVATechnologyAdapter>> objectClass) {
-		// TODO Auto-generated method stub
+	public ImageIcon getIconForTechnologyObject(
+			Class<? extends TechnologyObject<?>> arg0) {
 		return JAVAIconLibrary.JAVA_TECHNOLOGY_ICON;
 	}
 
 	@Override
-	public ModuleView<?> createModuleViewForObject(final TechnologyObject<JAVATechnologyAdapter> object, final FlexoController controller, final FlexoPerspective perspective) {
-		// TODO Auto-generated method stub : update your moduleView code to have somethig represented
-		if (object instanceof JAVAFolderModel){
-			return new JAVAModuleView((JAVAFolderModel) object, controller, perspective);
+	public ModuleView<?> createModuleViewForObject(
+			final TechnologyObject<JAVATechnologyAdapter> object,
+			final FlexoController controller, final FlexoPerspective perspective) {
+		// TODO Auto-generated method stub : update your moduleView code to have
+		// somethig represented
+		if (object instanceof JAVAFolderModel) {
+			return new JAVAModuleView((JAVAFolderModel) object, controller,
+					perspective);
 		}
-		return new EmptyPanel<TechnologyObject<JAVATechnologyAdapter>>(controller, perspective, object);
+		return new EmptyPanel<TechnologyObject<JAVATechnologyAdapter>>(
+				controller, perspective, object);
 	}
 
 	@Override
-	public ImageIcon getIconForPatternRole(Class<? extends FlexoRole<?>> role) {
-		// TODO Auto-generated method stub
+	public ImageIcon getIconForPatternRole(
+			Class<? extends org.openflexo.foundation.fml.FlexoRole<?>> arg0) {
 		return JAVAIconLibrary.JAVA_TECHNOLOGY_ICON;
 	}
 
 	@Override
 	public String getWindowTitleforObject(
-			TechnologyObject<JAVATechnologyAdapter> obj, FlexoController controller) {
+			TechnologyObject<JAVATechnologyAdapter> obj,
+			FlexoController controller) {
 		// TODO Auto-generated method stub
 		return "";
 	}
 
 	@Override
 	public boolean hasModuleViewForObject(
-			TechnologyObject<JAVATechnologyAdapter> obj, FlexoController controller) {
+			TechnologyObject<JAVATechnologyAdapter> obj,
+			FlexoController controller) {
 		// TODO Auto-generated method stub
 		return obj instanceof JAVAFolderModel;
 	}
 }
-
