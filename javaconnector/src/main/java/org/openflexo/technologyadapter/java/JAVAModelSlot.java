@@ -68,6 +68,7 @@ public interface JAVAModelSlot extends FreeModelSlot<JAVAFolderModel> {
 		 * Instanciate a new model slot instance configuration for this model
 		 * slot
 		 */
+		@SuppressWarnings("rawtypes")
 		@Override
 		public JAVAModelSlotInstanceConfiguration createConfiguration(
 				CreateVirtualModelInstance action) {
