@@ -72,26 +72,20 @@ public class JAVAGraphNode extends Observable {
 	}
 
 	public String getName() {
-		if (model instanceof JAVAFolderModel) {
-			JAVAFolderModel folderModel = (JAVAFolderModel) model;
-			if (!folderModel.getName().equals(name)) {
-				File folder = folderModel.getFolderModel();
-				folderModel.setChanged();
-				folder.renameTo(new File(folder.getParent() + "/" + name));
-			}
-
-		}
 		return name;
 	}
 
 	public void setName(String name) {
 		System.out.println("Set node name with " + name);
 		this.name = name;
-		// TODO check rename
 		if (model instanceof JAVAFolderModel) {
 			JAVAFolderModel folderModel = (JAVAFolderModel) model;
-			File folder = folderModel.getFolderModel();
-			folder.renameTo(new File(folder.getParent() + "/" + name));
+			if (!folderModel.getName().equals(name)) {
+				File folder = folderModel.getFolderModel();
+				File newFolder = new File(folder.getParent() + "/" + name);
+				folder.renameTo(newFolder);
+				folderModel.setFolderModel(newFolder);
+			}
 		}
 	}
 

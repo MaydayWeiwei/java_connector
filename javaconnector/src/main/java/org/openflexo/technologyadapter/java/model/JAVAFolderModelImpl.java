@@ -32,9 +32,6 @@ import org.openflexo.model.annotations.Setter;
 import org.openflexo.model.exceptions.ModelDefinitionException;
 import org.openflexo.model.factory.ModelFactory;
 import org.openflexo.technologyadapter.java.JAVATechnologyAdapter;
-import org.openflexo.technologyadapter.java.model.JAVAFolderModel;
-import org.openflexo.technologyadapter.java.model.JAVAFileModel;
-import org.openflexo.technologyadapter.java.model.JAVAFileModelImpl;
 
 /**
  * Abstract Simple implementation. Using Pamela.
@@ -112,6 +109,7 @@ public abstract class JAVAFolderModelImpl extends FlexoObjectImpl implements
 			final String msg = "Error while setting MapModel of map " + this;
 			LOGGER.log(Level.SEVERE, msg, e);
 		}
+		
 	}
 
 	@Override
@@ -157,7 +155,8 @@ public abstract class JAVAFolderModelImpl extends FlexoObjectImpl implements
 
 	private boolean isValidJAVAFile(File candidateFile) {
 		String fileName = candidateFile.getName();
-		return fileName.endsWith(".xml") || fileName.endsWith(".java") || fileName.endsWith(".jsp");
+		return fileName.endsWith(".xml") || fileName.endsWith(".java")
+				|| fileName.endsWith(".jsp");
 	}
 
 }

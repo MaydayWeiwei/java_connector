@@ -20,7 +20,6 @@
 
 package org.openflexo.technologyadapter.java.model;
 
-
 import java.io.File;
 import java.util.List;
 
@@ -31,40 +30,41 @@ import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.Setter;
 import org.openflexo.technologyadapter.java.JAVATechnologyAdapter;
-import org.openflexo.technologyadapter.java.model.JAVAFolderModelImpl;
 
 @ModelEntity
 @ImplementationClass(value = JAVAFolderModelImpl.class)
-public interface JAVAFolderModel extends TechnologyObject<JAVATechnologyAdapter>, ResourceData<JAVAFolderModel>{
+public interface JAVAFolderModel extends
+		TechnologyObject<JAVATechnologyAdapter>, ResourceData<JAVAFolderModel> {
 
-    public static final String MODEL_ITEM_KEY = "javaFolder";
-    public static final String PARENT_ITEM_KEY = "javaParentFolder";
-    public static final String CHILDREN_FOLDER_KEY = "javaChildrenFolders";
-    public static final String CHILDREN_FILE_KEY = "javaChildrenFiles";
+	public static final String MODEL_ITEM_KEY = "javaFolder";
+	public static final String PARENT_ITEM_KEY = "javaParentFolder";
+	public static final String CHILDREN_FOLDER_KEY = "javaChildrenFolders";
+	public static final String CHILDREN_FILE_KEY = "javaChildrenFiles";
+	public static final String MODEL_NAME_KEY = "javaFolderName";
 
-    @Getter(value = MODEL_ITEM_KEY, ignoreType = true)
-    public File getFolderModel();
+	@Getter(value = MODEL_ITEM_KEY, ignoreType = true)
+	public File getFolderModel();
 
-    @Setter(value =  MODEL_ITEM_KEY)
-    public void setFolderModel(File folder);
-    
-    @Getter(value = PARENT_ITEM_KEY, ignoreType = true)
-    public JAVAFolderModel getFatherFolder();
+	@Setter(value = MODEL_ITEM_KEY)
+	public void setFolderModel(File folder);
 
-    @Setter(value =  PARENT_ITEM_KEY)
-    public void setFatherFolder(JAVAFolderModel fatherFolder);
-    
-    @Getter(value = CHILDREN_FOLDER_KEY, ignoreType = true)
-    public List<JAVAFolderModel> getChildrenFolders();
+	@Getter(value = PARENT_ITEM_KEY, ignoreType = true)
+	public JAVAFolderModel getFatherFolder();
 
-    @Setter(value =  CHILDREN_FOLDER_KEY)
-    public void setChildrenFolders(List<JAVAFolderModel> childrenFolders);
-    
-    @Getter(value = CHILDREN_FILE_KEY, ignoreType = true)
-    public List<JAVAFileModel> getChildrenFiles();
+	@Setter(value = PARENT_ITEM_KEY)
+	public void setFatherFolder(JAVAFolderModel fatherFolder);
 
-    @Setter(value =  CHILDREN_FILE_KEY)
-    public void setChildrenFiles(List<JAVAFileModel> childrenFiles);
+	@Getter(value = CHILDREN_FOLDER_KEY, ignoreType = true)
+	public List<JAVAFolderModel> getChildrenFolders();
+
+	@Setter(value = CHILDREN_FOLDER_KEY)
+	public void setChildrenFolders(List<JAVAFolderModel> childrenFolders);
+
+	@Getter(value = CHILDREN_FILE_KEY, ignoreType = true)
+	public List<JAVAFileModel> getChildrenFiles();
+
+	@Setter(value = CHILDREN_FILE_KEY)
+	public void setChildrenFiles(List<JAVAFileModel> childrenFiles);
 
 	public String getName();
 

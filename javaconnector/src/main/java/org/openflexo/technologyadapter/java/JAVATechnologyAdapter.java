@@ -69,7 +69,6 @@ public class JAVATechnologyAdapter extends TechnologyAdapter {
 
 	@Override
 	public JAVATechnologyContextManager getTechnologyContextManager() {
-		// TODO Auto-generated method stub
 		return (JAVATechnologyContextManager) super
 				.getTechnologyContextManager();
 	}
@@ -83,7 +82,6 @@ public class JAVATechnologyAdapter extends TechnologyAdapter {
 	@Override
 	public <I> void initializeResourceCenter(
 			FlexoResourceCenter<I> resourceCenter) {
-		// TODO Auto-generated method stub
 		JAVAResourceRepository currentRepository = resourceCenter
 				.getRepository(JAVAResourceRepository.class, this);
 		if (currentRepository == null) {
@@ -143,7 +141,6 @@ public class JAVATechnologyAdapter extends TechnologyAdapter {
 	@Override
 	public <I> void contentsAdded(FlexoResourceCenter<I> resourceCenter,
 			I contents) {
-		// TODO Auto-generated method stub
 		if (contents instanceof File) {
 			this.initializeJAVAFolder(resourceCenter, (File) contents);
 		}
@@ -157,7 +154,6 @@ public class JAVATechnologyAdapter extends TechnologyAdapter {
 
 	public JAVAResource createNewJAVAModel(FlexoProject project,
 			String filename, String modelUri) {
-		// TODO Auto-generated method stub
 		final File file = new File(
 				FlexoProject.getProjectSpecificModelsDirectory(project),
 				filename);
