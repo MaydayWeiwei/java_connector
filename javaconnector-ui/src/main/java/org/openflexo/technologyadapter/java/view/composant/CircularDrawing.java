@@ -65,6 +65,7 @@ import org.openflexo.fge.geom.area.FGEArea;
 import org.openflexo.fge.geom.area.FGEUnionArea;
 import org.openflexo.fge.impl.DrawingImpl;
 import org.openflexo.fge.shapes.ShapeSpecification.ShapeType;
+import org.openflexo.technologyadapter.java.view.JAVAModuleView;
 
 public class CircularDrawing extends DrawingImpl<JAVAGraph> {
 
@@ -73,18 +74,19 @@ public class CircularDrawing extends DrawingImpl<JAVAGraph> {
 	private ConnectorGraphicalRepresentation edgeRepresentation;
 	private GeometricGraphicalRepresentation circle1GR;
 
-	public CircularDrawing(JAVAGraph graph, FGEModelFactory factory) {
+	private JAVAModuleView javaModuleView;
+
+	public CircularDrawing(JAVAGraph graph, FGEModelFactory factory,
+			JAVAModuleView javaModuleView) {
 		super(graph, factory, PersistenceMode.SharedGraphicalRepresentations);
+		this.javaModuleView = javaModuleView;
 	}
 
 	@Override
 	public void init() {
 		graphRepresentation = getFactory().makeDrawingGraphicalRepresentation();
-		// graphRepresentation.setBackgroundColor(Color.RED);
 		nodeRepresentation = getFactory().makeShapeGraphicalRepresentation(
 				ShapeType.CIRCLE);
-		// nodeRepresentation.setX(50);
-		// nodeRepresentation.setY(50);
 		nodeRepresentation.setWidth(20);
 		nodeRepresentation.setHeight(20);
 		nodeRepresentation.setAbsoluteTextX(30);
@@ -102,6 +104,8 @@ public class CircularDrawing extends DrawingImpl<JAVAGraph> {
 		circle1GR = getFactory().makeGeometricGraphicalRepresentation(union);
 		circle1GR.setForeground(getFactory().makeForegroundStyle(Color.GRAY,
 				0.5f, DashStyle.MEDIUM_DASHES));
+
+		nodeRepresentation.addToMouseClickControls(new JAVAMouseClickControl());
 
 		final DrawingGRBinding<JAVAGraph> graphBinding = bindDrawing(
 				JAVAGraph.class, "graph", new DrawingGRProvider<JAVAGraph>() {
@@ -168,14 +172,17 @@ public class CircularDrawing extends DrawingImpl<JAVAGraph> {
 
 		nodeBinding.setDynamicPropertyValue(GraphicalRepresentation.TEXT,
 				new DataBinding<String>("drawable.name"), true);
-		// nodeBinding.setDynamicPropertyValue(GraphicalRepresentation.ABSOLUTE_TEXT_X,
-		// new DataBinding<Double>("drawable.labelX"));
-		// nodeBinding.setDynamicPropertyValue(GraphicalRepresentation.ABSOLUTE_TEXT_Y,
-		// new DataBinding<Double>("drawable.labelY"));
 		nodeBinding.setDynamicPropertyValue(ShapeGraphicalRepresentation.X,
 				new DataBinding<Double>("drawable.circularX"), true);
 		nodeBinding.setDynamicPropertyValue(ShapeGraphicalRepresentation.Y,
 				new DataBinding<Double>("drawable.circularY"), true);
+	}
 
+	public JAVAModuleView getJavaModuleView() {
+		return javaModuleView;
+	}
+
+	public void setJavaModuleView(JAVAModuleView javaModuleView) {
+		this.javaModuleView = javaModuleView;
 	}
 }

@@ -23,6 +23,7 @@ package org.openflexo.technologyadapter.java.view;
 import javax.swing.JTabbedPane;
 
 import org.openflexo.technologyadapter.java.model.JAVAFolderModel;
+import org.openflexo.technologyadapter.java.view.composant.JAVAFolderViewConstructor;
 import org.openflexo.view.ModuleView;
 import org.openflexo.view.controller.FlexoController;
 import org.openflexo.view.controller.model.FlexoPerspective;
@@ -56,8 +57,10 @@ public class JAVAModuleView extends JTabbedPane implements
 		this.javaFolderModel = javaFolderModel;
 		this.perspective = perspective;
 		JAVAFolderViewConstructor constructor = new JAVAFolderViewConstructor(
-				javaFolderModel);
-		add(javaFolderModel.getName(), constructor.showPanel());
+				javaFolderModel, this);
+		constructor.createPanel();
+		addTab(javaFolderModel.getName(), constructor.createPanel());
+
 	}
 
 	@Override
@@ -121,4 +124,5 @@ public class JAVAModuleView extends JTabbedPane implements
 	public FlexoController getController() {
 		return controller;
 	}
+
 }

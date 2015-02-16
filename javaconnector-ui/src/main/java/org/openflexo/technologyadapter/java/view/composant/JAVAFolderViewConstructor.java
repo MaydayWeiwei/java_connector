@@ -1,53 +1,53 @@
-package org.openflexo.technologyadapter.java.view;
+package org.openflexo.technologyadapter.java.view.composant;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.Graphics;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.JMenuItem;
 import javax.swing.JPanel;
-import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 
 import org.openflexo.fge.FGEModelFactory;
 import org.openflexo.fge.FGEModelFactoryImpl;
-import org.openflexo.fge.swing.JDianaInteractiveEditor;
-import org.openflexo.fge.swing.SwingViewFactory;
-import org.openflexo.fge.swing.control.SwingToolFactory;
-import org.openflexo.fge.swing.control.tools.JDianaScaleSelector;
 import org.openflexo.model.exceptions.ModelDefinitionException;
 import org.openflexo.technologyadapter.java.model.JAVAFileModel;
 import org.openflexo.technologyadapter.java.model.JAVAFolderModel;
-import org.openflexo.technologyadapter.java.view.composant.CircularDrawing;
-import org.openflexo.technologyadapter.java.view.composant.JAVAGraph;
-import org.openflexo.technologyadapter.java.view.composant.JAVAGraphNode;
-
-import edu.uci.ics.jung.visualization.VisualizationServer;
+import org.openflexo.technologyadapter.java.view.JAVAModuleView;
 
 public class JAVAFolderViewConstructor {
 
 	private JAVAFolderModel rootFolderModel;
+	private JAVAModuleView javaModuleView;
 
-	public JAVAFolderViewConstructor(JAVAFolderModel rootFolderModel) {
+	// private JPanel panel = new JPanel(new BorderLayout());
+
+	public JAVAFolderViewConstructor(JAVAFolderModel rootFolderModel,
+			JAVAModuleView javaModuleView) {
 		this.rootFolderModel = rootFolderModel;
+		this.javaModuleView = javaModuleView;
 	}
 
-	public JPanel showPanel() {
+	public JPanel createPanel() {
 
 		JPanel panel = new JPanel(new BorderLayout());
 
 		final CircularDrawing d = makeDrawing();
-		final TestDrawingController dc = new TestDrawingController(d);
+		final JAVADrawingController dc = new JAVADrawingController(d);
 		dc.getDrawingView().setName("[NO_CACHE]");
 		panel.add(new JScrollPane(dc.getDrawingView()), BorderLayout.CENTER);
-		panel.add(dc.scaleSelector.getComponent(), BorderLayout.NORTH);
+		panel.add(dc.getScaleSelector().getComponent(), BorderLayout.NORTH);
 
 		panel.validate();
 		return panel;
 	}
+
+	// public JPanel getPanel() {
+	// return panel;
+	// }
+	//
+	// public void setPanel(JPanel panel) {
+	// this.panel = panel;
+	// }
 
 	public CircularDrawing makeDrawing() {
 		FGEModelFactory factory = null;
@@ -59,11 +59,13 @@ public class JAVAFolderViewConstructor {
 		List<JAVAFolderModel> folderModelList = new ArrayList<JAVAFolderModel>();
 		List<JAVAGraphNode> graphNodeList = new ArrayList<JAVAGraphNode>();
 		JAVAGraph graph = new JAVAGraph();
-		JAVAGraphNode node = new JAVAGraphNode(rootFolderModel.getName(), graph);
+		JAVAGraphNode node = new JAVAGraphNode(rootFolderModel.getName(),
+				graph, rootFolderModel);
 		folderModelList.add(rootFolderModel);
 		graphNodeList.add(node);
 		completeDrawing(graph, graphNodeList, folderModelList, 1, 0);
-		CircularDrawing circularDrawing = new CircularDrawing(graph, factory);
+		CircularDrawing circularDrawing = new CircularDrawing(graph, factory,
+				javaModuleView);
 		circularDrawing.printGraphicalObjectHierarchy();
 		return circularDrawing;
 	}
@@ -81,12 +83,12 @@ public class JAVAFolderViewConstructor {
 				JAVAFolderModel folderModel = folderModelList.get(i);
 				for (JAVAFileModel file : folderModel.getChildrenFiles()) {
 					JAVAGraphNode node = new JAVAGraphNode(file.getName(),
-							graph);
+							graph, file);
 					parent.connectTo(node);
 				}
 				for (JAVAFolderModel folder : folderModel.getChildrenFolders()) {
 					JAVAGraphNode node = new JAVAGraphNode(folder.getName(),
-							graph);
+							graph, folder);
 					parent.connectTo(node);
 					newGraphNodeList.add(node);
 					newFolderModelList.add(folder);
@@ -94,45 +96,6 @@ public class JAVAFolderViewConstructor {
 			}
 			completeDrawing(graph, newGraphNodeList, newFolderModelList,
 					newFolderModelList.size(), ++height);
-		}
-
-	}
-
-	public class TestDrawingController extends
-			JDianaInteractiveEditor<JAVAGraph> {
-		private final JPopupMenu contextualMenu;
-		private final JDianaScaleSelector scaleSelector;
-
-		public TestDrawingController(CircularDrawing aDrawing) {
-			super(aDrawing, aDrawing.getFactory(), SwingViewFactory.INSTANCE,
-					SwingToolFactory.DEFAULT);
-			scaleSelector = (JDianaScaleSelector) getToolFactory()
-					.makeDianaScaleSelector(this);
-			contextualMenu = new JPopupMenu();
-			contextualMenu.add(new JMenuItem("Item"));
-		}
-
-	}
-
-	class Labels implements VisualizationServer.Paintable {
-
-		@Override
-		public void paint(Graphics g) {
-			g.setColor(Color.RED);
-			g.fillArc(600, 10, 25, 25, 0, 360);
-			g.setFont(new Font("Lucida Grande", Font.TRUETYPE_FONT, 14));
-			g.drawString("Folder", 640, 25);
-			g.setColor(Color.BLUE);
-			g.fillArc(600, 50, 25, 25, 0, 360);
-			g.drawString(".java file", 640, 65);
-			g.setColor(Color.GREEN);
-			g.fillArc(600, 90, 25, 25, 0, 360);
-			g.drawString("Other file", 640, 105);
-		}
-
-		@Override
-		public boolean useTransform() {
-			return true;
 		}
 
 	}

@@ -38,16 +38,19 @@
 
 package org.openflexo.technologyadapter.java.view.composant;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Observable;
 
 import org.openflexo.fge.geom.FGEPoint;
+import org.openflexo.technologyadapter.java.model.JAVAFolderModel;
 
 public class JAVAGraphNode extends Observable {
 
 	private String name;
+	private Object model;
 	private final JAVAGraph graph;
 	private List<JAVAEdge> inputEdges;
 	private List<JAVAEdge> outputEdges;
@@ -57,27 +60,51 @@ public class JAVAGraphNode extends Observable {
 	private static final double CENTER_Y = 300;
 	private static final double RADIUS = 100;
 
-	public JAVAGraphNode(String name, JAVAGraph graph) {
+	public JAVAGraphNode(String name, JAVAGraph graph, Object model) {
 		inputEdges = new ArrayList<JAVAEdge>();
 		outputEdges = new ArrayList<JAVAEdge>();
 		this.name = name;
 		this.graph = graph;
+		this.model = model;
 		x = Math.random() * 500;
 		y = Math.random() * 500;
 		graph.addToNodes(this);
 	}
 
 	public String getName() {
+		if (model instanceof JAVAFolderModel) {
+			JAVAFolderModel folderModel = (JAVAFolderModel) model;
+			if (!folderModel.getName().equals(name)) {
+				File folder = folderModel.getFolderModel();
+				folderModel.setChanged();
+				folder.renameTo(new File(folder.getParent() + "/" + name));
+			}
+
+		}
 		return name;
 	}
 
 	public void setName(String name) {
 		System.out.println("Set node name with " + name);
 		this.name = name;
+		// TODO check rename
+		if (model instanceof JAVAFolderModel) {
+			JAVAFolderModel folderModel = (JAVAFolderModel) model;
+			File folder = folderModel.getFolderModel();
+			folder.renameTo(new File(folder.getParent() + "/" + name));
+		}
 	}
 
 	public JAVAGraph getGraph() {
 		return graph;
+	}
+
+	public Object getModel() {
+		return model;
+	}
+
+	public void setModel(Object model) {
+		this.model = model;
 	}
 
 	public List<JAVAEdge> getInputEdges() {
@@ -184,7 +211,10 @@ public class JAVAGraphNode extends Observable {
 			List<JAVAGraphNode> parentSiblings = parentNode.getSiblingNodes();
 			int parentIndex = parentSiblings.indexOf(parentNode);
 			parentAngle = 2 * Math.PI / (parentSiblings.size());
-			startAngle = 2 * Math.PI * parentIndex / parentSiblings.size();// - parentAngle / 2;
+			startAngle = 2 * Math.PI * parentIndex / parentSiblings.size();// -
+																			// parentAngle
+																			// /
+																			// 2;
 		}
 		isUpToDate = true;
 	}
@@ -230,7 +260,8 @@ public class JAVAGraphNode extends Observable {
 		} else {
 			JAVAGraphNode parentNode = getInputEdges().get(0).getStartNode();
 			List<JAVAGraphNode> returned = new ArrayList<JAVAGraphNode>();
-			for (JAVAEdge e : getInputEdges().get(0).getStartNode().getOutputEdges()) {
+			for (JAVAEdge e : getInputEdges().get(0).getStartNode()
+					.getOutputEdges()) {
 				returned.add(e.getEndNode());
 			}
 			return returned;
