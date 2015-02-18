@@ -38,14 +38,21 @@
 
 package org.openflexo.technologyadapter.java.view.composant;
 
+import japa.parser.ParseException;
+import japa.parser.ast.body.ClassOrInterfaceDeclaration;
+
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Observable;
 
 import org.openflexo.fge.geom.FGEPoint;
+import org.openflexo.technologyadapter.java.model.JAVAClassOrInterfaceModel;
+import org.openflexo.technologyadapter.java.model.JAVAFileModel;
 import org.openflexo.technologyadapter.java.model.JAVAFolderModel;
+import org.openflexo.technologyadapter.java.model.JAVAMethodModel;
 
 public class JAVAGraphNode extends Observable {
 
@@ -75,7 +82,7 @@ public class JAVAGraphNode extends Observable {
 		return name;
 	}
 
-	public void setName(String name) {
+	public void setName(String name) throws ParseException, IOException {
 		System.out.println("Set node name with " + name);
 		this.name = name;
 		if (model instanceof JAVAFolderModel) {
@@ -86,6 +93,48 @@ public class JAVAGraphNode extends Observable {
 				folder.renameTo(newFolder);
 				folderModel.setFolderModel(newFolder);
 			}
+		} else if (model instanceof JAVAFileModel) {
+			JAVAFileModel fileModel = (JAVAFileModel) model;
+			if (!fileModel.getName().equals(name)) {
+				File file = fileModel.getFileModel();
+				File newFile = new File(file.getParent() + "/" + name);
+				file.renameTo(newFile);
+				fileModel.setFileModel(newFile);
+			}
+		} else if (model instanceof JAVAClassOrInterfaceModel) {
+			JAVAClassOrInterfaceModel javaClassModel = (JAVAClassOrInterfaceModel) model;
+			if (!javaClassModel.getName().equals(name)) {
+				ClassOrInterfaceDeclaration classDeclaration = javaClassModel
+						.getClassOrInterfaceModel();
+				classDeclaration.setName(name);
+				javaClassModel.setClassOrInterfaceModel(classDeclaration);
+			}
+		} else if (model instanceof JAVAMethodModel) {
+			// JAVAMethodModel javaMethodModel = (JAVAMethodModel) model;
+			// JAVAClassOrInterfaceModel father = javaMethodModel
+			// .getJavaFatherItem();
+			// FileInputStream in = new FileInputStream(father.getJavaFile()
+			// .getFileModel());
+			// CompilationUnit cu;
+			// try {
+			// cu = JavaParser.parse(in);
+			// if (!javaMethodModel.getName().equals(name)) {
+			// MethodDeclaration methodDeclaration = javaMethodModel
+			// .getMethodModel();
+			// for (Node node : cu.getChildrenNodes().get(0)
+			// .getChildrenNodes()) {
+			// if (node.equals(methodDeclaration)) {
+			// ((MethodDeclaration) node).setName(name);
+			// }
+			// }
+			// methodDeclaration.setName(name);
+			// javaMethodModel.setMethodModel(methodDeclaration);
+			// }
+			//
+			// } finally {
+			// in.close();
+			// }
+			//
 		}
 	}
 

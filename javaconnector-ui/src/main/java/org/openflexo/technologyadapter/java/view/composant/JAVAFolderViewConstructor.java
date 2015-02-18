@@ -19,8 +19,6 @@ public class JAVAFolderViewConstructor {
 	private JAVAFolderModel rootFolderModel;
 	private JAVAModuleView javaModuleView;
 
-	// private JPanel panel = new JPanel(new BorderLayout());
-
 	public JAVAFolderViewConstructor(JAVAFolderModel rootFolderModel,
 			JAVAModuleView javaModuleView) {
 		this.rootFolderModel = rootFolderModel;
@@ -40,14 +38,6 @@ public class JAVAFolderViewConstructor {
 		panel.validate();
 		return panel;
 	}
-
-	// public JPanel getPanel() {
-	// return panel;
-	// }
-	//
-	// public void setPanel(JPanel panel) {
-	// this.panel = panel;
-	// }
 
 	public CircularDrawing makeDrawing() {
 		FGEModelFactory factory = null;
