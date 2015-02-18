@@ -67,5 +67,5 @@ public interface JAVAFolderModel extends
 	public void setChildrenFiles(List<JAVAFileModel> childrenFiles);
 
 	public String getName();
-
+	
 }

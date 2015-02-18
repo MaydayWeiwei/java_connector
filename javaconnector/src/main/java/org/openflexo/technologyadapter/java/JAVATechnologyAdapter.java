@@ -142,14 +142,18 @@ public class JAVATechnologyAdapter extends TechnologyAdapter {
 	public <I> void contentsAdded(FlexoResourceCenter<I> resourceCenter,
 			I contents) {
 		if (contents instanceof File) {
-			this.initializeJAVAFolder(resourceCenter, (File) contents);
+			File file = (File) contents;
+			if (isValidateJAVAFolder(file, resourceCenter.getName())) {
+				this.initializeJAVAFolder(resourceCenter, (File) contents);
+			}
 		}
+
 	}
 
 	@Override
 	public <I> void contentsDeleted(FlexoResourceCenter<I> resourceCenter,
 			I contents) {
-		// TODO Auto-generated method stub
+
 	}
 
 	public JAVAResource createNewJAVAModel(FlexoProject project,

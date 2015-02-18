@@ -109,7 +109,6 @@ public abstract class JAVAFolderModelImpl extends FlexoObjectImpl implements
 			final String msg = "Error while setting MapModel of map " + this;
 			LOGGER.log(Level.SEVERE, msg, e);
 		}
-		
 	}
 
 	@Override

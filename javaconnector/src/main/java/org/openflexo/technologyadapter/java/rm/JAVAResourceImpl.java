@@ -184,7 +184,6 @@ public abstract class JAVAResourceImpl extends
 	}
 
 	private void writeToFile() throws SaveResourceException {
-		// TODO : Auto-generated method skeleton.
 		FileOutputStream out = null;
 		try {
 			FileFlexoIODelegate delegate = (FileFlexoIODelegate) getFlexoIODelegate();

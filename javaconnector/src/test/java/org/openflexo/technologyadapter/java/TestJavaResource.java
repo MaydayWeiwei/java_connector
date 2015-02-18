@@ -11,8 +11,6 @@ import org.openflexo.foundation.FlexoServiceManager;
 import org.openflexo.foundation.OpenflexoTestCase;
 import org.openflexo.foundation.resource.DirectoryResourceCenter;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
-import org.openflexo.model.exceptions.ModelDefinitionException;
-import org.openflexo.model.factory.ModelFactory;
 import org.openflexo.technologyadapter.java.model.JAVAFieldModel;
 import org.openflexo.technologyadapter.java.model.JAVAFileModel;
 import org.openflexo.technologyadapter.java.model.JAVAFolderModel;
