@@ -8,23 +8,22 @@ import org.openflexo.model.annotations.Setter;
 import org.openflexo.technologyadapter.java.JAVATechnologyAdapter;
 
 public abstract class JAVAMethodModelImpl extends FlexoObjectImpl implements JAVAMethodModel {
-	
 
-    private JAVATechnologyAdapter technologyAdapter;
+	private JAVATechnologyAdapter technologyAdapter;
 	private JAVAClassOrInterfaceModel javaFatherItem;
 	private MethodDeclaration methodModel;
 
 	public JAVAMethodModelImpl() {
 	}
-	
-    public void setTechnologyAdapter(JAVATechnologyAdapter technologyAdapter) {
-        this.technologyAdapter = technologyAdapter;
-   }
 
-   @Override
-   public JAVATechnologyAdapter getTechnologyAdapter() {
-       return this.technologyAdapter;
-   }
+	public void setTechnologyAdapter(JAVATechnologyAdapter technologyAdapter) {
+		this.technologyAdapter = technologyAdapter;
+	}
+
+	@Override
+	public JAVATechnologyAdapter getTechnologyAdapter() {
+		return this.technologyAdapter;
+	}
 
 	@Override
 	@Getter(value = PARENT_ITEM_KEY, ignoreType = true)

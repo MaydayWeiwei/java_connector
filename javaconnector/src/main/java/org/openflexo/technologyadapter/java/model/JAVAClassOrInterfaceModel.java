@@ -12,8 +12,7 @@ import org.openflexo.technologyadapter.java.JAVATechnologyAdapter;
 
 @ModelEntity
 @ImplementationClass(value = JAVAClassOrInterfaceModelImpl.class)
-public interface JAVAClassOrInterfaceModel extends
-		TechnologyObject<JAVATechnologyAdapter> {
+public interface JAVAClassOrInterfaceModel extends TechnologyObject<JAVATechnologyAdapter> {
 
 	public static final String MODEL_ITEM_KEY = "javaClassOrInterface";
 	public static final String PARENT_FILE_KEY = "javaParentFile";
@@ -26,33 +25,32 @@ public interface JAVAClassOrInterfaceModel extends
 	public ClassOrInterfaceDeclaration getClassOrInterfaceModel();
 
 	@Setter(value = MODEL_ITEM_KEY)
-	public void setClassOrInterfaceModel(
-			ClassOrInterfaceDeclaration classOrInterfaceModel);
+	public void setClassOrInterfaceModel(ClassOrInterfaceDeclaration classOrInterfaceModel);
 
 	@Getter(value = PARENT_FILE_KEY, ignoreType = true)
 	public JAVAFileModel getJavaFile();
 
 	@Setter(value = PARENT_FILE_KEY)
 	public void setJavaFile(JAVAFileModel javaFile);
-	
+
 	@Getter(value = PARENT_CLASS_KEY, ignoreType = true)
 	public JAVAClassOrInterfaceModel getFatherClass();
 
 	@Setter(value = PARENT_CLASS_KEY)
 	public void setFatherClass(JAVAClassOrInterfaceModel fatherClass);
-	
+
 	@Getter(value = METHOD_ITEM_KEY, ignoreType = true)
 	public List<JAVAMethodModel> getMethods();
 
 	@Setter(value = METHOD_ITEM_KEY)
 	public void setMethods(List<JAVAMethodModel> methods);
-	
+
 	@Getter(value = CLASS_ITEM_KEY, ignoreType = true)
 	public List<JAVAClassOrInterfaceModel> getInnerClasses();
 
 	@Setter(value = CLASS_ITEM_KEY)
 	public void setInnerClasses(List<JAVAClassOrInterfaceModel> innerClasses);
-	
+
 	@Getter(value = FIELD_ITEM_KEY, ignoreType = true)
 	public List<JAVAFieldModel> getFields();
 

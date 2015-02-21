@@ -20,13 +20,33 @@
 
 package org.openflexo.technologyadapter.java;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.openflexo.foundation.resource.FlexoResourceCenterService;
 import org.openflexo.foundation.technologyadapter.TechnologyContextManager;
+import org.openflexo.technologyadapter.java.rm.JAVAResource;
 
 public class JAVATechnologyContextManager extends TechnologyContextManager<JAVATechnologyAdapter> {
 
-    public JAVATechnologyContextManager(JAVATechnologyAdapter adapter, FlexoResourceCenterService resourceCenterService) {
-        super(adapter, resourceCenterService);
-    }
+	/** Stores all known java file where key is the URI of JAVAFile */
+	protected Map<String, JAVAResource> javaFiles = new HashMap<String, JAVAResource>();
 
+	public JAVATechnologyContextManager(JAVATechnologyAdapter adapter, FlexoResourceCenterService resourceCenterService) {
+		super(adapter, resourceCenterService);
+	}
+
+	@Override
+	public JAVATechnologyAdapter getTechnologyAdapter() {
+		return (JAVATechnologyAdapter) super.getTechnologyAdapter();
+	}
+
+	public JAVAResource getJAVAResource(Object javaFile) {
+		return javaFiles.get(javaFile);
+	}
+
+	public void registerJAVAFile(JAVAResource newjavaResource) {
+		registerResource(newjavaResource);
+		javaFiles.put(newjavaResource.getURI(), newjavaResource);
+	}
 }

@@ -36,7 +36,7 @@
  * 
  */
 
-package org.openflexo.technologyadapter.java.view.composant;
+package org.openflexo.technologyadapter.java.radialview.library;
 
 import java.awt.Color;
 
@@ -93,6 +93,8 @@ public class CircularDrawing extends DrawingImpl<JAVAGraph> {
 		FGEArea union = FGEUnionArea.makeUnion(circle1, circle2);
 		circle1GR = getFactory().makeGeometricGraphicalRepresentation(union);
 		circle1GR.setForeground(getFactory().makeForegroundStyle(Color.GRAY, 0.5f, DashStyle.MEDIUM_DASHES));
+
+		nodeRepresentation.addToMouseClickControls(new JAVAMouseClickControl());
 
 		final DrawingGRBinding<JAVAGraph> graphBinding = bindDrawing(JAVAGraph.class, "graph", new DrawingGRProvider<JAVAGraph>() {
 			@Override

@@ -36,7 +36,7 @@
  * 
  */
 
-package org.openflexo.technologyadapter.java.view.composant;
+package org.openflexo.technologyadapter.java.radialview.library;
 
 import japa.parser.ParseException;
 import japa.parser.ast.body.ClassOrInterfaceDeclaration;

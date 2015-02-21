@@ -27,5 +27,6 @@
   <modules>
     <module>javaconnector</module>
     <module>javaconnector-ui</module>
+    <module>java-radialview</module>
   </modules>
 </project>

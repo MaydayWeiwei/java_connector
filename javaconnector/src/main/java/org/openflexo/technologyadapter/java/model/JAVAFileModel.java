@@ -20,7 +20,6 @@
 
 package org.openflexo.technologyadapter.java.model;
 
-
 import java.io.File;
 
 import org.openflexo.foundation.resource.ResourceData;
@@ -35,31 +34,22 @@ import org.openflexo.technologyadapter.java.JAVATechnologyAdapter;
 @ImplementationClass(value = JAVAFileModelImpl.class)
 public interface JAVAFileModel extends TechnologyObject<JAVATechnologyAdapter>, ResourceData<JAVAFileModel> {
 
-    public static final String MODEL_ITEM_KEY = "javaFile";
-    public static final String PARENT_ITEM_KEY = "javaParentFolder";
-    public static final String CLASS_ITEM_KEY = "javaClass";
+	public static final String MODEL_ITEM_KEY = "javaFile";
+	// public static final String PARENT_ITEM_KEY = "javaParentFolder";
+	public static final String CLASS_ITEM_KEY = "javaClass";
 
-    @Getter(value = MODEL_ITEM_KEY, ignoreType = true)
-    public File getFileModel();
+	@Getter(value = MODEL_ITEM_KEY, ignoreType = true)
+	public File getFileModel();
 
-    @Setter(value =  MODEL_ITEM_KEY)
-    public void setFileModel(File file);
-    
-    @Getter(value = PARENT_ITEM_KEY, ignoreType = true)
-    public JAVAFolderModel getFatherFolder();
-    
-    @Setter(value =  PARENT_ITEM_KEY)
-    public void setFatherFolder(JAVAFolderModel fatherFolder);
+	@Setter(value = MODEL_ITEM_KEY)
+	public void setFileModel(File file);
 
-    @Setter(value =  CLASS_ITEM_KEY)
-    public void setRootClass(JAVAClassOrInterfaceModel rootClass);
-    
-    @Getter(value = CLASS_ITEM_KEY, ignoreType = true)
-    public JAVAClassOrInterfaceModel getRootClass();
+	@Setter(value = CLASS_ITEM_KEY)
+	public void setRootClass(JAVAClassOrInterfaceModel rootClass);
 
+	@Getter(value = CLASS_ITEM_KEY, ignoreType = true)
+	public JAVAClassOrInterfaceModel getRootClass();
 
-    
-    public String getName();
-    
+	public String getName();
 
 }

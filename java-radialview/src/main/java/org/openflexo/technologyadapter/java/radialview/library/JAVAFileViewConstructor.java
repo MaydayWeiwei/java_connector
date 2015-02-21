@@ -1,4 +1,4 @@
-package org.openflexo.technologyadapter.java.view.composant;
+package org.openflexo.technologyadapter.java.radialview.library;
 
 import java.awt.BorderLayout;
 import java.util.ArrayList;

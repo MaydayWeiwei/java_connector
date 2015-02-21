@@ -22,23 +22,21 @@ package org.openflexo.technologyadapter.java.view;
 
 import javax.swing.JTabbedPane;
 
-import org.openflexo.technologyadapter.java.model.JAVAFolderModel;
-import org.openflexo.technologyadapter.java.view.composant.JAVAFolderViewConstructor;
+import org.openflexo.technologyadapter.java.model.JAVAFileModel;
+import org.openflexo.technologyadapter.java.view.composant.JAVAFileViewConstructor;
 import org.openflexo.view.ModuleView;
 import org.openflexo.view.controller.FlexoController;
 import org.openflexo.view.controller.model.FlexoPerspective;
 
 /**
- * Module view is typed with generally the resource data, but can be done with
- * any TechnologyObject.
+ * Module view is typed with generally the resource data, but can be done with any TechnologyObject.
  */
 @SuppressWarnings("serial")
-public class JAVAModuleView extends JTabbedPane implements
-		ModuleView<JAVAFolderModel> {
+public class JAVAFileView extends JTabbedPane implements ModuleView<JAVAFileModel> {
 
 	private final FlexoController controller;
 
-	private final JAVAFolderModel javaFolderModel;
+	private final JAVAFileModel javaFileModel;
 
 	private final FlexoPerspective perspective;
 
@@ -51,21 +49,18 @@ public class JAVAModuleView extends JTabbedPane implements
 	 *            JAVAModel object that will be represented
 	 * @param perspective
 	 */
-	public JAVAModuleView(JAVAFolderModel javaFolderModel,
-			FlexoController controller, FlexoPerspective perspective) {
+	public JAVAFileView(JAVAFileModel javaFileModel, FlexoController controller, FlexoPerspective perspective) {
 		this.controller = controller;
-		this.javaFolderModel = javaFolderModel;
+		this.javaFileModel = javaFileModel;
 		this.perspective = perspective;
-		JAVAFolderViewConstructor constructor = new JAVAFolderViewConstructor(
-				javaFolderModel, this);
+		JAVAFileViewConstructor constructor = new JAVAFileViewConstructor(javaFileModel);
 		constructor.createPanel();
-		addTab(javaFolderModel.getName(), constructor.createPanel());
+		addTab(javaFileModel.getName(), constructor.createPanel());
 
 	}
 
 	@Override
-	public void show(FlexoController flexoController,
-			FlexoPerspective flexoPerspective) {
+	public void show(FlexoController flexoController, FlexoPerspective flexoPerspective) {
 		// If you want to add right and left panels to your module view, do it
 		// here. Un comment following code with your component.
 		// SwingUtilities.invokeLater(new Runnable() {
@@ -110,8 +105,8 @@ public class JAVAModuleView extends JTabbedPane implements
 	}
 
 	@Override
-	public JAVAFolderModel getRepresentedObject() {
-		return javaFolderModel;
+	public JAVAFileModel getRepresentedObject() {
+		return javaFileModel;
 	}
 
 	@Override

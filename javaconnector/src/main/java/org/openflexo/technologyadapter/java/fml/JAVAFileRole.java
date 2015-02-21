@@ -41,8 +41,7 @@ public interface JAVAFileRole extends FlexoRole<JAVAFileModel> {
 
 	public JAVATechnologyAdapter getModelSlotTechnologyAdapter();
 
-	public abstract static class JAVAFileRoleImpl extends
-			FlexoRoleImpl<JAVAFileModel> implements JAVAFileRole {
+	public abstract static class JAVAFileRoleImpl extends FlexoRoleImpl<JAVAFileModel> implements JAVAFileRole {
 
 		public JAVAFileRoleImpl() {
 			super();
@@ -101,11 +100,9 @@ public interface JAVAFileRole extends FlexoRole<JAVAFileModel> {
 		 * org.openflexo.foundation.view.FlexoConceptInstance)
 		 */
 		@Override
-		public ActorReference<JAVAFileModel> makeActorReference(
-				final JAVAFileModel object, final FlexoConceptInstance epi) {
+		public ActorReference<JAVAFileModel> makeActorReference(final JAVAFileModel object, final FlexoConceptInstance epi) {
 			final VirtualModelInstanceModelFactory factory = epi.getFactory();
-			final ModelObjectActorReference<JAVAFileModel> returned = factory
-					.newInstance(ModelObjectActorReference.class);
+			final ModelObjectActorReference<JAVAFileModel> returned = factory.newInstance(ModelObjectActorReference.class);
 			returned.setFlexoRole(this);
 			returned.setFlexoConceptInstance(epi);
 			returned.setModellingElement(object);
@@ -118,8 +115,7 @@ public interface JAVAFileRole extends FlexoRole<JAVAFileModel> {
 		 */
 		@Override
 		public JAVATechnologyAdapter getModelSlotTechnologyAdapter() {
-			return getServiceManager().getTechnologyAdapterService()
-					.getTechnologyAdapter(JAVATechnologyAdapter.class);
+			return getServiceManager().getTechnologyAdapterService().getTechnologyAdapter(JAVATechnologyAdapter.class);
 		}
 	}
 }

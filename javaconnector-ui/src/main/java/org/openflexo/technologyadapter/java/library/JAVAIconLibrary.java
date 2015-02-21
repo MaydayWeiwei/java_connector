@@ -28,7 +28,6 @@ import org.openflexo.foundation.technologyadapter.TechnologyObject;
 import org.openflexo.rm.ResourceLocator;
 import org.openflexo.toolbox.ImageIconResource;
 
-
 public class JAVAIconLibrary {
 	private static final Logger logger = Logger.getLogger(JAVAIconLibrary.class.getPackage().getName());
 

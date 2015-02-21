@@ -24,12 +24,11 @@ import japa.parser.ast.body.ClassOrInterfaceDeclaration;
 
 import java.io.File;
 
+import org.openflexo.foundation.FlexoObject.FlexoObjectImpl;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.Setter;
 import org.openflexo.model.factory.ModelFactory;
-import org.openflexo.foundation.FlexoObject.FlexoObjectImpl;
 import org.openflexo.technologyadapter.java.JAVATechnologyAdapter;
-import org.openflexo.technologyadapter.java.model.JAVAFolderModel;
 import org.openflexo.technologyadapter.java.utils.JAVAFileParser;
 
 /**
@@ -38,12 +37,10 @@ import org.openflexo.technologyadapter.java.utils.JAVAFileParser;
  * @author SomeOne
  * 
  */
-public abstract class JAVAFileModelImpl extends FlexoObjectImpl implements
-		JAVAFileModel {
+public abstract class JAVAFileModelImpl extends FlexoObjectImpl implements JAVAFileModel {
 
 	private JAVATechnologyAdapter technologyAdapter;
 	private File fileModel;
-	private JAVAFolderModel fatherFolder;
 	private JAVAClassOrInterfaceModel rootClass;
 
 	public JAVAFileModelImpl() {
@@ -70,10 +67,8 @@ public abstract class JAVAFileModelImpl extends FlexoObjectImpl implements
 		this.fileModel = fileModel;
 		if (fileModel.getName().toLowerCase().endsWith(".java")) {
 			try {
-				ClassOrInterfaceDeclaration javaClass = JAVAFileParser
-						.getRoot(fileModel);
-				final ModelFactory factory = new ModelFactory(
-						JAVAClassOrInterfaceModel.class);
+				ClassOrInterfaceDeclaration javaClass = JAVAFileParser.getRoot(fileModel);
+				final ModelFactory factory = new ModelFactory(JAVAClassOrInterfaceModel.class);
 				final JAVAClassOrInterfaceModelImpl child = (JAVAClassOrInterfaceModelImpl) factory
 						.newInstance(JAVAClassOrInterfaceModel.class);
 				child.setTechnologyAdapter(this.getTechnologyAdapter());
@@ -84,18 +79,6 @@ public abstract class JAVAFileModelImpl extends FlexoObjectImpl implements
 				e.printStackTrace();
 			}
 		}
-	}
-
-	@Override
-	@Getter(value = PARENT_ITEM_KEY, ignoreType = true)
-	public JAVAFolderModel getFatherFolder() {
-		return fatherFolder;
-	}
-
-	@Override
-	@Setter(value = PARENT_ITEM_KEY)
-	public void setFatherFolder(JAVAFolderModel fatherFolder) {
-		this.fatherFolder = fatherFolder;
 	}
 
 	@Override

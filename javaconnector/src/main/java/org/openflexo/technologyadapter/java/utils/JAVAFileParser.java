@@ -12,10 +12,9 @@ import java.io.FileInputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-
 public class JAVAFileParser {
-	
-	public static ClassOrInterfaceDeclaration getRoot(File javaFile) throws Exception{
+
+	public static ClassOrInterfaceDeclaration getRoot(File javaFile) throws Exception {
 		FileInputStream javaFileInputStream = new FileInputStream(javaFile);
 		CompilationUnit cu;
 		try {
@@ -25,39 +24,38 @@ public class JAVAFileParser {
 			javaFileInputStream.close();
 		}
 		ClassOrInterfaceDeclaration root = null;
-		for(Node node : cu.getChildrenNodes()) {
+		for (Node node : cu.getChildrenNodes()) {
 			if (node instanceof ClassOrInterfaceDeclaration) {
 				root = (ClassOrInterfaceDeclaration) node;
 			}
-		}		
+		}
 		return root;
 	}
-	
-	
-	public static List<ClassOrInterfaceDeclaration> getInnerClassList(ClassOrInterfaceDeclaration parent){
+
+	public static List<ClassOrInterfaceDeclaration> getInnerClassList(ClassOrInterfaceDeclaration parent) {
 		List<ClassOrInterfaceDeclaration> innerClassList = new ArrayList<ClassOrInterfaceDeclaration>();
-		for(Node node : parent.getChildrenNodes()) {
-			if(node instanceof ClassOrInterfaceDeclaration) {
+		for (Node node : parent.getChildrenNodes()) {
+			if (node instanceof ClassOrInterfaceDeclaration) {
 				innerClassList.add((ClassOrInterfaceDeclaration) node);
 			}
 		}
 		return innerClassList;
 	}
-	
+
 	public static List<MethodDeclaration> getMethodList(ClassOrInterfaceDeclaration parent) {
 		List<MethodDeclaration> methodList = new ArrayList<MethodDeclaration>();
-		for(Node node : parent.getChildrenNodes()) {
-			if(node instanceof MethodDeclaration) {
+		for (Node node : parent.getChildrenNodes()) {
+			if (node instanceof MethodDeclaration) {
 				methodList.add((MethodDeclaration) node);
 			}
 		}
 		return methodList;
 	}
-	
+
 	public static List<FieldDeclaration> getFieldList(ClassOrInterfaceDeclaration parent) {
 		List<FieldDeclaration> fieldList = new ArrayList<FieldDeclaration>();
-		for(Node node : parent.getChildrenNodes()) {
-			if(node instanceof FieldDeclaration) {
+		for (Node node : parent.getChildrenNodes()) {
+			if (node instanceof FieldDeclaration) {
 				fieldList.add((FieldDeclaration) node);
 			}
 		}

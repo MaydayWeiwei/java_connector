@@ -18,22 +18,28 @@
  *
  */
 
-package org.openflexo.technologyadapter.java;
+package org.openflexo.technologyadapter.java.radialview;
 
-import org.openflexo.foundation.fml.rt.action.CreateVirtualModelInstance;
-import org.openflexo.foundation.technologyadapter.FreeModelSlotInstanceConfiguration;
-import org.openflexo.technologyadapter.java.model.JAVAFileModel;
+import java.awt.Dimension;
 
-public class JAVAModelSlotInstanceConfiguration extends FreeModelSlotInstanceConfiguration<JAVAFileModel, JAVAModelSlot> {
+import javax.swing.JDialog;
 
-	protected JAVAModelSlotInstanceConfiguration(JAVAModelSlot ms, CreateVirtualModelInstance<?> action) {
-		super(ms, action);
-	}
+import org.openflexo.foundation.resource.RepositoryFolder;
+import org.openflexo.technologyadapter.java.radialview.library.JAVAFolderViewConstructor;
+import org.openflexo.technologyadapter.java.rm.JAVAResource;
 
-	@Override
-	public void setOption(ModelSlotInstanceConfigurationOption option) {
-		super.setOption(option);
-		// TODO : add specific options here
+@SuppressWarnings("serial")
+public class JAVARepositoryView extends JDialog {
+
+	public JAVARepositoryView(RepositoryFolder<JAVAResource> repository) {
+		JAVAFolderViewConstructor constructor = new JAVAFolderViewConstructor(repository);
+		getContentPane().add(constructor.createPanel());
+
+		setPreferredSize(new Dimension(550, 600));
+		validate();
+		pack();
+
+		setVisible(true);
 	}
 
 }

@@ -3,23 +3,26 @@ package org.openflexo.technologyadapter.java;
 import java.io.File;
 
 public class SimpleTest {
-	
+
 	public static void main(String[] args) {
-		File file = new File("/Users/wei/workspace/apache_tomcat/consommation/.git/logs/refs/remotes/origin");
-		File f = new File("/Users/wei/workspace");
-		System.out.println(isValidateJAVAFolder(f));
+		File file = new File("/Users/wei/workspace/test/web_services/monserviceClient/src/DefaultNamespace/Calculatrice.java");
+		File f = new File("/Users/wei/workspace/test");
+		System.out.println(isValidateJAVAFile(file, f.getAbsolutePath(), file.getName().toLowerCase()));
 	}
 
-    private static boolean isValidateJAVAFolder(File folder) {
-    	System.out.println(folder.getAbsolutePath());
-    	if(folder.isHidden()) {
-    		return false;
-    	}
-    	else if(folder.getParentFile()==null){
-    		return true;    		
-    	}
-    	else{
-    		return isValidateJAVAFolder(folder.getParentFile());
-    	}
-    }
+	private static boolean isValidateJAVAFile(File file, String resourceCenter, String fileName) {
+		if (!isValidateJAVAFileName(fileName) || file.isHidden() || "target".equals(file.getName()) || "build".equals(file.getName())) {
+			return false;
+		}
+		else if (resourceCenter.equals(file.getParent())) {
+			return true;
+		}
+		else {
+			return isValidateJAVAFile(file.getParentFile(), resourceCenter, fileName);
+		}
+	}
+
+	private static boolean isValidateJAVAFileName(String fileName) {
+		return fileName.endsWith(".java") || fileName.endsWith("xml");
+	}
 }

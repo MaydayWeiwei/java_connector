@@ -28,19 +28,24 @@ import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.Setter;
 import org.openflexo.technologyadapter.java.JAVATechnologyAdapter;
 import org.openflexo.technologyadapter.java.JAVATechnologyContextManager;
-import org.openflexo.technologyadapter.java.model.JAVAFolderModel;
+import org.openflexo.technologyadapter.java.model.JAVAFileModel;
 
 @ModelEntity
 @ImplementationClass(JAVAResourceImpl.class)
-public abstract interface JAVAResource extends FlexoResource<JAVAFolderModel>, TechnologyAdapterResource<JAVAFolderModel, JAVATechnologyAdapter>{
-    
-    public static final String TECHNOLOGY_CONTEXT_MANAGER = "technologyContextManager";
+public abstract interface JAVAResource extends FlexoResource<JAVAFileModel>,
+		TechnologyAdapterResource<JAVAFileModel, JAVATechnologyAdapter> {
 
-    @Getter(value="technologyContextManager", ignoreType=true)
-    public JAVATechnologyContextManager getTechnologyContextManager();
+	public static final String TECHNOLOGY_CONTEXT_MANAGER = "technologyContextManager";
 
-    @Setter("technologyContextManager")
-    public void setTechnologyContextManager(JAVATechnologyContextManager paramJAVATechnologyContextManager);
-    
+	public static final String TECHNOLOGY_ADAPTER = "technologyAdapter";
+
+	@Getter(value = TECHNOLOGY_CONTEXT_MANAGER, ignoreType = true)
+	public JAVATechnologyContextManager getTechnologyContextManager();
+
+	@Setter(TECHNOLOGY_CONTEXT_MANAGER)
+	public void setTechnologyContextManager(JAVATechnologyContextManager paramJAVATechnologyContextManager);
+
+	@Getter(value = TECHNOLOGY_ADAPTER, ignoreType = true)
+	public JAVATechnologyAdapter getTechnologyAdapter();
+
 }
-

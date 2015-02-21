@@ -32,8 +32,7 @@ import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.XMLElement;
 import org.openflexo.technologyadapter.java.fml.JAVAFileRole;
-import org.openflexo.technologyadapter.java.fml.JAVAFolderRole;
-import org.openflexo.technologyadapter.java.model.JAVAFolderModel;
+import org.openflexo.technologyadapter.java.model.JAVAFileModel;
 
 /**
  * Implementation of the ModelSlot class for the JAVA technology adapter<br>
@@ -42,7 +41,7 @@ import org.openflexo.technologyadapter.java.model.JAVAFolderModel;
  * @author SomeOne
  * 
  */
-@DeclareFlexoRoles({ JAVAFolderRole.class, JAVAFileRole.class })
+@DeclareFlexoRoles({ JAVAFileRole.class })
 @DeclareEditionActions({ // All edition actions available through this model
 // slot
 })
@@ -51,13 +50,12 @@ import org.openflexo.technologyadapter.java.model.JAVAFolderModel;
 @ModelEntity
 @ImplementationClass(JAVAModelSlot.JAVAModelSlotImpl.class)
 @XMLElement
-public interface JAVAModelSlot extends FreeModelSlot<JAVAFolderModel> {
+public interface JAVAModelSlot extends FreeModelSlot<JAVAFileModel> {
 
 	@Override
 	public JAVATechnologyAdapter getModelSlotTechnologyAdapter();
 
-	public static abstract class JAVAModelSlotImpl extends
-			FreeModelSlotImpl<JAVAFolderModel> implements JAVAModelSlot {
+	public static abstract class JAVAModelSlotImpl extends FreeModelSlotImpl<JAVAFileModel> implements JAVAModelSlot {
 
 		@Override
 		public Class<JAVATechnologyAdapter> getTechnologyAdapterClass() {
@@ -65,22 +63,16 @@ public interface JAVAModelSlot extends FreeModelSlot<JAVAFolderModel> {
 		}
 
 		/**
-		 * Instanciate a new model slot instance configuration for this model
-		 * slot
+		 * Instanciate a new model slot instance configuration for this model slot
 		 */
 		@SuppressWarnings("rawtypes")
 		@Override
-		public JAVAModelSlotInstanceConfiguration createConfiguration(
-				CreateVirtualModelInstance action) {
+		public JAVAModelSlotInstanceConfiguration createConfiguration(CreateVirtualModelInstance action) {
 			return new JAVAModelSlotInstanceConfiguration(this, action);
 		}
 
 		@Override
-		public <PR extends FlexoRole<?>> String defaultFlexoRoleName(
-				Class<PR> patternRoleClass) {
-			if (JAVAFolderRole.class.isAssignableFrom(patternRoleClass)) {
-				return "JavaFolder";
-			}
+		public <PR extends FlexoRole<?>> String defaultFlexoRoleName(Class<PR> patternRoleClass) {
 			if (JAVAFileRole.class.isAssignableFrom(patternRoleClass)) {
 				return "JavaFile";
 			}
@@ -89,13 +81,12 @@ public interface JAVAModelSlot extends FreeModelSlot<JAVAFolderModel> {
 
 		@Override
 		public Type getType() {
-			return JAVAFolderModel.class;
+			return JAVAFileModel.class;
 		}
 
 		@Override
 		public JAVATechnologyAdapter getModelSlotTechnologyAdapter() {
-			return (JAVATechnologyAdapter) super
-					.getModelSlotTechnologyAdapter();
+			return (JAVATechnologyAdapter) super.getModelSlotTechnologyAdapter();
 		}
 
 	}

@@ -36,51 +36,41 @@ import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
 import org.openflexo.foundation.resource.SaveResourceException;
 import org.openflexo.foundation.resource.SaveResourcePermissionDeniedException;
 import org.openflexo.model.ModelContextLibrary;
+import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.exceptions.ModelDefinitionException;
 import org.openflexo.model.factory.ModelFactory;
-import org.openflexo.technologyadapter.java.JAVATechnologyContextManager;
 import org.openflexo.technologyadapter.java.JAVATechnologyAdapter;
-import org.openflexo.technologyadapter.java.model.JAVAFolderModel;
-import org.openflexo.technologyadapter.java.model.JAVAFolderModelImpl;
-import org.openflexo.technologyadapter.java.rm.JAVAResource;
+import org.openflexo.technologyadapter.java.JAVATechnologyContextManager;
+import org.openflexo.technologyadapter.java.model.JAVAFileModel;
+import org.openflexo.technologyadapter.java.model.JAVAFileModelImpl;
 import org.openflexo.toolbox.IProgress;
 
-public abstract class JAVAResourceImpl extends
-		FlexoResourceImpl<JAVAFolderModel> implements JAVAResource {
+public abstract class JAVAResourceImpl extends FlexoResourceImpl<JAVAFileModel> implements JAVAResource {
 
-	private static final Logger LOGGER = Logger
-			.getLogger(JAVAResourceImpl.class.getPackage().getName());
+	private static final Logger LOGGER = Logger.getLogger(JAVAResourceImpl.class.getPackage().getName());
 
 	private static ModelFactory MODEL_FACTORY;
 
 	static {
 		try {
-			MODEL_FACTORY = new ModelFactory(JAVAFolderModel.class);
+			MODEL_FACTORY = new ModelFactory(JAVAFileModel.class);
 		} catch (final ModelDefinitionException e) {
 			final String msg = "Error while initializing JAVA model resource";
 			LOGGER.log(Level.SEVERE, msg, e);
 		}
 	}
 
-	public static JAVAResource makeJAVAResource(String modelURI,
-			File modelFile,
-			JAVATechnologyContextManager technologyContextManager) {
+	public static JAVAResource makeJAVAResource(String modelURI, File modelFile, JAVATechnologyContextManager technologyContextManager) {
 		try {
-			ModelFactory factory = new ModelFactory(
-					ModelContextLibrary.getCompoundModelContext(
-							JAVAResource.class, FileFlexoIODelegate.class));
-			JAVAResourceImpl returned = (JAVAResourceImpl) factory
-					.newInstance(JAVAResource.class);
+			ModelFactory factory = new ModelFactory(ModelContextLibrary.getCompoundModelContext(JAVAResource.class,
+					FileFlexoIODelegate.class));
+			JAVAResourceImpl returned = (JAVAResourceImpl) factory.newInstance(JAVAResource.class);
 			returned.setName(modelFile.getName());
-			returned.setFlexoIODelegate(FileFlexoIODelegateImpl
-					.makeFileFlexoIODelegate(modelFile, factory));
+			returned.setFlexoIODelegate(FileFlexoIODelegateImpl.makeFileFlexoIODelegate(modelFile, factory));
 
 			returned.setURI(modelURI);
-			returned.setServiceManager(technologyContextManager
-					.getTechnologyAdapter().getTechnologyAdapterService()
-					.getServiceManager());
-			returned.setTechnologyAdapter((JAVATechnologyAdapter) technologyContextManager
-					.getTechnologyAdapter());
+			returned.setServiceManager(technologyContextManager.getTechnologyAdapter().getTechnologyAdapterService().getServiceManager());
+			returned.setTechnologyAdapter((JAVATechnologyAdapter) technologyContextManager.getTechnologyAdapter());
 			returned.setTechnologyContextManager(technologyContextManager);
 			technologyContextManager.registerResource(returned);
 
@@ -92,23 +82,16 @@ public abstract class JAVAResourceImpl extends
 		return null;
 	}
 
-	public static JAVAResource retrieveJAVAResource(File modelFile,
-			JAVATechnologyContextManager technologyContextManager) {
+	public static JAVAResource retrieveJAVAResource(File modelFile, JAVATechnologyContextManager technologyContextManager) {
 		try {
-			ModelFactory factory = new ModelFactory(
-					ModelContextLibrary.getCompoundModelContext(
-							JAVAResource.class, FileFlexoIODelegate.class));
-			JAVAResourceImpl returned = (JAVAResourceImpl) factory
-					.newInstance(JAVAResource.class);
+			ModelFactory factory = new ModelFactory(ModelContextLibrary.getCompoundModelContext(JAVAResource.class,
+					FileFlexoIODelegate.class));
+			JAVAResourceImpl returned = (JAVAResourceImpl) factory.newInstance(JAVAResource.class);
 			returned.setName(modelFile.getName());
-			returned.setFlexoIODelegate(FileFlexoIODelegateImpl
-					.makeFileFlexoIODelegate(modelFile, factory));
+			returned.setFlexoIODelegate(FileFlexoIODelegateImpl.makeFileFlexoIODelegate(modelFile, factory));
 			returned.setURI(modelFile.toURI().toString());
-			returned.setServiceManager(technologyContextManager
-					.getTechnologyAdapter().getTechnologyAdapterService()
-					.getServiceManager());
-			returned.setTechnologyAdapter((JAVATechnologyAdapter) technologyContextManager
-					.getTechnologyAdapter());
+			returned.setServiceManager(technologyContextManager.getTechnologyAdapter().getTechnologyAdapterService().getServiceManager());
+			returned.setTechnologyAdapter((JAVATechnologyAdapter) technologyContextManager.getTechnologyAdapter());
 			returned.setTechnologyContextManager(technologyContextManager);
 			technologyContextManager.registerResource(returned);
 			return returned;
@@ -119,24 +102,21 @@ public abstract class JAVAResourceImpl extends
 		return null;
 	}
 
+	@Getter(value = TECHNOLOGY_ADAPTER, ignoreType = true)
 	@Override
 	public JAVATechnologyAdapter getTechnologyAdapter() {
 		if (getServiceManager() != null) {
-			return getServiceManager().getTechnologyAdapterService()
-					.getTechnologyAdapter(JAVATechnologyAdapter.class);
+			return getServiceManager().getTechnologyAdapterService().getTechnologyAdapter(JAVATechnologyAdapter.class);
 		}
 		return null;
 	}
 
 	@Override
-	public JAVAFolderModel loadResourceData(IProgress progress)
-			throws ResourceLoadingCancelledException, FileNotFoundException,
+	public JAVAFileModel loadResourceData(IProgress progress) throws ResourceLoadingCancelledException, FileNotFoundException,
 			FlexoException {
 
-		final JAVAFolderModelImpl javaObject = (JAVAFolderModelImpl) MODEL_FACTORY
-				.newInstance(JAVAFolderModel.class);
-		javaObject.setFolderModel(((FileFlexoIODelegate) getFlexoIODelegate())
-				.getFile());
+		final JAVAFileModelImpl javaObject = (JAVAFileModelImpl) MODEL_FACTORY.newInstance(JAVAFileModel.class);
+		javaObject.setFileModel(((FileFlexoIODelegate) getFlexoIODelegate()).getFile());
 
 		javaObject.setTechnologyAdapter(getTechnologyAdapter());
 		javaObject.setResource(this);
@@ -145,7 +125,7 @@ public abstract class JAVAResourceImpl extends
 
 	@Override
 	public void save(IProgress progress) throws SaveResourceException {
-		JAVAFolderModel resourceData = null;
+		JAVAFileModel resourceData = null;
 		try {
 			resourceData = getResourceData(progress);
 		} catch (FileNotFoundException e) {
@@ -164,11 +144,9 @@ public abstract class JAVAResourceImpl extends
 
 		if (!getFlexoIODelegate().hasWritePermission()) {
 			if (LOGGER.isLoggable(Level.WARNING)) {
-				LOGGER.warning("Permission denied : "
-						+ getFlexoIODelegate().toString());
+				LOGGER.warning("Permission denied : " + getFlexoIODelegate().toString());
 			}
-			throw new SaveResourcePermissionDeniedException(
-					getFlexoIODelegate());
+			throw new SaveResourcePermissionDeniedException(getFlexoIODelegate());
 		}
 		if (resourceData != null) {
 			FileWritingLock lock = getFlexoIODelegate().willWriteOnDisk();
@@ -177,8 +155,7 @@ public abstract class JAVAResourceImpl extends
 			notifyResourceStatusChanged();
 			resourceData.clearIsModified(false);
 			if (LOGGER.isLoggable(Level.INFO)) {
-				LOGGER.info("Succeeding to save Resource " + getURI() + " : "
-						+ getFlexoIODelegate().toString());
+				LOGGER.info("Succeeding to save Resource " + getURI() + " : " + getFlexoIODelegate().toString());
 			}
 		}
 	}
@@ -200,8 +177,8 @@ public abstract class JAVAResourceImpl extends
 	}
 
 	@Override
-	public Class<JAVAFolderModel> getResourceDataClass() {
-		return JAVAFolderModel.class;
+	public Class<JAVAFileModel> getResourceDataClass() {
+		return JAVAFileModel.class;
 	}
 
 }

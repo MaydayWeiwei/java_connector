@@ -7,24 +7,23 @@ import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.Setter;
 import org.openflexo.technologyadapter.java.JAVATechnologyAdapter;
 
-public abstract class JAVAFieldModelImpl extends FlexoObjectImpl implements
-		JAVAFieldModel {
+public abstract class JAVAFieldModelImpl extends FlexoObjectImpl implements JAVAFieldModel {
 
-    private JAVATechnologyAdapter technologyAdapter;
+	private JAVATechnologyAdapter technologyAdapter;
 	private JAVAClassOrInterfaceModel javaFatherItem;
 	private FieldDeclaration fieldModel;
 
 	public JAVAFieldModelImpl() {
 	}
-	
-    public void setTechnologyAdapter(JAVATechnologyAdapter technologyAdapter) {
-        this.technologyAdapter = technologyAdapter;
-   }
 
-   @Override
-   public JAVATechnologyAdapter getTechnologyAdapter() {
-       return this.technologyAdapter;
-   }
+	public void setTechnologyAdapter(JAVATechnologyAdapter technologyAdapter) {
+		this.technologyAdapter = technologyAdapter;
+	}
+
+	@Override
+	public JAVATechnologyAdapter getTechnologyAdapter() {
+		return this.technologyAdapter;
+	}
 
 	@Override
 	@Getter(value = PARENT_ITEM_KEY, ignoreType = true)
@@ -52,8 +51,7 @@ public abstract class JAVAFieldModelImpl extends FlexoObjectImpl implements
 
 	@Override
 	public String getName() {
-		return this.fieldModel.getVariables().get(0).getChildrenNodes().get(0)
-				.toString();
+		return this.fieldModel.getVariables().get(0).getChildrenNodes().get(0).toString();
 	}
 
 }
