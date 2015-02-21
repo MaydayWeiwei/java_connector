@@ -39,7 +39,6 @@
 package org.openflexo.technologyadapter.java.radialview.library;
 
 import japa.parser.ParseException;
-import japa.parser.ast.body.ClassOrInterfaceDeclaration;
 
 import java.io.File;
 import java.io.IOException;
@@ -47,14 +46,17 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Observable;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.openflexo.fge.geom.FGEPoint;
-import org.openflexo.technologyadapter.java.model.JAVAClassOrInterfaceModel;
+import org.openflexo.foundation.resource.RepositoryFolder;
 import org.openflexo.technologyadapter.java.model.JAVAFileModel;
-import org.openflexo.technologyadapter.java.model.JAVAMethodModel;
-import org.openflexo.technologyadapter.java.rm.JAVAResourceRepository;
+import org.openflexo.technologyadapter.java.rm.JAVAResource;
 
 public class JAVAGraphNode extends Observable {
+
+	private static final Logger LOGGER = Logger.getLogger(JAVAGraphNode.class.getPackage().getName());
 
 	private String name;
 	private Object model;
@@ -85,57 +87,30 @@ public class JAVAGraphNode extends Observable {
 	public void setName(String name) throws ParseException, IOException {
 		System.out.println("Set node name with " + name);
 		this.name = name;
-		if (model instanceof JAVAResourceRepository) {
-			JAVAResourceRepository resourceRepository = (JAVAResourceRepository) model;
-			if (!resourceRepository.getRootFolder().getName().equals(name)) {
-				File folder = resourceRepository.getRootFolder().getFile();
+		if (model instanceof RepositoryFolder<?>) {
+			RepositoryFolder<JAVAResource> resourceRepository = (RepositoryFolder<JAVAResource>) model;
+			if (!resourceRepository.getName().equals(name)) {
+				File folder = resourceRepository.getFile();
 				File newFolder = new File(folder.getParent() + "/" + name);
 				folder.renameTo(newFolder);
+				resourceRepository.setChanged();
 			}
 		}
-		else if (model instanceof JAVAFileModel) {
-			JAVAFileModel fileModel = (JAVAFileModel) model;
-			if (!fileModel.getName().equals(name)) {
-				File file = fileModel.getFileModel();
-				File newFile = new File(file.getParent() + "/" + name);
-				file.renameTo(newFile);
-				fileModel.setFileModel(newFile);
+		else if (model instanceof JAVAResource) {
+			JAVAResource javaResource = (JAVAResource) model;
+			try {
+				final JAVAFileModel fileModel = javaResource.loadResourceData(null);
+				if (!fileModel.getName().equals(name)) {
+					File file = fileModel.getFileModel();
+					File newFile = new File(file.getParent() + "/" + name);
+					file.renameTo(newFile);
+					fileModel.setFileModel(newFile);
+				}
+			} catch (Exception e) {
+				final String msg = "Error during load JAVA resource data";
+				LOGGER.log(Level.SEVERE, msg, e);
 			}
-		}
-		else if (model instanceof JAVAClassOrInterfaceModel) {
-			JAVAClassOrInterfaceModel javaClassModel = (JAVAClassOrInterfaceModel) model;
-			if (!javaClassModel.getName().equals(name)) {
-				ClassOrInterfaceDeclaration classDeclaration = javaClassModel.getClassOrInterfaceModel();
-				classDeclaration.setName(name);
-				javaClassModel.setClassOrInterfaceModel(classDeclaration);
-			}
-		}
-		else if (model instanceof JAVAMethodModel) {
-			// JAVAMethodModel javaMethodModel = (JAVAMethodModel) model;
-			// JAVAClassOrInterfaceModel father = javaMethodModel
-			// .getJavaFatherItem();
-			// FileInputStream in = new FileInputStream(father.getJavaFile()
-			// .getFileModel());
-			// CompilationUnit cu;
-			// try {
-			// cu = JavaParser.parse(in);
-			// if (!javaMethodModel.getName().equals(name)) {
-			// MethodDeclaration methodDeclaration = javaMethodModel
-			// .getMethodModel();
-			// for (Node node : cu.getChildrenNodes().get(0)
-			// .getChildrenNodes()) {
-			// if (node.equals(methodDeclaration)) {
-			// ((MethodDeclaration) node).setName(name);
-			// }
-			// }
-			// methodDeclaration.setName(name);
-			// javaMethodModel.setMethodModel(methodDeclaration);
-			// }
-			//
-			// } finally {
-			// in.close();
-			// }
-			//
+
 		}
 	}
 

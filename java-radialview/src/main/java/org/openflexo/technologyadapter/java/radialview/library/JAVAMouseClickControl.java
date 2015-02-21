@@ -1,20 +1,21 @@
 package org.openflexo.technologyadapter.java.radialview.library;
 
-import java.io.FileNotFoundException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.openflexo.fge.Drawing.DrawingTreeNode;
 import org.openflexo.fge.control.MouseClickControl;
 import org.openflexo.fge.control.MouseClickControlAction;
 import org.openflexo.fge.control.MouseControlContext;
-import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.resource.RepositoryFolder;
-import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
 import org.openflexo.technologyadapter.java.model.JAVAFileModel;
 import org.openflexo.technologyadapter.java.radialview.JAVAFileView;
 import org.openflexo.technologyadapter.java.radialview.JAVARepositoryView;
 import org.openflexo.technologyadapter.java.rm.JAVAResource;
 
 public class JAVAMouseClickControl implements MouseClickControl<JAVADrawingController> {
+
+	private static final Logger LOGGER = Logger.getLogger(JAVAMouseClickControl.class.getPackage().getName());
 
 	@Override
 	public boolean isApplicable(DrawingTreeNode<?, ?> node, JAVADrawingController controller, MouseControlContext context) {
@@ -26,22 +27,14 @@ public class JAVAMouseClickControl implements MouseClickControl<JAVADrawingContr
 			}
 			else if (obj instanceof JAVAResource) {
 				JAVAResource javaResource = (JAVAResource) obj;
-				javaResource.getTechnologyContextManager();
-				JAVAFileModel fileModel;
 				try {
-					fileModel = javaResource.loadResourceData(null);
+					final JAVAFileModel fileModel = javaResource.loadResourceData(null);
 					if (fileModel.getName().toLowerCase().endsWith(".java")) {
 						JAVAFileView fileview = new JAVAFileView(fileModel);
 					}
-				} catch (FileNotFoundException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (ResourceLoadingCancelledException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (FlexoException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+				} catch (Exception e) {
+					final String msg = "Error during load JAVA resource data";
+					LOGGER.log(Level.SEVERE, msg, e);
 				}
 
 			}

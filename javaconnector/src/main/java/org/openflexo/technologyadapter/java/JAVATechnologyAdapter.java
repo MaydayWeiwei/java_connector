@@ -91,32 +91,22 @@ public class JAVATechnologyAdapter extends TechnologyAdapter {
 
 		}
 
-		// for (final I item : resourceCenter) {
-		// if (item instanceof File) {
-		// File folder = (File) item;
-		// if (isValidateJAVAFile(folder, resourceCenter.getName())) {
-		// this.initializeJAVAFolder(resourceCenter, (File) item);
-		// }
-		// }
-		// }
-
 		// Call it to update the current repositories
 		getPropertyChangeSupport().firePropertyChange("getAllRepositories()", null, resourceCenter);
 
 	}
 
 	protected JAVAResource tryToLookupJAVAFile(FlexoResourceCenter<?> resourceCenter, Object candidateElement) {
-		JAVATechnologyContextManager technologyContextManager = getTechnologyContextManager();
 		if (isValidateJAVAFile(candidateElement, resourceCenter.getName())) {
 			JAVAResource javaRes = retrieveJAVAResource(candidateElement);
 			JAVAResourceRepository javaRepository = resourceCenter.getRepository(JAVAResourceRepository.class, this);
 			if (javaRes != null) {
-				RepositoryFolder<JAVAResource> folder;
 				try {
-					folder = javaRepository.getRepositoryFolder(candidateElement, true);
+					final RepositoryFolder<JAVAResource> folder = javaRepository.getRepositoryFolder(candidateElement, true);
 					javaRepository.registerResource(javaRes, folder);
-				} catch (IOException e1) {
-					e1.printStackTrace();
+				} catch (IOException e) {
+					final String msg = "Error during get JAVA JAVA resource RepositoryFolder";
+					LOGGER.log(Level.SEVERE, msg, e);
 				}
 				referenceResource(javaRes, resourceCenter);
 				return javaRes;

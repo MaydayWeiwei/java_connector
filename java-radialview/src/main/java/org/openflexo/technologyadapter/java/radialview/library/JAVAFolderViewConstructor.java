@@ -17,11 +17,8 @@ public class JAVAFolderViewConstructor {
 
 	private RepositoryFolder<JAVAResource> resourceRepository;
 
-	// private JAVARepositoryView javaModuleView;
-
 	public JAVAFolderViewConstructor(RepositoryFolder<JAVAResource> resourceRepository) {
 		this.resourceRepository = resourceRepository;
-		// this.javaModuleView = javaModuleView;
 	}
 
 	public JPanel createPanel() {
