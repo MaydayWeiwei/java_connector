@@ -105,7 +105,7 @@ public class JAVATechnologyAdapter extends TechnologyAdapter {
 					final RepositoryFolder<JAVAResource> folder = javaRepository.getRepositoryFolder(candidateElement, true);
 					javaRepository.registerResource(javaRes, folder);
 				} catch (IOException e) {
-					final String msg = "Error during get JAVA JAVA resource RepositoryFolder";
+					final String msg = "Error during get JAVA resource RepositoryFolder";
 					LOGGER.log(Level.SEVERE, msg, e);
 				}
 				referenceResource(javaRes, resourceCenter);
@@ -139,7 +139,7 @@ public class JAVATechnologyAdapter extends TechnologyAdapter {
 	 * @param resourceCenter
 	 * @param candidateFile
 	 */
-	private <I> void initializeJAVAFolder(final FlexoResourceCenter<I> resourceCenter, final File candidateFile) {
+	private <I> void initializeJAVAFile(final FlexoResourceCenter<I> resourceCenter, final File candidateFile) {
 		final JAVAResourceImpl javaResourceFile = (JAVAResourceImpl) JAVAResourceImpl.retrieveJAVAResource(candidateFile,
 				this.getTechnologyContextManager());
 		final JAVAResourceRepository resourceRepository = resourceCenter.getRepository(JAVAResourceRepository.class, this);
@@ -155,13 +155,6 @@ public class JAVATechnologyAdapter extends TechnologyAdapter {
 		}
 	}
 
-	private <I> void deleteJAVAFolder(final FlexoResourceCenter<I> resourceCenter, final File candidateFile) {
-		final JAVAResourceImpl javaResourceFile = (JAVAResourceImpl) JAVAResourceImpl.retrieveJAVAResource(candidateFile,
-				this.getTechnologyContextManager());
-		final JAVAResourceRepository resourceRepository = resourceCenter.getRepository(JAVAResourceRepository.class, this);
-		resourceRepository.unregisterResource(javaResourceFile);
-	}
-
 	@Override
 	public <I> boolean isIgnorable(FlexoResourceCenter<I> resourceCenter, I contents) {
 		// TODO Auto-generated method stub
@@ -173,7 +166,7 @@ public class JAVATechnologyAdapter extends TechnologyAdapter {
 		if (contents instanceof File) {
 			File file = (File) contents;
 			if (tryToLookupJAVAFile(resourceCenter, file) != null) {
-				this.initializeJAVAFolder(resourceCenter, (File) contents);
+				this.initializeJAVAFile(resourceCenter, (File) contents);
 			}
 		}
 
@@ -181,12 +174,12 @@ public class JAVATechnologyAdapter extends TechnologyAdapter {
 
 	@Override
 	public <I> void contentsDeleted(FlexoResourceCenter<I> resourceCenter, I contents) {
-		if (contents instanceof File) {
-			File candidateFile = (File) contents;
-			if (isValidateJAVAFile(candidateFile, resourceCenter.getName())) {
-				deleteJAVAFolder(resourceCenter, (File) contents);
-			}
-		}
+		// if (contents instanceof File) {
+		// File candidateFile = (File) contents;
+		// if (isValidateJAVAFile(candidateFile, resourceCenter.getName())) {
+		// deleteJAVAFolder(resourceCenter, (File) contents);
+		// }
+		// }
 	}
 
 	public JAVAResource createNewJAVAModel(FlexoProject project, String filename, String modelUri) {

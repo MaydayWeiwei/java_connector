@@ -40,7 +40,6 @@ package org.openflexo.technologyadapter.java.radialview.library;
 
 import japa.parser.ParseException;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -90,21 +89,17 @@ public class JAVAGraphNode extends Observable {
 		if (model instanceof RepositoryFolder<?>) {
 			RepositoryFolder<JAVAResource> resourceRepository = (RepositoryFolder<JAVAResource>) model;
 			if (!resourceRepository.getName().equals(name)) {
-				File folder = resourceRepository.getFile();
-				File newFolder = new File(folder.getParent() + "/" + name);
-				folder.renameTo(newFolder);
-				resourceRepository.setChanged();
+				resourceRepository.setName(name);
 			}
 		}
 		else if (model instanceof JAVAResource) {
 			JAVAResource javaResource = (JAVAResource) model;
 			try {
-				final JAVAFileModel fileModel = javaResource.loadResourceData(null);
+				final JAVAFileModel fileModel = javaResource.getResourceData(null);
 				if (!fileModel.getName().equals(name)) {
-					File file = fileModel.getFileModel();
-					File newFile = new File(file.getParent() + "/" + name);
-					file.renameTo(newFile);
-					fileModel.setFileModel(newFile);
+					fileModel.setName(name);
+					// javaResource.setName(name);
+					// fileModel.setFileModel(fileModel.getFileModel());
 				}
 			} catch (Exception e) {
 				final String msg = "Error during load JAVA resource data";

@@ -101,4 +101,10 @@ public class JAVAAdapterController extends TechnologyAdapterController<JAVATechn
 		return obj instanceof JAVAFileModel;
 	}
 
+	// @Override
+	// public TechnologyPerspective<JAVATechnologyAdapter> getTechnologyPerspective(FlexoController controller) {
+	// // TODO Auto-generated method stub
+	// return super.getTechnologyPerspective(controller);
+	// }
+
 }

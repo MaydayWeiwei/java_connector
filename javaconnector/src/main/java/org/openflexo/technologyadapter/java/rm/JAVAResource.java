@@ -42,7 +42,7 @@ public abstract interface JAVAResource extends FlexoResource<JAVAFileModel>,
 	@Getter(value = TECHNOLOGY_CONTEXT_MANAGER, ignoreType = true)
 	public JAVATechnologyContextManager getTechnologyContextManager();
 
-	@Setter(TECHNOLOGY_CONTEXT_MANAGER)
+	@Setter(value = TECHNOLOGY_CONTEXT_MANAGER)
 	public void setTechnologyContextManager(JAVATechnologyContextManager paramJAVATechnologyContextManager);
 
 	@Getter(value = TECHNOLOGY_ADAPTER, ignoreType = true)
