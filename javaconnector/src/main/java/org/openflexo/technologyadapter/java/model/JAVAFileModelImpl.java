@@ -81,7 +81,6 @@ public abstract class JAVAFileModelImpl extends FlexoObjectImpl implements JAVAF
 				e.printStackTrace();
 			}
 		}
-		// getPropertyChangeSupport().firePropertyChange(MODEL_ITEM_KEY, this.fileModel, fileModel);
 	}
 
 	@Override
@@ -118,5 +117,6 @@ public abstract class JAVAFileModelImpl extends FlexoObjectImpl implements JAVAF
 		System.out.println("*********** modifyFileName with " + fileModel.getName() + " to " + newName);
 		File newFile = new File(fileModel.getParent() + "/" + newName);
 		fileModel.renameTo(newFile);
+		this.fileModel = newFile;
 	}
 }

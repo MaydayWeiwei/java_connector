@@ -30,7 +30,7 @@ import org.openflexo.view.controller.FlexoController;
 import org.openflexo.view.controller.model.FlexoPerspective;
 
 @SuppressWarnings("serial")
-public class JAVARepositoryView extends JTabbedPane implements ModuleView<RepositoryFolder> {
+public class JAVARepositoryView extends JTabbedPane implements ModuleView<RepositoryFolder<JAVAResource>> {
 
 	private final FlexoController controller;
 
@@ -45,11 +45,10 @@ public class JAVARepositoryView extends JTabbedPane implements ModuleView<Reposi
 		JAVAFolderViewConstructor constructor = new JAVAFolderViewConstructor(repository);
 		constructor.createPanel();
 		addTab(repository.getName(), constructor.createPanel());
-
 	}
 
 	@Override
-	public RepositoryFolder getRepresentedObject() {
+	public RepositoryFolder<JAVAResource> getRepresentedObject() {
 		return this.repository;
 	}
 

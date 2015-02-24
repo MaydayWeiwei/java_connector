@@ -20,8 +20,6 @@
 
 package org.openflexo.technologyadapter.java.controller;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.logging.Logger;
 
 import javax.swing.ImageIcon;
@@ -91,11 +89,10 @@ public class JAVAAdapterController extends TechnologyAdapterController<JAVATechn
 		return new EmptyPanel<TechnologyObject<JAVATechnologyAdapter>>(controller, perspective, object);
 	}
 
-	@Override
-	public ModuleView<?> createModuleViewForObject(final RepositoryFolder object, final FlexoController controller,
+	public ModuleView<?> createModuleViewForRepository(final RepositoryFolder<JAVAResource> object, final FlexoController controller,
 			final FlexoPerspective perspective) {
-		if (object instanceof RepositoryFolder) {
-			return new JAVARepositoryView((RepositoryFolder<JAVAResource>) object, controller, perspective);
+		if (object instanceof RepositoryFolder<?>) {
+			return new JAVARepositoryView(object, controller, perspective);
 		}
 		return new EmptyPanel<RepositoryFolder<JAVAResource>>(controller, perspective, object);
 	}
@@ -117,25 +114,14 @@ public class JAVAAdapterController extends TechnologyAdapterController<JAVATechn
 	}
 
 	@Override
-	public boolean hasModuleViewForObject(RepositoryFolder<?> object, FlexoController controller) {
-		return object instanceof RepositoryFolder;
-	}
-
-	protected final Map<FlexoController, TechnologyPerspective<JAVATechnologyAdapter>> technologyPerspectives = new HashMap<FlexoController, TechnologyPerspective<JAVATechnologyAdapter>>();
-
-	@Override
 	public TechnologyPerspective<JAVATechnologyAdapter> getTechnologyPerspective(FlexoController controller) {
-		TechnologyPerspective<JAVATechnologyAdapter> returned = super.technologyPerspectives.get(controller);
-		if (returned == null) {
-			returned = new TechnologyPerspective<JAVATechnologyAdapter>(getTechnologyAdapter(), controller);
-			technologyPerspectives.put(controller, returned);
-		}
+		JAVATechnologyPerspective returned = new JAVATechnologyPerspective(getTechnologyAdapter(), controller);
+		technologyPerspectives.put(controller, returned);
 		return returned;
 	}
 
-	@Override
-	public void installTechnologyPerspective(FlexoController controller) {
-		controller.addToPerspectives(getTechnologyPerspective(controller));
+	public boolean hasModuleViewForObject(RepositoryFolder<JAVAResource> object, FlexoController controller) {
+		return object instanceof RepositoryFolder<?>;
 	}
 
 }

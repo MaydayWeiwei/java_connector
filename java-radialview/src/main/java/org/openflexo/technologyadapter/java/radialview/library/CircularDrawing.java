@@ -86,6 +86,7 @@ public class CircularDrawing extends DrawingImpl<JAVAGraph> {
 		nodeRepresentation.setAbsoluteTextX(30);
 		nodeRepresentation.setAbsoluteTextY(0);
 		nodeRepresentation.setBackground(getFactory().makeColoredBackground(Color.red));
+		// nodeRepresentation.setBackground(getFactory().makeImageBackground(image));
 		edgeRepresentation = getFactory().makeConnectorGraphicalRepresentation(ConnectorType.CURVE);
 
 		FGECircle circle1 = new FGECircle(new FGEPoint(310, 310), 100, Filling.NOT_FILLED);
