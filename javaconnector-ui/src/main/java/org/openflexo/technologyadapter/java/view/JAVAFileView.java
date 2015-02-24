@@ -54,7 +54,7 @@ public class JAVAFileView extends JTabbedPane implements ModuleView<JAVAFileMode
 		this.javaFileModel = javaFileModel;
 		this.perspective = perspective;
 		JAVAFileViewConstructor constructor = new JAVAFileViewConstructor(javaFileModel);
-		constructor.createPanel();
+		// constructor.createPanel();
 		addTab(javaFileModel.getName(), constructor.createPanel());
 
 	}

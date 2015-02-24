@@ -110,6 +110,7 @@ public abstract class JAVAFileModelImpl extends FlexoObjectImpl implements JAVAF
 		if (getResource() != null) {
 			getResource().setName(name);
 			modifyFileName(name);
+			getResource().setResourceData(this);
 		}
 	}
 

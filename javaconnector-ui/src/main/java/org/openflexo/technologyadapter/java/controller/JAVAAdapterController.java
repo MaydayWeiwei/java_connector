@@ -20,21 +20,27 @@
 
 package org.openflexo.technologyadapter.java.controller;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.logging.Logger;
 
 import javax.swing.ImageIcon;
 
+import org.openflexo.foundation.resource.RepositoryFolder;
 import org.openflexo.foundation.technologyadapter.TechnologyObject;
 import org.openflexo.rm.ResourceLocator;
 import org.openflexo.technologyadapter.java.JAVATechnologyAdapter;
 import org.openflexo.technologyadapter.java.library.JAVAIconLibrary;
 import org.openflexo.technologyadapter.java.model.JAVAFileModel;
+import org.openflexo.technologyadapter.java.rm.JAVAResource;
 import org.openflexo.technologyadapter.java.view.JAVAFileView;
+import org.openflexo.technologyadapter.java.view.JAVARepositoryView;
 import org.openflexo.view.EmptyPanel;
 import org.openflexo.view.ModuleView;
 import org.openflexo.view.controller.ControllerActionInitializer;
 import org.openflexo.view.controller.FlexoController;
 import org.openflexo.view.controller.TechnologyAdapterController;
+import org.openflexo.view.controller.TechnologyPerspective;
 import org.openflexo.view.controller.model.FlexoPerspective;
 
 public class JAVAAdapterController extends TechnologyAdapterController<JAVATechnologyAdapter> {
@@ -86,6 +92,15 @@ public class JAVAAdapterController extends TechnologyAdapterController<JAVATechn
 	}
 
 	@Override
+	public ModuleView<?> createModuleViewForObject(final RepositoryFolder object, final FlexoController controller,
+			final FlexoPerspective perspective) {
+		if (object instanceof RepositoryFolder) {
+			return new JAVARepositoryView((RepositoryFolder<JAVAResource>) object, controller, perspective);
+		}
+		return new EmptyPanel<RepositoryFolder<JAVAResource>>(controller, perspective, object);
+	}
+
+	@Override
 	public ImageIcon getIconForPatternRole(Class<? extends org.openflexo.foundation.fml.FlexoRole<?>> arg0) {
 		return JAVAIconLibrary.JAVA_TECHNOLOGY_ICON;
 	}
@@ -101,10 +116,26 @@ public class JAVAAdapterController extends TechnologyAdapterController<JAVATechn
 		return obj instanceof JAVAFileModel;
 	}
 
-	// @Override
-	// public TechnologyPerspective<JAVATechnologyAdapter> getTechnologyPerspective(FlexoController controller) {
-	// // TODO Auto-generated method stub
-	// return super.getTechnologyPerspective(controller);
-	// }
+	@Override
+	public boolean hasModuleViewForObject(RepositoryFolder<?> object, FlexoController controller) {
+		return object instanceof RepositoryFolder;
+	}
+
+	protected final Map<FlexoController, TechnologyPerspective<JAVATechnologyAdapter>> technologyPerspectives = new HashMap<FlexoController, TechnologyPerspective<JAVATechnologyAdapter>>();
+
+	@Override
+	public TechnologyPerspective<JAVATechnologyAdapter> getTechnologyPerspective(FlexoController controller) {
+		TechnologyPerspective<JAVATechnologyAdapter> returned = super.technologyPerspectives.get(controller);
+		if (returned == null) {
+			returned = new TechnologyPerspective<JAVATechnologyAdapter>(getTechnologyAdapter(), controller);
+			technologyPerspectives.put(controller, returned);
+		}
+		return returned;
+	}
+
+	@Override
+	public void installTechnologyPerspective(FlexoController controller) {
+		controller.addToPerspectives(getTechnologyPerspective(controller));
+	}
 
 }
