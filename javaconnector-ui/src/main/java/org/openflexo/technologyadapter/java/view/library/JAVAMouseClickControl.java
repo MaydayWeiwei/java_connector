@@ -1,5 +1,6 @@
 package org.openflexo.technologyadapter.java.view.library;
 
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.openflexo.fge.Drawing.DrawingTreeNode;
@@ -7,11 +8,19 @@ import org.openflexo.fge.control.MouseClickControl;
 import org.openflexo.fge.control.MouseClickControlAction;
 import org.openflexo.fge.control.MouseControlContext;
 import org.openflexo.foundation.resource.RepositoryFolder;
+import org.openflexo.technologyadapter.java.model.JAVAFileModel;
 import org.openflexo.technologyadapter.java.rm.JAVAResource;
+import org.openflexo.technologyadapter.java.view.JAVARepositoryView;
 
 public class JAVAMouseClickControl implements MouseClickControl<JAVADrawingController> {
 
 	private static final Logger LOGGER = Logger.getLogger(JAVAMouseClickControl.class.getPackage().getName());
+
+	private JAVARepositoryView repositoryView;
+
+	public JAVAMouseClickControl(JAVARepositoryView repositoryView) {
+		this.repositoryView = repositoryView;
+	}
 
 	@Override
 	public boolean isApplicable(DrawingTreeNode<?, ?> node, JAVADrawingController controller, MouseControlContext context) {
@@ -19,21 +28,25 @@ public class JAVAMouseClickControl implements MouseClickControl<JAVADrawingContr
 			Object obj = ((JAVAGraphNode) node.getDrawable()).getModel();
 			if (obj instanceof RepositoryFolder<?>) {
 				RepositoryFolder<JAVAResource> repository = (RepositoryFolder<JAVAResource>) obj;
-				// JAVARepositoryView newRepositoryView = new JAVARepositoryView(repository, );
+				// JAVARepositoryView repositoryView = (JAVARepositoryView) moduleView;
+				JAVARepositoryConstructor constructor = new JAVARepositoryConstructor(repository, repositoryView);
+				repositoryView.addTab(repository.getName(), constructor.createPanel());
 			}
-			// else if (obj instanceof JAVAResource) {
-			// JAVAResource javaResource = (JAVAResource) obj;
-			// try {
-			// final JAVAFileModel fileModel = javaResource.loadResourceData(null);
-			// if (fileModel.getName().toLowerCase().endsWith(".java")) {
-			// JAVAFileView fileview = new JAVAFileView(fileModel);
-			// }
-			// } catch (Exception e) {
-			// final String msg = "Error during load JAVA resource data";
-			// LOGGER.log(Level.SEVERE, msg, e);
-			// }
-			//
-			// }
+			else if (obj instanceof JAVAResource) {
+				JAVAResource javaResource = (JAVAResource) obj;
+				try {
+					final JAVAFileModel fileModel = javaResource.getResourceData(null);
+					if (fileModel.getName().toLowerCase().endsWith(".java")) {
+						// JAVAFileView fileView = (JAVAFileView) moduleView;
+						JAVAFileViewConstructor constructor = new JAVAFileViewConstructor(fileModel, repositoryView);
+						repositoryView.addTab(fileModel.getName(), constructor.createPanel());
+					}
+				} catch (Exception e) {
+					final String msg = "Error during load JAVA resource data";
+					LOGGER.log(Level.SEVERE, msg, e);
+				}
+
+			}
 			return true;
 		}
 		return false;

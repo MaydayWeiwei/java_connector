@@ -14,10 +14,18 @@ import org.openflexo.technologyadapter.java.model.JAVAClassOrInterfaceModel;
 import org.openflexo.technologyadapter.java.model.JAVAFieldModel;
 import org.openflexo.technologyadapter.java.model.JAVAFileModel;
 import org.openflexo.technologyadapter.java.model.JAVAMethodModel;
+import org.openflexo.technologyadapter.java.view.JAVARepositoryView;
 
 public class JAVAFileViewConstructor {
 
 	private JAVAFileModel fileModel;
+
+	private JAVARepositoryView repositoryView;
+
+	public JAVAFileViewConstructor(JAVAFileModel fileModel, JAVARepositoryView repositoryView) {
+		this.fileModel = fileModel;
+		this.repositoryView = repositoryView;
+	}
 
 	public JAVAFileViewConstructor(JAVAFileModel fileModel) {
 		this.fileModel = fileModel;
@@ -52,7 +60,7 @@ public class JAVAFileViewConstructor {
 		classList.add(rootClass);
 		graphNodeList.add(node);
 		completeDrawing(graph, graphNodeList, classList, 1, 0);
-		CircularDrawing circularDrawing = new CircularDrawing(graph, factory);
+		CircularDrawing circularDrawing = new CircularDrawing(graph, factory, repositoryView);
 		circularDrawing.printGraphicalObjectHierarchy();
 		return circularDrawing;
 	}

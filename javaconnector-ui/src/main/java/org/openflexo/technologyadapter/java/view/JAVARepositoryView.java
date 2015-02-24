@@ -24,7 +24,7 @@ import javax.swing.JTabbedPane;
 
 import org.openflexo.foundation.resource.RepositoryFolder;
 import org.openflexo.technologyadapter.java.rm.JAVAResource;
-import org.openflexo.technologyadapter.java.view.library.JAVAFolderViewConstructor;
+import org.openflexo.technologyadapter.java.view.library.JAVARepositoryConstructor;
 import org.openflexo.view.ModuleView;
 import org.openflexo.view.controller.FlexoController;
 import org.openflexo.view.controller.model.FlexoPerspective;
@@ -42,8 +42,7 @@ public class JAVARepositoryView extends JTabbedPane implements ModuleView<Reposi
 		this.controller = controller;
 		this.repository = repository;
 		this.perspective = perspective;
-		JAVAFolderViewConstructor constructor = new JAVAFolderViewConstructor(repository);
-		constructor.createPanel();
+		JAVARepositoryConstructor constructor = new JAVARepositoryConstructor(repository, this);
 		addTab(repository.getName(), constructor.createPanel());
 	}
 

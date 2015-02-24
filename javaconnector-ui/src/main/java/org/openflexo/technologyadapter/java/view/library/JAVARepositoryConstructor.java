@@ -12,13 +12,17 @@ import org.openflexo.fge.FGEModelFactoryImpl;
 import org.openflexo.foundation.resource.RepositoryFolder;
 import org.openflexo.model.exceptions.ModelDefinitionException;
 import org.openflexo.technologyadapter.java.rm.JAVAResource;
+import org.openflexo.technologyadapter.java.view.JAVARepositoryView;
 
-public class JAVAFolderViewConstructor {
+public class JAVARepositoryConstructor {
 
 	private RepositoryFolder<JAVAResource> resourceRepository;
 
-	public JAVAFolderViewConstructor(RepositoryFolder<JAVAResource> resourceRepository) {
+	private JAVARepositoryView repositoryView;
+
+	public JAVARepositoryConstructor(RepositoryFolder<JAVAResource> resourceRepository, JAVARepositoryView repositoryView) {
 		this.resourceRepository = resourceRepository;
+		this.repositoryView = repositoryView;
 	}
 
 	public JPanel createPanel() {
@@ -49,7 +53,7 @@ public class JAVAFolderViewConstructor {
 		repositoryList.add(resourceRepository);
 		graphNodeList.add(node);
 		completeDrawing(graph, graphNodeList, repositoryList, 1, 0);
-		CircularDrawing circularDrawing = new CircularDrawing(graph, factory);
+		CircularDrawing circularDrawing = new CircularDrawing(graph, factory, repositoryView);
 		circularDrawing.printGraphicalObjectHierarchy();
 		return circularDrawing;
 	}

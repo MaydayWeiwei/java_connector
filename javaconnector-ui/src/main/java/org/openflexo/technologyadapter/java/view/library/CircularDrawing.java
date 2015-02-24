@@ -65,6 +65,7 @@ import org.openflexo.fge.geom.area.FGEArea;
 import org.openflexo.fge.geom.area.FGEUnionArea;
 import org.openflexo.fge.impl.DrawingImpl;
 import org.openflexo.fge.shapes.ShapeSpecification.ShapeType;
+import org.openflexo.technologyadapter.java.view.JAVARepositoryView;
 
 public class CircularDrawing extends DrawingImpl<JAVAGraph> {
 
@@ -72,9 +73,12 @@ public class CircularDrawing extends DrawingImpl<JAVAGraph> {
 	private ShapeGraphicalRepresentation nodeRepresentation;
 	private ConnectorGraphicalRepresentation edgeRepresentation;
 	private GeometricGraphicalRepresentation circle1GR;
+	private JAVAMouseClickControl mouseClickControl;
 
-	public CircularDrawing(JAVAGraph graph, FGEModelFactory factory) {
+	public CircularDrawing(JAVAGraph graph, FGEModelFactory factory, JAVARepositoryView repositoryView) {
 		super(graph, factory, PersistenceMode.SharedGraphicalRepresentations);
+		mouseClickControl = new JAVAMouseClickControl(repositoryView);
+		nodeRepresentation.addToMouseClickControls(mouseClickControl);
 	}
 
 	@Override
@@ -94,7 +98,7 @@ public class CircularDrawing extends DrawingImpl<JAVAGraph> {
 		circle1GR = getFactory().makeGeometricGraphicalRepresentation(union);
 		circle1GR.setForeground(getFactory().makeForegroundStyle(Color.GRAY, 0.5f, DashStyle.MEDIUM_DASHES));
 
-		nodeRepresentation.addToMouseClickControls(new JAVAMouseClickControl());
+		// nodeRepresentation.addToMouseClickControls(new JAVAMouseClickControl(moduleView));
 
 		final DrawingGRBinding<JAVAGraph> graphBinding = bindDrawing(JAVAGraph.class, "graph", new DrawingGRProvider<JAVAGraph>() {
 			@Override
