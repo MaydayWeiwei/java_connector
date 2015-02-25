@@ -45,7 +45,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Observable;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.openflexo.fge.geom.FGEPoint;
@@ -66,7 +65,7 @@ public class JAVAGraphNode extends Observable {
 
 	private static final double CENTER_X = 300;
 	private static final double CENTER_Y = 300;
-	private static final double RADIUS = 100;
+	private static final double RADIUS = 130;
 
 	public JAVAGraphNode(String name, JAVAGraph graph, Object model) {
 		inputEdges = new ArrayList<JAVAEdge>();
@@ -92,18 +91,11 @@ public class JAVAGraphNode extends Observable {
 				resourceRepository.setName(name);
 			}
 		}
-		else if (model instanceof JAVAResource) {
-			JAVAResource javaResource = (JAVAResource) model;
-			try {
-				final JAVAFileModel fileModel = javaResource.getResourceData(null);
-				if (!fileModel.getName().equals(name)) {
-					fileModel.setName(name);
-				}
-			} catch (Exception e) {
-				final String msg = "Error during load JAVA resource data";
-				LOGGER.log(Level.SEVERE, msg, e);
+		else if (model instanceof JAVAFileModel) {
+			JAVAFileModel fileModel = (JAVAFileModel) model;
+			if (!fileModel.getName().equals(name)) {
+				fileModel.setName(name);
 			}
-
 		}
 	}
 

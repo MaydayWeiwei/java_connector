@@ -56,7 +56,7 @@ public class JAVAFileViewConstructor {
 		List<JAVAClassOrInterfaceModel> classList = new ArrayList<JAVAClassOrInterfaceModel>();
 		List<JAVAGraphNode> graphNodeList = new ArrayList<JAVAGraphNode>();
 		JAVAGraph graph = new JAVAGraph();
-		JAVAGraphNode node = new JAVAGraphNode(fileModel.getName(), graph, fileModel);
+		JAVAGraphNode node = new JAVAGraphNode(rootClass.getName(), graph, rootClass);
 		classList.add(rootClass);
 		graphNodeList.add(node);
 		completeDrawing(graph, graphNodeList, classList, 1, 0);

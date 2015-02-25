@@ -3,6 +3,8 @@ package org.openflexo.technologyadapter.java.view.library;
 import java.awt.BorderLayout;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -11,10 +13,13 @@ import org.openflexo.fge.FGEModelFactory;
 import org.openflexo.fge.FGEModelFactoryImpl;
 import org.openflexo.foundation.resource.RepositoryFolder;
 import org.openflexo.model.exceptions.ModelDefinitionException;
+import org.openflexo.technologyadapter.java.model.JAVAFileModel;
 import org.openflexo.technologyadapter.java.rm.JAVAResource;
 import org.openflexo.technologyadapter.java.view.JAVARepositoryView;
 
 public class JAVARepositoryConstructor {
+
+	private static final Logger LOGGER = Logger.getLogger(JAVARepositoryConstructor.class.getPackage().getName());
 
 	private RepositoryFolder<JAVAResource> resourceRepository;
 
@@ -69,8 +74,15 @@ public class JAVARepositoryConstructor {
 				JAVAGraphNode parent = graphNodeList.get(i);
 				RepositoryFolder<JAVAResource> repository = repositoryList.get(i);
 				for (JAVAResource resource : repository.getResources()) {
-					JAVAGraphNode node = new JAVAGraphNode(resource.getName(), graph, resource);
-					parent.connectTo(node);
+					try {
+						JAVAFileModel fileModel = (JAVAFileModel) resource.getResourceData(null);
+						JAVAGraphNode node = new JAVAGraphNode(resource.getName(), graph, fileModel);
+						parent.connectTo(node);
+					} catch (Exception e) {
+						final String msg = "Error during get JAVA resource";
+						LOGGER.log(Level.SEVERE, msg, e);
+					}
+
 				}
 				for (RepositoryFolder<JAVAResource> folder : repository.getChildren()) {
 					JAVAGraphNode node = new JAVAGraphNode(folder.getName(), graph, folder);
