@@ -48,6 +48,7 @@ public class JAVAMouseClickControl implements MouseClickControl<JAVADrawingContr
 
 			}
 			return true;
+
 		}
 		return false;
 	}
