@@ -35,6 +35,7 @@ import org.openflexo.foundation.resource.RepositoryFolder;
 import org.openflexo.foundation.technologyadapter.TechnologyAdapter;
 import org.openflexo.foundation.technologyadapter.TechnologyAdapterBindingFactory;
 import org.openflexo.foundation.technologyadapter.TechnologyAdapterInitializationException;
+import org.openflexo.technologyadapter.java.model.JAVAFileModel;
 import org.openflexo.technologyadapter.java.rm.JAVAResource;
 import org.openflexo.technologyadapter.java.rm.JAVAResourceImpl;
 import org.openflexo.technologyadapter.java.rm.JAVAResourceRepository;
@@ -182,6 +183,56 @@ public class JAVATechnologyAdapter extends TechnologyAdapter {
 		// }
 	}
 
+	@Override
+	public <I> void contentsRenamed(FlexoResourceCenter<I> resourceCenter, I oldContents, I newContents) {
+		if (oldContents instanceof File && newContents instanceof File) {
+			File oldFile = (File) oldContents;
+			File newFile = (File) newContents;
+			if (!oldFile.isDirectory() && !newFile.isDirectory()) {
+				renameJAVAFile(resourceCenter, oldFile, newFile);
+			}
+			else {
+				renameJAVARepository(resourceCenter, oldFile, newFile);
+			}
+		}
+	}
+
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	private void renameJAVAFile(FlexoResourceCenter resourceCenter, File oldFile, File newFile) {
+		final JAVAResourceImpl javaResourceFile = (JAVAResourceImpl) JAVAResourceImpl.retrieveJAVAResource(newFile,
+				this.getTechnologyContextManager());
+		final JAVAResourceRepository resourceRepository = (JAVAResourceRepository) resourceCenter.getRepository(
+				JAVAResourceRepository.class, this);
+		if (javaResourceFile != null) {
+			try {
+				final RepositoryFolder<JAVAResource> folder = resourceRepository.getRepositoryFolder(oldFile, true);
+				for (JAVAResource javaResource : folder.getResources()) {
+					JAVAFileModel fileModel = (JAVAFileModel) javaResource.getResourceData(null);
+					if (fileModel == null) {
+						resourceRepository.registerResource(javaResourceFile, folder);
+						this.referenceResource(javaResourceFile, resourceCenter);
+						resourceRepository.unregisterResource(javaResource);
+						this.dereferenceResource(javaResource, resourceCenter);
+					}
+				}
+			} catch (final Exception e) {
+				final String msg = "Error during getting JAVA resource folder";
+				LOGGER.log(Level.SEVERE, msg, e);
+			}
+		}
+
+	}
+
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	private void renameJAVARepository(FlexoResourceCenter resourceCenter, File oldFile, File newFile) {
+		final JAVAResourceRepository resourceRepository = (JAVAResourceRepository) resourceCenter.getRepository(
+				JAVAResourceRepository.class, this);
+		RepositoryFolder<JAVAResource> repositoryFolder = resourceRepository.getFolderWithName(oldFile.getName());
+		RepositoryFolder<JAVAResource> parent = repositoryFolder.getParentFolder();
+		resourceRepository.deleteFolder(repositoryFolder);
+		createNewJAVARepository(resourceCenter);
+	}
+
 	public JAVAResource createNewJAVAModel(FlexoProject project, String filename, String modelUri) {
 		final File file = new File(FlexoProject.getProjectSpecificModelsDirectory(project), filename);
 		final JAVAResourceImpl javaResourceFile = (JAVAResourceImpl) JAVAResourceImpl.makeJAVAResource(modelUri, file,
@@ -223,7 +274,7 @@ public class JAVATechnologyAdapter extends TechnologyAdapter {
 	}
 
 	private boolean isValidateJAVAFileName(String fileName) {
-		return fileName.endsWith(".java") || fileName.endsWith("xml");
+		return fileName.endsWith(".java");
 	}
 
 }

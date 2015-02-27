@@ -27,29 +27,12 @@ public class JAVAMouseClickControl implements MouseClickControl<JAVADrawingContr
 			Object obj = ((JAVAGraphNode) node.getDrawable()).getModel();
 			if (obj instanceof RepositoryFolder<?>) {
 				RepositoryFolder<JAVAResource> repository = (RepositoryFolder<JAVAResource>) obj;
-				// JAVARepositoryView repositoryView = (JAVARepositoryView) moduleView;
 				JAVARepositoryConstructor constructor = new JAVARepositoryConstructor(repository, repositoryView);
 				repositoryView.addTab(repository.getName(), constructor.createPanel());
 			}
-			// else if (obj instanceof JAVAResource) {
-			// JAVAResource javaResource = (JAVAResource) obj;
-			// try {
-			// final JAVAFileModel fileModel = javaResource.getResourceData(null);
-			// if (fileModel.getName().toLowerCase().endsWith(".java")) {
-			// // JAVAFileView fileView = (JAVAFileView) moduleView;
-			// JAVAFileViewConstructor constructor = new JAVAFileViewConstructor(fileModel, repositoryView);
-			// repositoryView.addTab(fileModel.getName(), constructor.createPanel());
-			// }
-			// } catch (Exception e) {
-			// final String msg = "Error during load JAVA resource data";
-			// LOGGER.log(Level.SEVERE, msg, e);
-			// }
-			//
-			// }
 			else if (obj instanceof JAVAFileModel) {
 				JAVAFileModel fileModel = (JAVAFileModel) obj;
 				if (fileModel.getName().toLowerCase().endsWith(".java")) {
-					// JAVAFileView fileView = (JAVAFileView) moduleView;
 					JAVAFileViewConstructor constructor = new JAVAFileViewConstructor(fileModel, repositoryView);
 					repositoryView.addTab(fileModel.getName(), constructor.createPanel());
 				}
