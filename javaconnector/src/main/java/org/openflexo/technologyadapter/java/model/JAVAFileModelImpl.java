@@ -65,7 +65,7 @@ public abstract class JAVAFileModelImpl extends FlexoObjectImpl implements JAVAF
 	@Setter(value = MODEL_ITEM_KEY)
 	public void setFileModel(File fileModel) {
 		this.fileModel = fileModel;
-		// getPropertyChangeSupport().firePropertyChange(MODEL_ITEM_KEY, this.fileModel, fileModel);
+		getPropertyChangeSupport().firePropertyChange(MODEL_ITEM_KEY, this.fileModel, fileModel);
 		if (fileModel.getName().toLowerCase().endsWith(".java")) {
 			try {
 				ClassOrInterfaceDeclaration javaClass = JAVAFileParser.getRoot(fileModel);
@@ -86,6 +86,7 @@ public abstract class JAVAFileModelImpl extends FlexoObjectImpl implements JAVAF
 	@Override
 	@Setter(value = CLASS_ITEM_KEY)
 	public void setRootClass(JAVAClassOrInterfaceModel rootClass) {
+		getPropertyChangeSupport().firePropertyChange(CLASS_ITEM_KEY, this.fileModel, fileModel);
 		this.rootClass = rootClass;
 	}
 
