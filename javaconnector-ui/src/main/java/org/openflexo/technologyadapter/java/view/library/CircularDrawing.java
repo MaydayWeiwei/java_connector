@@ -107,6 +107,7 @@ public class CircularDrawing extends DrawingImpl<JAVAGraph> {
 		Image folderImage = null;
 		Image xmlImage = null;
 		try {
+			// TODO need to replace file path by something more stable
 			javaImage = ImageIO.read(new File("../java/javaconnector-ui/src/main/resources/Images/java.jpg"));
 			folderImage = ImageIO.read(new File("../java/javaconnector-ui/src/main/resources/Images/folder.jpg"));
 			xmlImage = ImageIO.read(new File("../java/javaconnector-ui/src/main/resources/Images/xml.jpg"));
@@ -242,5 +243,6 @@ public class CircularDrawing extends DrawingImpl<JAVAGraph> {
 		nodeBinding.setDynamicPropertyValue(GraphicalRepresentation.TEXT, new DataBinding<String>("drawable.name"), true);
 		nodeBinding.setDynamicPropertyValue(ShapeGraphicalRepresentation.X, new DataBinding<Double>("drawable.circularX"), true);
 		nodeBinding.setDynamicPropertyValue(ShapeGraphicalRepresentation.Y, new DataBinding<Double>("drawable.circularY"), true);
+
 	}
 }

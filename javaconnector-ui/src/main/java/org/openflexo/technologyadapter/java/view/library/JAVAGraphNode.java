@@ -62,6 +62,10 @@ public class JAVAGraphNode extends Observable {
 	private List<JAVAEdge> inputEdges;
 	private List<JAVAEdge> outputEdges;
 	private double x, y;
+	private Double dragX = null;
+	private Double dragY = null;
+	private Integer depth = null;
+	private JAVAGraphNode parent;
 
 	private static final double CENTER_X = 300;
 	private static final double CENTER_Y = 300;
@@ -222,29 +226,47 @@ public class JAVAGraphNode extends Observable {
 	}
 
 	public double getCircularX() {
-		return CENTER_X + (getDepth() * RADIUS) * Math.cos(getTeta());
+		final int realDepth = depth == null ? getDepth() : depth;
+		return CENTER_X + (realDepth * RADIUS) * Math.cos(getTeta());
 	}
 
 	public double getCircularY() {
-		return CENTER_Y + (getDepth() * RADIUS) * Math.sin(getTeta());
+		final int realDepth = depth == null ? getDepth() : depth;
+		return CENTER_Y + (realDepth * RADIUS) * Math.sin(getTeta());
 	}
 
 	public void setCircularX(double circX) {
 		if (teta != null) {
+			this.dragX = circX;
 			updateTetaWithNewPosition(new FGEPoint(circX, getCircularY()));
 		}
 	}
 
 	public void setCircularY(double circY) {
 		if (teta != null) {
+			this.dragY = circY;
 			updateTetaWithNewPosition(new FGEPoint(getCircularX(), circY));
 		}
 	}
 
 	private void updateTetaWithNewPosition(FGEPoint newPosition) {
-		// System.out.println("teta was = " + getTeta());
+		// if (graph.getRootNode() != null) {
+		// parent = this.graph.getClosestNode(newPosition);
+		// if (parent != null) {
+		// this.setChanged();
+		// this.notifyObservers();
+		// }
+		// }
+		updateDepth();
 		teta = Math.atan2(newPosition.y - CENTER_Y, newPosition.x - CENTER_X);
-		// System.out.println("teta is now = " + getTeta());
+	}
+
+	private void updateDepth() {
+		if (dragX != null && dragY != null) {
+			depth = (int) Math.round(Math.sqrt((dragX - CENTER_X) * (dragX - CENTER_X) + (dragY - CENTER_Y) * (dragY - CENTER_Y)) / RADIUS);
+		}
+		// JAVAGraphNode newParent = this.graph.getClosestNode(p);
+		// this.notifyObservers();
 	}
 
 	public int getDepth() {
@@ -294,6 +316,14 @@ public class JAVAGraphNode extends Observable {
 
 	public void setLabelY(double labelY) {
 		this.labelY = labelY;
+	}
+
+	public JAVAGraphNode getParent() {
+		return parent;
+	}
+
+	public void setParent(JAVAGraphNode parent) {
+		this.parent = parent;
 	}
 
 }
