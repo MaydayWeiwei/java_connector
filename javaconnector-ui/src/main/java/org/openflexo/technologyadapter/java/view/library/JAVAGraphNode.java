@@ -265,7 +265,7 @@ public class JAVAGraphNode extends Observable {
 
 	private void moveObject() {
 		// TODO move file possible, move folder impossible
-		if (depth != null && depth.intValue() != getDepth()) {
+		if (depth != null && depth.intValue() == 1 && getDepth() == 2) {
 			JAVAGraphNode newParent = inputEdges.get(0).getStartNode().getInputEdges().get(0).getStartNode();
 			Object newParentObj = newParent.getModel();
 			RepositoryFolder<JAVAResource> parentRepository = (RepositoryFolder<JAVAResource>) newParentObj;
@@ -274,7 +274,35 @@ public class JAVAGraphNode extends Observable {
 			File file = fileModel.getFileModel();
 			fileModel.setFileModel(new File(parentRepo.getAbsolutePath() + "/" + file.getName()));
 		}
+		else if (depth != null && getDepth() == 1 && depth.intValue() == 2) {
+			JAVAGraphNode closetNode = getParentNode();
+			Object newParentObj = closetNode.getModel();
+			RepositoryFolder<JAVAResource> parentRepository = (RepositoryFolder<JAVAResource>) newParentObj;
+			JAVAFileModel fileModel = (JAVAFileModel) model;
+			File parentRepo = parentRepository.getFile();
+			File file = fileModel.getFileModel();
+			fileModel.setFileModel(new File(parentRepo.getAbsolutePath() + "/" + file.getName()));
+		}
 
+	}
+
+	private JAVAGraphNode getParentNode() {
+		List<JAVAGraphNode> siblings = getSiblingNodes();
+		JAVAGraphNode parentNode = null;
+		double minDistance = 1000;
+		if (siblings != null) {
+			for (JAVAGraphNode node : siblings) {
+				if (node.getModel() instanceof RepositoryFolder<?>) {
+					double currentDiatance = Math.sqrt((dragX - node.getX()) * (dragX - node.getX()) + (dragY - node.getY())
+							* (dragY - node.getY()));
+					if (currentDiatance < minDistance) {
+						parentNode = node;
+						minDistance = currentDiatance;
+					}
+				}
+			}
+		}
+		return parentNode;
 	}
 
 	public int getDepth() {

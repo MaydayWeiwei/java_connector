@@ -67,6 +67,7 @@ public abstract class JAVAFileModelImpl extends FlexoObjectImpl implements JAVAF
 		if (!fileModel.exists()) {
 			modifyFileModel(this.fileModel, fileModel);
 		}
+		getPropertyChangeSupport().firePropertyChange(MODEL_ITEM_KEY, this.fileModel, fileModel);
 		this.fileModel = fileModel;
 		if (fileModel.getName().toLowerCase().endsWith(".java")) {
 			try {
