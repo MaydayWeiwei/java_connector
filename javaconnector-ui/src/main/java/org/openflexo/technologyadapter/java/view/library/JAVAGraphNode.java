@@ -40,6 +40,7 @@ package org.openflexo.technologyadapter.java.view.library;
 
 import japa.parser.ParseException;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -65,7 +66,6 @@ public class JAVAGraphNode extends Observable {
 	private Double dragX = null;
 	private Double dragY = null;
 	private Integer depth = null;
-	private JAVAGraphNode parent;
 
 	private static final double CENTER_X = 300;
 	private static final double CENTER_Y = 300;
@@ -89,13 +89,14 @@ public class JAVAGraphNode extends Observable {
 	public void setName(String name) throws ParseException, IOException {
 		System.out.println("Set node name with " + name);
 		this.name = name;
-		if (model instanceof RepositoryFolder<?>) {
-			RepositoryFolder<JAVAResource> resourceRepository = (RepositoryFolder<JAVAResource>) model;
-			if (!resourceRepository.getName().equals(name)) {
-				resourceRepository.setName(name);
-			}
-		}
-		else if (model instanceof JAVAFileModel) {
+		// TODO rename repository need to be fixed
+		// if (model instanceof RepositoryFolder<?>) {
+		// RepositoryFolder<JAVAResource> resourceRepository = (RepositoryFolder<JAVAResource>) model;
+		// if (!resourceRepository.getName().equals(name)) {
+		// resourceRepository.setName(name);
+		// }
+		// }
+		if (model instanceof JAVAFileModel) {
 			JAVAFileModel fileModel = (JAVAFileModel) model;
 			if (!fileModel.getName().equals(name)) {
 				fileModel.setName(name);
@@ -250,23 +251,30 @@ public class JAVAGraphNode extends Observable {
 	}
 
 	private void updateTetaWithNewPosition(FGEPoint newPosition) {
-		// if (graph.getRootNode() != null) {
-		// parent = this.graph.getClosestNode(newPosition);
-		// if (parent != null) {
-		// this.setChanged();
-		// this.notifyObservers();
-		// }
-		// }
-		updateDepth();
-		teta = Math.atan2(newPosition.y - CENTER_Y, newPosition.x - CENTER_X);
+		updateDepth(newPosition);
+		teta = Math.atan2(newPosition.y - CENTER_Y, newPosition.x - CENTER_X); // if (graph.getRootNode() != null) {
 	}
 
-	private void updateDepth() {
-		if (dragX != null && dragY != null) {
+	private void updateDepth(FGEPoint newPosition) {
+		if (dragX != null && dragY != null && model instanceof JAVAFileModel) {
 			depth = (int) Math.round(Math.sqrt((dragX - CENTER_X) * (dragX - CENTER_X) + (dragY - CENTER_Y) * (dragY - CENTER_Y)) / RADIUS);
+			moveObject();
 		}
-		// JAVAGraphNode newParent = this.graph.getClosestNode(p);
-		// this.notifyObservers();
+
+	}
+
+	private void moveObject() {
+		// TODO move file possible, move folder impossible
+		if (depth != null && depth.intValue() != getDepth()) {
+			JAVAGraphNode newParent = inputEdges.get(0).getStartNode().getInputEdges().get(0).getStartNode();
+			Object newParentObj = newParent.getModel();
+			RepositoryFolder<JAVAResource> parentRepository = (RepositoryFolder<JAVAResource>) newParentObj;
+			JAVAFileModel fileModel = (JAVAFileModel) model;
+			File parentRepo = parentRepository.getFile();
+			File file = fileModel.getFileModel();
+			fileModel.setFileModel(new File(parentRepo.getAbsolutePath() + "/" + file.getName()));
+		}
+
 	}
 
 	public int getDepth() {
@@ -316,14 +324,6 @@ public class JAVAGraphNode extends Observable {
 
 	public void setLabelY(double labelY) {
 		this.labelY = labelY;
-	}
-
-	public JAVAGraphNode getParent() {
-		return parent;
-	}
-
-	public void setParent(JAVAGraphNode parent) {
-		this.parent = parent;
 	}
 
 }

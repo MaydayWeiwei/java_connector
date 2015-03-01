@@ -64,8 +64,10 @@ public abstract class JAVAFileModelImpl extends FlexoObjectImpl implements JAVAF
 	@Override
 	@Setter(value = MODEL_ITEM_KEY)
 	public void setFileModel(File fileModel) {
+		if (!fileModel.exists()) {
+			modifyFileModel(this.fileModel, fileModel);
+		}
 		this.fileModel = fileModel;
-		getPropertyChangeSupport().firePropertyChange(MODEL_ITEM_KEY, this.fileModel, fileModel);
 		if (fileModel.getName().toLowerCase().endsWith(".java")) {
 			try {
 				ClassOrInterfaceDeclaration javaClass = JAVAFileParser.getRoot(fileModel);
@@ -119,6 +121,10 @@ public abstract class JAVAFileModelImpl extends FlexoObjectImpl implements JAVAF
 		File newFile = new File(fileModel.getParent() + "/" + newName);
 		fileModel.renameTo(newFile);
 		this.fileModel = newFile;
-		// setFileModel(newFile);
+	}
+
+	private void modifyFileModel(File oldFile, File newFile) {
+		System.out.println("*********** copyFile from " + oldFile.getAbsolutePath() + " to " + newFile.getAbsolutePath());
+		oldFile.renameTo(newFile);
 	}
 }

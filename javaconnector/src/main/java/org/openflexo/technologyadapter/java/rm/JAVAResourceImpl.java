@@ -51,6 +51,7 @@ public abstract class JAVAResourceImpl extends FlexoResourceImpl<JAVAFileModel> 
 
 	private static ModelFactory MODEL_FACTORY;
 
+	private File resourceFile;
 	static {
 		try {
 			MODEL_FACTORY = new ModelFactory(JAVAFileModel.class);
@@ -116,7 +117,8 @@ public abstract class JAVAResourceImpl extends FlexoResourceImpl<JAVAFileModel> 
 			FlexoException {
 
 		final JAVAFileModelImpl javaObject = (JAVAFileModelImpl) MODEL_FACTORY.newInstance(JAVAFileModel.class);
-		javaObject.setFileModel(((FileFlexoIODelegate) getFlexoIODelegate()).getFile());
+		resourceFile = ((FileFlexoIODelegate) getFlexoIODelegate()).getFile();
+		javaObject.setFileModel(resourceFile);
 
 		javaObject.setTechnologyAdapter(getTechnologyAdapter());
 		javaObject.setResource(this);
@@ -179,6 +181,11 @@ public abstract class JAVAResourceImpl extends FlexoResourceImpl<JAVAFileModel> 
 	@Override
 	public Class<JAVAFileModel> getResourceDataClass() {
 		return JAVAFileModel.class;
+	}
+
+	@Override
+	public File getResourceFile() {
+		return resourceFile;
 	}
 
 }

@@ -164,22 +164,29 @@ public class JAVATechnologyAdapter extends TechnologyAdapter {
 	@Override
 	public <I> void contentsAdded(FlexoResourceCenter<I> resourceCenter, I contents) {
 		if (contents instanceof File) {
-			File file = (File) contents;
-			if (tryToLookupJAVAFile(resourceCenter, file) != null) {
-				this.initializeJAVAFile(resourceCenter, (File) contents);
-			}
+			this.initializeJAVAFile(resourceCenter, (File) contents);
 		}
 
 	}
 
 	@Override
 	public <I> void contentsDeleted(FlexoResourceCenter<I> resourceCenter, I contents) {
-		// if (contents instanceof File) {
-		// File candidateFile = (File) contents;
-		// if (isValidateJAVAFile(candidateFile, resourceCenter.getName())) {
-		// deleteJAVAFolder(resourceCenter, (File) contents);
-		// }
-		// }
+		if (contents instanceof File) {
+			File candidateFile = (File) contents;
+			this.deleteJAVAFile(resourceCenter, candidateFile);
+		}
+	}
+
+	private <I> void deleteJAVAFile(final FlexoResourceCenter<I> resourceCenter, final File candidateFile) {
+		final JAVAResourceRepository resourceRepository = resourceCenter.getRepository(JAVAResourceRepository.class, this);
+		for (JAVAResource javaResource : resourceRepository.getAllResources()) {
+			if (javaResource.getResourceFile() != null) {
+				if (candidateFile.getAbsolutePath().equals(javaResource.getResourceFile().getAbsolutePath())) {
+					resourceRepository.unregisterResource(javaResource);
+				}
+			}
+		}
+
 	}
 
 	public JAVAResource createNewJAVAModel(FlexoProject project, String filename, String modelUri) {

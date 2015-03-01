@@ -20,6 +20,8 @@
 
 package org.openflexo.technologyadapter.java.rm;
 
+import java.io.File;
+
 import org.openflexo.foundation.resource.FlexoResource;
 import org.openflexo.foundation.technologyadapter.TechnologyAdapterResource;
 import org.openflexo.model.annotations.Getter;
@@ -47,5 +49,7 @@ public abstract interface JAVAResource extends FlexoResource<JAVAFileModel>,
 
 	@Getter(value = TECHNOLOGY_ADAPTER, ignoreType = true)
 	public JAVATechnologyAdapter getTechnologyAdapter();
+
+	public File getResourceFile();
 
 }

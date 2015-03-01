@@ -3,8 +3,6 @@ package org.openflexo.technologyadapter.java.view.library;
 import java.awt.BorderLayout;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Observable;
-import java.util.Observer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -19,7 +17,7 @@ import org.openflexo.technologyadapter.java.model.JAVAFileModel;
 import org.openflexo.technologyadapter.java.rm.JAVAResource;
 import org.openflexo.technologyadapter.java.view.JAVARepositoryView;
 
-public class JAVARepositoryConstructor implements Observer {
+public class JAVARepositoryConstructor {
 
 	private static final Logger LOGGER = Logger.getLogger(JAVARepositoryConstructor.class.getPackage().getName());
 
@@ -60,9 +58,6 @@ public class JAVARepositoryConstructor implements Observer {
 		repositoryList.add(resourceRepository);
 		graphNodeList.add(node);
 		completeDrawing(graph, graphNodeList, repositoryList, 1, 0);
-		for (JAVAGraphNode n : graph.getNodes()) {
-			n.addObserver(this);
-		}
 		CircularDrawing circularDrawing = new CircularDrawing(graph, factory, repositoryView);
 		circularDrawing.printGraphicalObjectHierarchy();
 		return circularDrawing;
@@ -97,19 +92,6 @@ public class JAVARepositoryConstructor implements Observer {
 				}
 			}
 			completeDrawing(graph, newGraphNodeList, newRepositoryList, newRepositoryList.size(), ++height);
-		}
-
-	}
-
-	@Override
-	public void update(Observable o, Object arg) {
-		System.out.println("hhhhhhhhhhhhhhhhh");
-		if (o instanceof JAVAGraphNode) {
-			JAVAGraphNode node = (JAVAGraphNode) o;
-			JAVAGraphNode parentNode = node.getParent();
-			RepositoryFolder<JAVAResource> parentFolder = (RepositoryFolder<JAVAResource>) parentNode.getModel();
-			RepositoryFolder<JAVAResource> folder = (RepositoryFolder<JAVAResource>) node.getModel();
-
 		}
 
 	}

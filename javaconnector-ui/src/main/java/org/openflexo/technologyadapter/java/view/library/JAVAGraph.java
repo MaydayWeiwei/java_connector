@@ -47,8 +47,6 @@ public class JAVAGraph extends Observable {
 	private List<JAVAGraphNode> nodes;
 	private JAVAGraphNode rootNode;
 
-	// private final static int thredhold = 10000000;
-
 	public JAVAGraph() {
 		nodes = new ArrayList<JAVAGraphNode>();
 	}
@@ -84,23 +82,4 @@ public class JAVAGraph extends Observable {
 		setChanged();
 		notifyObservers();
 	}
-
-	// public JAVAGraphNode getClosestNode(FGEPoint p) {
-	// // TODO refactor code
-	// JAVAGraphNode closestNode = nodes.get(0);
-	// double minDistance = (closestNode.getX() - p.x) * (closestNode.getY() - p.y) + (closestNode.getY() - p.y)
-	// * (closestNode.getY() - p.y);
-	// double currentDistance;
-	// for (JAVAGraphNode node : nodes) {
-	// currentDistance = (node.getX() - p.x) * (node.getX() - p.x) + (node.getY() - p.y) * (node.getY() - p.y);
-	// if (currentDistance < minDistance) {
-	// minDistance = currentDistance;
-	// closestNode = node;
-	// }
-	// }
-	// if (minDistance > thredhold) {
-	// closestNode = null;
-	// }
-	// return closestNode;
-	// }
 }
