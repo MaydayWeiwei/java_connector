@@ -13,20 +13,20 @@ import org.openflexo.technologyadapter.java.JAVATechnologyAdapter;
 @ImplementationClass(value = JAVAMethodModelImpl.class)
 public interface JAVAMethodModel extends TechnologyObject<JAVATechnologyAdapter> {
 
-	public static final String MODEL_ITEM_KEY = "javaMethod";
-	public static final String PARENT_ITEM_KEY = "javaClass";
+	public static final String MODEL_ITEM_KEY = "javaMethodModel";
+	public static final String CLASS_ITEM_KEY = "javaClass";
 
 	@Getter(value = MODEL_ITEM_KEY, ignoreType = true)
-	public MethodDeclaration getMethodModel();
+	public MethodDeclaration getJavaMethodModel();
 
 	@Setter(value = MODEL_ITEM_KEY)
-	public void setMethodModel(MethodDeclaration methodModel);
+	public void setJavaMethodModel(MethodDeclaration javaMethodModel);
 
-	@Getter(value = PARENT_ITEM_KEY, ignoreType = true)
-	public JAVAClassOrInterfaceModel getJavaFatherItem();
+	@Getter(value = CLASS_ITEM_KEY, ignoreType = true)
+	public JAVAClassOrInterfaceModel getJavaClass();
 
-	@Setter(value = PARENT_ITEM_KEY)
-	public void setJavaFatherItem(JAVAClassOrInterfaceModel javaFatherItem);
+	@Setter(value = CLASS_ITEM_KEY)
+	public void setJavaClass(JAVAClassOrInterfaceModel javaClass);
 
 	public String getName();
 

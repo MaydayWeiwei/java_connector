@@ -52,7 +52,7 @@ public class JAVAFileViewConstructor {
 		} catch (ModelDefinitionException e) {
 			e.printStackTrace();
 		}
-		JAVAClassOrInterfaceModel rootClass = fileModel.getRootClass();
+		JAVAClassOrInterfaceModel rootClass = fileModel.getJavaClass();
 		List<JAVAClassOrInterfaceModel> classList = new ArrayList<JAVAClassOrInterfaceModel>();
 		List<JAVAGraphNode> graphNodeList = new ArrayList<JAVAGraphNode>();
 		JAVAGraph graph = new JAVAGraph();
@@ -80,12 +80,12 @@ public class JAVAFileViewConstructor {
 					parent.connectTo(node);
 					newClassList.add(innerClass);
 				}
-				for (JAVAFieldModel fieldModel : classModel.getFields()) {
+				for (JAVAFieldModel fieldModel : classModel.getJavaFields()) {
 					JAVAGraphNode node = new JAVAGraphNode(fieldModel.getName(), graph, fieldModel);
 					parent.connectTo(node);
 					newGraphNodeList.add(node);
 				}
-				for (JAVAMethodModel methodModel : classModel.getMethods()) {
+				for (JAVAMethodModel methodModel : classModel.getJavaMethods()) {
 					JAVAGraphNode node = new JAVAGraphNode(methodModel.getName(), graph, methodModel);
 					parent.connectTo(node);
 					newGraphNodeList.add(node);

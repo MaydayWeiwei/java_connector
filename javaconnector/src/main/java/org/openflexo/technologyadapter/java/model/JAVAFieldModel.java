@@ -13,8 +13,8 @@ import org.openflexo.technologyadapter.java.JAVATechnologyAdapter;
 @ImplementationClass(value = JAVAFieldModelImpl.class)
 public interface JAVAFieldModel extends TechnologyObject<JAVATechnologyAdapter> {
 
-	public static final String MODEL_ITEM_KEY = "javaField";
-	public static final String PARENT_ITEM_KEY = "javaClass";
+	public static final String MODEL_ITEM_KEY = "fieldModel";
+	public static final String CLASS_ITEM_KEY = "javaClass";
 
 	@Getter(value = MODEL_ITEM_KEY, ignoreType = true)
 	public FieldDeclaration getFieldModel();
@@ -22,11 +22,11 @@ public interface JAVAFieldModel extends TechnologyObject<JAVATechnologyAdapter> 
 	@Setter(value = MODEL_ITEM_KEY)
 	public void setFieldModel(FieldDeclaration fieldModel);
 
-	@Getter(value = PARENT_ITEM_KEY, ignoreType = true)
-	public JAVAClassOrInterfaceModel getJavaFatherItem();
+	@Getter(value = CLASS_ITEM_KEY, ignoreType = true)
+	public JAVAClassOrInterfaceModel getJavaClass();
 
-	@Setter(value = PARENT_ITEM_KEY)
-	public void setJavaFatherItem(JAVAClassOrInterfaceModel javaFatherItem);
+	@Setter(value = CLASS_ITEM_KEY)
+	public void setJavaClass(JAVAClassOrInterfaceModel javaFatherItem);
 
 	public String getName();
 

@@ -41,7 +41,7 @@ public abstract class JAVAFileModelImpl extends FlexoObjectImpl implements JAVAF
 
 	private JAVATechnologyAdapter technologyAdapter;
 	private File fileModel;
-	private JAVAClassOrInterfaceModel rootClass;
+	private JAVAClassOrInterfaceModel javaClass;
 
 	public JAVAFileModelImpl() {
 	}
@@ -77,8 +77,8 @@ public abstract class JAVAFileModelImpl extends FlexoObjectImpl implements JAVAF
 						.newInstance(JAVAClassOrInterfaceModel.class);
 				child.setTechnologyAdapter(this.getTechnologyAdapter());
 				child.setJavaFile(this);
-				child.setClassOrInterfaceModel(javaClass);
-				this.setRootClass(child);
+				child.setClassModel(javaClass);
+				this.setJavaClass(child);
 				this.setName(fileModel.getName());
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -88,15 +88,15 @@ public abstract class JAVAFileModelImpl extends FlexoObjectImpl implements JAVAF
 
 	@Override
 	@Setter(value = CLASS_ITEM_KEY)
-	public void setRootClass(JAVAClassOrInterfaceModel rootClass) {
+	public void setJavaClass(JAVAClassOrInterfaceModel javaClass) {
 		getPropertyChangeSupport().firePropertyChange(CLASS_ITEM_KEY, this.fileModel, fileModel);
-		this.rootClass = rootClass;
+		this.javaClass = javaClass;
 	}
 
 	@Override
 	@Getter(value = CLASS_ITEM_KEY, ignoreType = true)
-	public JAVAClassOrInterfaceModel getRootClass() {
-		return rootClass;
+	public JAVAClassOrInterfaceModel getJavaClass() {
+		return javaClass;
 	}
 
 	@Override
@@ -109,7 +109,6 @@ public abstract class JAVAFileModelImpl extends FlexoObjectImpl implements JAVAF
 
 	@Override
 	public void setName(String name) {
-		System.out.println("*********** setName with " + name + " resource=" + getResource());
 		if (getResource() != null) {
 			getResource().setName(name);
 			modifyFileName(name);
@@ -118,14 +117,12 @@ public abstract class JAVAFileModelImpl extends FlexoObjectImpl implements JAVAF
 	}
 
 	private void modifyFileName(String newName) {
-		System.out.println("*********** modifyFileName with " + fileModel.getName() + " to " + newName);
 		File newFile = new File(fileModel.getParent() + "/" + newName);
 		fileModel.renameTo(newFile);
 		this.fileModel = newFile;
 	}
 
 	private void modifyFileModel(File oldFile, File newFile) {
-		System.out.println("*********** copyFile from " + oldFile.getAbsolutePath() + " to " + newFile.getAbsolutePath());
 		oldFile.renameTo(newFile);
 	}
 }

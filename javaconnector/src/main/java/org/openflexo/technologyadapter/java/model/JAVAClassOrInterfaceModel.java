@@ -1,8 +1,9 @@
 package org.openflexo.technologyadapter.java.model;
 
+import japa.parser.ast.body.ClassOrInterfaceDeclaration;
+
 import java.util.List;
 
-import japa.parser.ast.body.ClassOrInterfaceDeclaration;
 import org.openflexo.foundation.technologyadapter.TechnologyObject;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.ImplementationClass;
@@ -14,48 +15,48 @@ import org.openflexo.technologyadapter.java.JAVATechnologyAdapter;
 @ImplementationClass(value = JAVAClassOrInterfaceModelImpl.class)
 public interface JAVAClassOrInterfaceModel extends TechnologyObject<JAVATechnologyAdapter> {
 
-	public static final String MODEL_ITEM_KEY = "javaClassOrInterface";
-	public static final String PARENT_FILE_KEY = "javaParentFile";
-	public static final String PARENT_CLASS_KEY = "javaParentClass";
-	public static final String METHOD_ITEM_KEY = "javaMethod";
-	public static final String CLASS_ITEM_KEY = "javaInnerClass";
-	public static final String FIELD_ITEM_KEY = "javaField";
+	public static final String MODEL_ITEM_KEY = "classModel";
+	public static final String FILE_ITEM_KEY = "javaFile";
+	public static final String CLASS_ITEM_KEY = "javaClass";
+	public static final String METHOD_ITEM_KEY = "javaMethods";
+	public static final String INNERCLASS_ITEM_KEY = "javaInnerClasses";
+	public static final String FIELD_ITEM_KEY = "javaFields";
 
 	@Getter(value = MODEL_ITEM_KEY, ignoreType = true)
-	public ClassOrInterfaceDeclaration getClassOrInterfaceModel();
+	public ClassOrInterfaceDeclaration getClassModel();
 
 	@Setter(value = MODEL_ITEM_KEY)
-	public void setClassOrInterfaceModel(ClassOrInterfaceDeclaration classOrInterfaceModel);
+	public void setClassModel(ClassOrInterfaceDeclaration classModel);
 
-	@Getter(value = PARENT_FILE_KEY, ignoreType = true)
+	@Getter(value = FILE_ITEM_KEY, ignoreType = true)
 	public JAVAFileModel getJavaFile();
 
-	@Setter(value = PARENT_FILE_KEY)
+	@Setter(value = FILE_ITEM_KEY)
 	public void setJavaFile(JAVAFileModel javaFile);
 
-	@Getter(value = PARENT_CLASS_KEY, ignoreType = true)
-	public JAVAClassOrInterfaceModel getFatherClass();
-
-	@Setter(value = PARENT_CLASS_KEY)
-	public void setFatherClass(JAVAClassOrInterfaceModel fatherClass);
-
-	@Getter(value = METHOD_ITEM_KEY, ignoreType = true)
-	public List<JAVAMethodModel> getMethods();
-
-	@Setter(value = METHOD_ITEM_KEY)
-	public void setMethods(List<JAVAMethodModel> methods);
-
 	@Getter(value = CLASS_ITEM_KEY, ignoreType = true)
-	public List<JAVAClassOrInterfaceModel> getInnerClasses();
+	public JAVAClassOrInterfaceModel getJavaClass();
 
 	@Setter(value = CLASS_ITEM_KEY)
+	public void setJavaClass(JAVAClassOrInterfaceModel javaClass);
+
+	@Getter(value = METHOD_ITEM_KEY, ignoreType = true)
+	public List<JAVAMethodModel> getJavaMethods();
+
+	@Setter(value = METHOD_ITEM_KEY)
+	public void setJavaMethods(List<JAVAMethodModel> javaMethods);
+
+	@Getter(value = INNERCLASS_ITEM_KEY, ignoreType = true)
+	public List<JAVAClassOrInterfaceModel> getInnerClasses();
+
+	@Setter(value = INNERCLASS_ITEM_KEY)
 	public void setInnerClasses(List<JAVAClassOrInterfaceModel> innerClasses);
 
 	@Getter(value = FIELD_ITEM_KEY, ignoreType = true)
-	public List<JAVAFieldModel> getFields();
+	public List<JAVAFieldModel> getJavaFields();
 
 	@Setter(value = FIELD_ITEM_KEY)
-	public void setFields(List<JAVAFieldModel> fields);
+	public void setJavaFields(List<JAVAFieldModel> javaFields);
 
 	public String getName();
 

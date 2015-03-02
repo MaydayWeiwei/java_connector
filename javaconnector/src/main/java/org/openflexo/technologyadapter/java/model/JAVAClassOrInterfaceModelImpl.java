@@ -1,13 +1,13 @@
 package org.openflexo.technologyadapter.java.model;
 
+import japa.parser.ast.body.ClassOrInterfaceDeclaration;
+import japa.parser.ast.body.FieldDeclaration;
+import japa.parser.ast.body.MethodDeclaration;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
-import japa.parser.ast.body.ClassOrInterfaceDeclaration;
-import japa.parser.ast.body.FieldDeclaration;
-import japa.parser.ast.body.MethodDeclaration;
 
 import org.openflexo.foundation.FlexoObject.FlexoObjectImpl;
 import org.openflexo.model.annotations.Getter;
@@ -22,11 +22,11 @@ public abstract class JAVAClassOrInterfaceModelImpl extends FlexoObjectImpl impl
 	private static final Logger LOGGER = Logger.getLogger(JAVAClassOrInterfaceModelImpl.class.getName());
 	private JAVATechnologyAdapter technologyAdapter;
 	private JAVAFileModel javaFile;
-	private JAVAClassOrInterfaceModel fatherClass;
-	private ClassOrInterfaceDeclaration classOrInterfaceModel;
+	private JAVAClassOrInterfaceModel javaClass;
+	private ClassOrInterfaceDeclaration classModel;
 	private List<JAVAClassOrInterfaceModel> innerClasses;
-	private List<JAVAFieldModel> fields;
-	private List<JAVAMethodModel> methods;
+	private List<JAVAFieldModel> javaFields;
+	private List<JAVAMethodModel> javaMethods;
 
 	public JAVAClassOrInterfaceModelImpl() {
 	}
@@ -41,43 +41,43 @@ public abstract class JAVAClassOrInterfaceModelImpl extends FlexoObjectImpl impl
 	}
 
 	@Override
-	@Getter(value = PARENT_FILE_KEY, ignoreType = true)
+	@Getter(value = FILE_ITEM_KEY, ignoreType = true)
 	public JAVAFileModel getJavaFile() {
 		return javaFile;
 	}
 
 	@Override
-	@Setter(value = PARENT_FILE_KEY)
+	@Setter(value = FILE_ITEM_KEY)
 	public void setJavaFile(JAVAFileModel javaFile) {
 		this.javaFile = javaFile;
 	}
 
 	@Override
-	@Getter(value = PARENT_CLASS_KEY, ignoreType = true)
-	public JAVAClassOrInterfaceModel getFatherClass() {
-		return fatherClass;
+	@Getter(value = CLASS_ITEM_KEY, ignoreType = true)
+	public JAVAClassOrInterfaceModel getJavaClass() {
+		return javaClass;
 	}
 
 	@Override
-	@Setter(value = PARENT_CLASS_KEY)
-	public void setFatherClass(JAVAClassOrInterfaceModel fatherClass) {
-		this.fatherClass = fatherClass;
+	@Setter(value = CLASS_ITEM_KEY)
+	public void setJavaClass(JAVAClassOrInterfaceModel javaClass) {
+		this.javaClass = javaClass;
 	}
 
 	@Override
 	@Getter(value = MODEL_ITEM_KEY, ignoreType = true)
-	public ClassOrInterfaceDeclaration getClassOrInterfaceModel() {
-		return classOrInterfaceModel;
+	public ClassOrInterfaceDeclaration getClassModel() {
+		return classModel;
 	}
 
 	@Override
 	@Setter(value = MODEL_ITEM_KEY)
-	public void setClassOrInterfaceModel(ClassOrInterfaceDeclaration classOrInterfaceModel) {
-		this.classOrInterfaceModel = classOrInterfaceModel;
+	public void setClassModel(ClassOrInterfaceDeclaration classModel) {
+		this.classModel = classModel;
 		try {
-			final List<ClassOrInterfaceDeclaration> innerClasses = JAVAFileParser.getInnerClassList(classOrInterfaceModel);
-			final List<FieldDeclaration> javaFields = JAVAFileParser.getFieldList(classOrInterfaceModel);
-			final List<MethodDeclaration> javaMethods = JAVAFileParser.getMethodList(classOrInterfaceModel);
+			final List<ClassOrInterfaceDeclaration> innerClasses = JAVAFileParser.getInnerClassList(classModel);
+			final List<FieldDeclaration> javaFields = JAVAFileParser.getFieldList(classModel);
+			final List<MethodDeclaration> javaMethods = JAVAFileParser.getMethodList(classModel);
 
 			final List<JAVAClassOrInterfaceModel> sonClasses = new ArrayList<JAVAClassOrInterfaceModel>();
 			final List<JAVAFieldModel> sonFields = new ArrayList<JAVAFieldModel>();
@@ -87,7 +87,7 @@ public abstract class JAVAClassOrInterfaceModelImpl extends FlexoObjectImpl impl
 				final ModelFactory factory = new ModelFactory(JAVAFieldModel.class);
 				final JAVAFieldModelImpl child = (JAVAFieldModelImpl) factory.newInstance(JAVAFieldModel.class);
 				child.setTechnologyAdapter(this.getTechnologyAdapter());
-				child.setJavaFatherItem(this);
+				child.setJavaClass(this);
 				child.setFieldModel(javaField);
 				sonFields.add(child);
 			}
@@ -95,8 +95,8 @@ public abstract class JAVAClassOrInterfaceModelImpl extends FlexoObjectImpl impl
 				final ModelFactory factory = new ModelFactory(JAVAMethodModel.class);
 				final JAVAMethodModelImpl child = (JAVAMethodModelImpl) factory.newInstance(JAVAMethodModel.class);
 				child.setTechnologyAdapter(this.getTechnologyAdapter());
-				child.setJavaFatherItem(this);
-				child.setMethodModel(javaMethod);
+				child.setJavaClass(this);
+				child.setJavaMethodModel(javaMethod);
 				sonMethods.add(child);
 			}
 			for (ClassOrInterfaceDeclaration innerClass : innerClasses) {
@@ -104,12 +104,12 @@ public abstract class JAVAClassOrInterfaceModelImpl extends FlexoObjectImpl impl
 				final JAVAClassOrInterfaceModelImpl child = (JAVAClassOrInterfaceModelImpl) factory
 						.newInstance(JAVAClassOrInterfaceModel.class);
 				child.setTechnologyAdapter(this.getTechnologyAdapter());
-				child.setFatherClass(this);
-				child.setClassOrInterfaceModel(innerClass);
+				child.setJavaClass(this);
+				child.setClassModel(innerClass);
 				sonClasses.add(child);
 			}
-			this.setFields(sonFields);
-			this.setMethods(sonMethods);
+			this.setJavaFields(sonFields);
+			this.setJavaMethods(sonMethods);
 			this.setInnerClasses(sonClasses);
 		} catch (final ModelDefinitionException e) {
 			final String msg = "Error while setting MapModel of map " + this;
@@ -119,43 +119,43 @@ public abstract class JAVAClassOrInterfaceModelImpl extends FlexoObjectImpl impl
 
 	@Override
 	@Getter(value = METHOD_ITEM_KEY, ignoreType = true)
-	public List<JAVAMethodModel> getMethods() {
-		return methods;
+	public List<JAVAMethodModel> getJavaMethods() {
+		return javaMethods;
 	}
 
 	@Override
 	@Setter(value = METHOD_ITEM_KEY)
-	public void setMethods(List<JAVAMethodModel> methods) {
-		this.methods = methods;
+	public void setJavaMethods(List<JAVAMethodModel> methods) {
+		this.javaMethods = methods;
 	}
 
 	@Override
-	@Getter(value = CLASS_ITEM_KEY, ignoreType = true)
+	@Getter(value = INNERCLASS_ITEM_KEY, ignoreType = true)
 	public List<JAVAClassOrInterfaceModel> getInnerClasses() {
 		return innerClasses;
 	}
 
 	@Override
-	@Setter(value = CLASS_ITEM_KEY)
+	@Setter(value = INNERCLASS_ITEM_KEY)
 	public void setInnerClasses(List<JAVAClassOrInterfaceModel> innerClasses) {
 		this.innerClasses = innerClasses;
 	}
 
 	@Override
 	@Getter(value = FIELD_ITEM_KEY, ignoreType = true)
-	public List<JAVAFieldModel> getFields() {
-		return fields;
+	public List<JAVAFieldModel> getJavaFields() {
+		return javaFields;
 	}
 
 	@Override
 	@Setter(value = FIELD_ITEM_KEY)
-	public void setFields(List<JAVAFieldModel> fields) {
-		this.fields = fields;
+	public void setJavaFields(List<JAVAFieldModel> fields) {
+		this.javaFields = fields;
 	}
 
 	@Override
 	public String getName() {
-		return this.classOrInterfaceModel.getName();
+		return this.classModel.getName();
 	}
 
 }

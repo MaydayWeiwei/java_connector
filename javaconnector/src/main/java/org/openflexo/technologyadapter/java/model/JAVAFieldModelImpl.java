@@ -10,7 +10,7 @@ import org.openflexo.technologyadapter.java.JAVATechnologyAdapter;
 public abstract class JAVAFieldModelImpl extends FlexoObjectImpl implements JAVAFieldModel {
 
 	private JAVATechnologyAdapter technologyAdapter;
-	private JAVAClassOrInterfaceModel javaFatherItem;
+	private JAVAClassOrInterfaceModel javaClass;
 	private FieldDeclaration fieldModel;
 
 	public JAVAFieldModelImpl() {
@@ -26,15 +26,15 @@ public abstract class JAVAFieldModelImpl extends FlexoObjectImpl implements JAVA
 	}
 
 	@Override
-	@Getter(value = PARENT_ITEM_KEY, ignoreType = true)
-	public JAVAClassOrInterfaceModel getJavaFatherItem() {
-		return javaFatherItem;
+	@Getter(value = CLASS_ITEM_KEY, ignoreType = true)
+	public JAVAClassOrInterfaceModel getJavaClass() {
+		return javaClass;
 	}
 
 	@Override
-	@Setter(value = PARENT_ITEM_KEY)
-	public void setJavaFatherItem(JAVAClassOrInterfaceModel javaFatherItem) {
-		this.javaFatherItem = javaFatherItem;
+	@Setter(value = CLASS_ITEM_KEY)
+	public void setJavaClass(JAVAClassOrInterfaceModel javaClass) {
+		this.javaClass = javaClass;
 	}
 
 	@Override

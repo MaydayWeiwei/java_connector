@@ -10,8 +10,8 @@ import org.openflexo.technologyadapter.java.JAVATechnologyAdapter;
 public abstract class JAVAMethodModelImpl extends FlexoObjectImpl implements JAVAMethodModel {
 
 	private JAVATechnologyAdapter technologyAdapter;
-	private JAVAClassOrInterfaceModel javaFatherItem;
-	private MethodDeclaration methodModel;
+	private JAVAClassOrInterfaceModel javaClass;
+	private MethodDeclaration javaMethodModel;
 
 	public JAVAMethodModelImpl() {
 	}
@@ -26,32 +26,32 @@ public abstract class JAVAMethodModelImpl extends FlexoObjectImpl implements JAV
 	}
 
 	@Override
-	@Getter(value = PARENT_ITEM_KEY, ignoreType = true)
-	public JAVAClassOrInterfaceModel getJavaFatherItem() {
-		return javaFatherItem;
+	@Getter(value = CLASS_ITEM_KEY, ignoreType = true)
+	public JAVAClassOrInterfaceModel getJavaClass() {
+		return javaClass;
 	}
 
 	@Override
-	@Setter(value = PARENT_ITEM_KEY)
-	public void setJavaFatherItem(JAVAClassOrInterfaceModel javaFatherItem) {
-		this.javaFatherItem = javaFatherItem;
+	@Setter(value = CLASS_ITEM_KEY)
+	public void setJavaClass(JAVAClassOrInterfaceModel javaClass) {
+		this.javaClass = javaClass;
 	}
 
 	@Override
 	@Getter(value = MODEL_ITEM_KEY, ignoreType = true)
-	public MethodDeclaration getMethodModel() {
-		return methodModel;
+	public MethodDeclaration getJavaMethodModel() {
+		return javaMethodModel;
 	}
 
 	@Override
 	@Setter(value = MODEL_ITEM_KEY)
-	public void setMethodModel(MethodDeclaration methodModel) {
-		this.methodModel = methodModel;
+	public void setJavaMethodModel(MethodDeclaration javaMethodModel) {
+		this.javaMethodModel = javaMethodModel;
 	}
 
 	@Override
 	public String getName() {
-		return this.methodModel.getName();
+		return this.javaMethodModel.getName();
 	}
 
 }

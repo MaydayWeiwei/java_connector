@@ -35,7 +35,7 @@ import org.openflexo.technologyadapter.java.JAVATechnologyAdapter;
 public interface JAVAFileModel extends TechnologyObject<JAVATechnologyAdapter>, ResourceData<JAVAFileModel> {
 
 	public static final String MODEL_ITEM_KEY = "fileModel";
-	public static final String CLASS_ITEM_KEY = "rootClass";
+	public static final String CLASS_ITEM_KEY = "javaClass";
 
 	@Getter(value = MODEL_ITEM_KEY, ignoreType = true)
 	public File getFileModel();
@@ -44,10 +44,10 @@ public interface JAVAFileModel extends TechnologyObject<JAVATechnologyAdapter>, 
 	public void setFileModel(File file);
 
 	@Setter(value = CLASS_ITEM_KEY)
-	public void setRootClass(JAVAClassOrInterfaceModel rootClass);
+	public void setJavaClass(JAVAClassOrInterfaceModel javaClass);
 
 	@Getter(value = CLASS_ITEM_KEY, ignoreType = true)
-	public JAVAClassOrInterfaceModel getRootClass();
+	public JAVAClassOrInterfaceModel getJavaClass();
 
 	public String getName();
 
