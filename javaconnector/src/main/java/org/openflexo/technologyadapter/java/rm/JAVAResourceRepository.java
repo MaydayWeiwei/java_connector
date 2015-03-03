@@ -25,6 +25,12 @@ import org.openflexo.foundation.technologyadapter.TechnologyAdapterFileResourceR
 import org.openflexo.technologyadapter.java.JAVATechnologyAdapter;
 import org.openflexo.technologyadapter.java.model.JAVAFileModel;
 
+/**
+ * JAVA File repository
+ * 
+ * @author wei
+ *
+ */
 public class JAVAResourceRepository extends TechnologyAdapterFileResourceRepository<JAVAResource, JAVATechnologyAdapter, JAVAFileModel> {
 
 	public JAVAResourceRepository(JAVATechnologyAdapter adapter, FlexoResourceCenter<?> resourceCenter) {

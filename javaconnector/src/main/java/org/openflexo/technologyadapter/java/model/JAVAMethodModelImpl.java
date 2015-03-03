@@ -7,6 +7,12 @@ import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.Setter;
 import org.openflexo.technologyadapter.java.JAVATechnologyAdapter;
 
+/**
+ * Represents an JAVA method
+ * 
+ * @author wei
+ *
+ */
 public abstract class JAVAMethodModelImpl extends FlexoObjectImpl implements JAVAMethodModel {
 
 	private JAVATechnologyAdapter technologyAdapter;

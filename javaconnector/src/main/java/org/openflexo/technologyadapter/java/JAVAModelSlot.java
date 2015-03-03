@@ -38,7 +38,7 @@ import org.openflexo.technologyadapter.java.model.JAVAFileModel;
  * Implementation of the ModelSlot class for the JAVA technology adapter<br>
  * We expect here to connect an JAVA model conform to an JAVAMetaModel
  * 
- * @author SomeOne
+ * @author wei
  * 
  */
 @DeclareFlexoRoles({ JAVAFileRole.class })

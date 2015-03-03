@@ -7,6 +7,12 @@ import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.Setter;
 import org.openflexo.technologyadapter.java.JAVATechnologyAdapter;
 
+/**
+ * Represents an JAVA field
+ * 
+ * @author wei
+ *
+ */
 public abstract class JAVAFieldModelImpl extends FlexoObjectImpl implements JAVAFieldModel {
 
 	private JAVATechnologyAdapter technologyAdapter;

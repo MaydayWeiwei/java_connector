@@ -17,6 +17,12 @@ import org.openflexo.model.factory.ModelFactory;
 import org.openflexo.technologyadapter.java.JAVATechnologyAdapter;
 import org.openflexo.technologyadapter.java.utils.JAVAFileParser;
 
+/**
+ * Represents an JAVA class
+ * 
+ * @author wei
+ *
+ */
 public abstract class JAVAClassOrInterfaceModelImpl extends FlexoObjectImpl implements JAVAClassOrInterfaceModel {
 
 	private static final Logger LOGGER = Logger.getLogger(JAVAClassOrInterfaceModelImpl.class.getName());

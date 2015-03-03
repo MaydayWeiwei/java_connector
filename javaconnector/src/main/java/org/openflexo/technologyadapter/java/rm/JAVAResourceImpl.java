@@ -45,6 +45,12 @@ import org.openflexo.technologyadapter.java.model.JAVAFileModel;
 import org.openflexo.technologyadapter.java.model.JAVAFileModelImpl;
 import org.openflexo.toolbox.IProgress;
 
+/**
+ * Represents the resource associated to a {@link JAVAFileModel}
+ * 
+ * @author wei
+ *
+ */
 public abstract class JAVAResourceImpl extends FlexoResourceImpl<JAVAFileModel> implements JAVAResource {
 
 	private static final Logger LOGGER = Logger.getLogger(JAVAResourceImpl.class.getPackage().getName());
@@ -61,6 +67,12 @@ public abstract class JAVAResourceImpl extends FlexoResourceImpl<JAVAFileModel> 
 		}
 	}
 
+	/**
+	 * @param modelURI
+	 * @param modelFile
+	 * @param technologyContextManager
+	 * @return
+	 */
 	public static JAVAResource makeJAVAResource(String modelURI, File modelFile, JAVATechnologyContextManager technologyContextManager) {
 		try {
 			ModelFactory factory = new ModelFactory(ModelContextLibrary.getCompoundModelContext(JAVAResource.class,
@@ -74,7 +86,6 @@ public abstract class JAVAResourceImpl extends FlexoResourceImpl<JAVAFileModel> 
 			returned.setTechnologyAdapter((JAVATechnologyAdapter) technologyContextManager.getTechnologyAdapter());
 			returned.setTechnologyContextManager(technologyContextManager);
 			technologyContextManager.registerResource(returned);
-
 			return returned;
 		} catch (ModelDefinitionException e) {
 			final String msg = "Error while initializing JAVA model resource";
@@ -83,6 +94,11 @@ public abstract class JAVAResourceImpl extends FlexoResourceImpl<JAVAFileModel> 
 		return null;
 	}
 
+	/**
+	 * @param modelFile
+	 * @param technologyContextManager
+	 * @return
+	 */
 	public static JAVAResource retrieveJAVAResource(File modelFile, JAVATechnologyContextManager technologyContextManager) {
 		try {
 			ModelFactory factory = new ModelFactory(ModelContextLibrary.getCompoundModelContext(JAVAResource.class,

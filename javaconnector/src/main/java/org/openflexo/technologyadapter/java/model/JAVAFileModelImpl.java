@@ -32,10 +32,10 @@ import org.openflexo.technologyadapter.java.JAVATechnologyAdapter;
 import org.openflexo.technologyadapter.java.utils.JAVAFileParser;
 
 /**
- * Abstract Simple implementation. Using Pamela.
+ * Represents an JAVA file
  * 
- * @author SomeOne
- * 
+ * @author wei
+ *
  */
 public abstract class JAVAFileModelImpl extends FlexoObjectImpl implements JAVAFileModel {
 

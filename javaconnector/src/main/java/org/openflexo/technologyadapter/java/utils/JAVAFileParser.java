@@ -12,6 +12,12 @@ import java.io.FileInputStream;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Provide methods to parser a .java file
+ * 
+ * @author wei
+ *
+ */
 public class JAVAFileParser {
 
 	public static ClassOrInterfaceDeclaration getRoot(File javaFile) throws Exception {

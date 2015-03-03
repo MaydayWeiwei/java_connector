@@ -24,6 +24,10 @@ import org.openflexo.foundation.fml.rt.action.CreateVirtualModelInstance;
 import org.openflexo.foundation.technologyadapter.FreeModelSlotInstanceConfiguration;
 import org.openflexo.technologyadapter.java.model.JAVAFileModel;
 
+/**
+ * @author wei
+ *
+ */
 public class JAVAModelSlotInstanceConfiguration extends FreeModelSlotInstanceConfiguration<JAVAFileModel, JAVAModelSlot> {
 
 	protected JAVAModelSlotInstanceConfiguration(JAVAModelSlot ms, CreateVirtualModelInstance<?> action) {

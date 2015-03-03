@@ -42,7 +42,7 @@ import org.openflexo.technologyadapter.java.rm.JAVAResourceRepository;
 /**
  * This class defines and implements the JAVA technology adapter
  * 
- * @author SomeOne
+ * @author wei
  * 
  */
 
@@ -157,7 +157,6 @@ public class JAVATechnologyAdapter extends TechnologyAdapter {
 
 	@Override
 	public <I> boolean isIgnorable(FlexoResourceCenter<I> resourceCenter, I contents) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
@@ -218,6 +217,7 @@ public class JAVATechnologyAdapter extends TechnologyAdapter {
 	}
 
 	private boolean isValidateJAVAFile(File file, String resourceCenter) {
+		// vérifier que les fichiers ne sont pas des fichiers binaire
 		if (file.isHidden() || "target".equals(file.getName()) || "build".equals(file.getName())) {
 			return false;
 		}
@@ -230,6 +230,8 @@ public class JAVATechnologyAdapter extends TechnologyAdapter {
 	}
 
 	private boolean isValidateJAVAFileName(String fileName) {
+		// pour l'instant, les fichers .java sont considérés comme JAVAResource
+		// si ajouter d'autres fichiers comme JAVAResource, ajouter ||fileName.endsWith("")
 		return fileName.endsWith(".java");
 	}
 
