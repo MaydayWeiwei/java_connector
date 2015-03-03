@@ -1,4 +1,4 @@
-package org.openflexo.technologyadapter.java.view.library;
+package org.openflexo.technologyadapter.java.view.drawing;
 
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;

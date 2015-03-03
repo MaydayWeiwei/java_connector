@@ -36,26 +36,26 @@
  * 
  */
 
-package org.openflexo.technologyadapter.java.view.library;
+package org.openflexo.technologyadapter.java.view.drawing;
 
 import java.util.Observable;
 
 public class JAVAEdge extends Observable {
 
-	private final JAVAGraphNode startNode;
-	private final JAVAGraphNode endNode;
+	private final JAVANode startNode;
+	private final JAVANode endNode;
 
-	public JAVAEdge(JAVAGraphNode startNode, JAVAGraphNode endNode) {
+	public JAVAEdge(JAVANode startNode, JAVANode endNode) {
 		super();
 		this.startNode = startNode;
 		this.endNode = endNode;
 	}
 
-	public JAVAGraphNode getStartNode() {
+	public JAVANode getStartNode() {
 		return startNode;
 	}
 
-	public JAVAGraphNode getEndNode() {
+	public JAVANode getEndNode() {
 		return endNode;
 	}
 }

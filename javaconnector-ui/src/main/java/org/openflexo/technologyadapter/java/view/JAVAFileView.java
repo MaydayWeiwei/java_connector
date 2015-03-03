@@ -23,7 +23,7 @@ package org.openflexo.technologyadapter.java.view;
 import javax.swing.JTabbedPane;
 
 import org.openflexo.technologyadapter.java.model.JAVAFileModel;
-import org.openflexo.technologyadapter.java.view.library.JAVAFileViewConstructor;
+import org.openflexo.technologyadapter.java.view.drawing.JAVAFileViewConstructor;
 import org.openflexo.view.ModuleView;
 import org.openflexo.view.controller.FlexoController;
 import org.openflexo.view.controller.model.FlexoPerspective;

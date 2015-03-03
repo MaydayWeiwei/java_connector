@@ -36,7 +36,7 @@
  * 
  */
 
-package org.openflexo.technologyadapter.java.view.library;
+package org.openflexo.technologyadapter.java.view.drawing;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,40 +44,40 @@ import java.util.Observable;
 
 public class JAVAGraph extends Observable {
 
-	private List<JAVAGraphNode> nodes;
-	private JAVAGraphNode rootNode;
+	private List<JAVANode> nodes;
+	private JAVANode rootNode;
 
 	public JAVAGraph() {
-		nodes = new ArrayList<JAVAGraphNode>();
+		nodes = new ArrayList<JAVANode>();
 	}
 
-	public List<JAVAGraphNode> getNodes() {
+	public List<JAVANode> getNodes() {
 		return nodes;
 	}
 
-	public void setNodes(List<JAVAGraphNode> nodes) {
+	public void setNodes(List<JAVANode> nodes) {
 		this.nodes = nodes;
 		setChanged();
 		notifyObservers();
 	}
 
-	public void addToNodes(JAVAGraphNode aNode) {
+	public void addToNodes(JAVANode aNode) {
 		nodes.add(aNode);
 		setChanged();
 		notifyObservers();
 	}
 
-	public void removeFromNodes(JAVAGraphNode aNode) {
+	public void removeFromNodes(JAVANode aNode) {
 		nodes.remove(aNode);
 		setChanged();
 		notifyObservers();
 	}
 
-	public JAVAGraphNode getRootNode() {
+	public JAVANode getRootNode() {
 		return rootNode;
 	}
 
-	public void setRootNode(JAVAGraphNode rootNode) {
+	public void setRootNode(JAVANode rootNode) {
 		this.rootNode = rootNode;
 		setChanged();
 		notifyObservers();

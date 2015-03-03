@@ -132,13 +132,13 @@ public abstract class JAVAResourceImpl extends FlexoResourceImpl<JAVAFileModel> 
 	public JAVAFileModel loadResourceData(IProgress progress) throws ResourceLoadingCancelledException, FileNotFoundException,
 			FlexoException {
 
-		final JAVAFileModelImpl javaObject = (JAVAFileModelImpl) MODEL_FACTORY.newInstance(JAVAFileModel.class);
+		final JAVAFileModelImpl javaFile = (JAVAFileModelImpl) MODEL_FACTORY.newInstance(JAVAFileModel.class);
 		resourceFile = ((FileFlexoIODelegate) getFlexoIODelegate()).getFile();
-		javaObject.setFileModel(resourceFile);
+		javaFile.setFileModel(resourceFile);
 
-		javaObject.setTechnologyAdapter(getTechnologyAdapter());
-		javaObject.setResource(this);
-		return javaObject;
+		javaFile.setTechnologyAdapter(getTechnologyAdapter());
+		javaFile.setResource(this);
+		return javaFile;
 	}
 
 	@Override

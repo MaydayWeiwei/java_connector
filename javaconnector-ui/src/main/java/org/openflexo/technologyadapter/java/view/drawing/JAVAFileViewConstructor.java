@@ -1,4 +1,4 @@
-package org.openflexo.technologyadapter.java.view.library;
+package org.openflexo.technologyadapter.java.view.drawing;
 
 import java.awt.BorderLayout;
 import java.util.ArrayList;
@@ -54,9 +54,9 @@ public class JAVAFileViewConstructor {
 		}
 		JAVAClassOrInterfaceModel rootClass = fileModel.getJavaClass();
 		List<JAVAClassOrInterfaceModel> classList = new ArrayList<JAVAClassOrInterfaceModel>();
-		List<JAVAGraphNode> graphNodeList = new ArrayList<JAVAGraphNode>();
+		List<JAVANode> graphNodeList = new ArrayList<JAVANode>();
 		JAVAGraph graph = new JAVAGraph();
-		JAVAGraphNode node = new JAVAGraphNode(rootClass.getName(), graph, rootClass);
+		JAVANode node = new JAVANode(rootClass.getName(), graph, rootClass);
 		classList.add(rootClass);
 		graphNodeList.add(node);
 		completeDrawing(graph, graphNodeList, classList, 1, 0);
@@ -65,28 +65,28 @@ public class JAVAFileViewConstructor {
 		return circularDrawing;
 	}
 
-	private void completeDrawing(JAVAGraph graph, List<JAVAGraphNode> graphNodeList, List<JAVAClassOrInterfaceModel> classList, int size,
+	private void completeDrawing(JAVAGraph graph, List<JAVANode> graphNodeList, List<JAVAClassOrInterfaceModel> classList, int size,
 			int height) {
 
 		List<JAVAClassOrInterfaceModel> newClassList = new ArrayList<JAVAClassOrInterfaceModel>();
-		List<JAVAGraphNode> newGraphNodeList = new ArrayList<JAVAGraphNode>();
+		List<JAVANode> newGraphNodeList = new ArrayList<JAVANode>();
 
 		if (size > 0 && height < 1) {
 			for (int i = 0; i < size; i++) {
-				JAVAGraphNode parent = graphNodeList.get(i);
+				JAVANode parent = graphNodeList.get(i);
 				JAVAClassOrInterfaceModel classModel = classList.get(i);
 				for (JAVAClassOrInterfaceModel innerClass : classModel.getInnerClasses()) {
-					JAVAGraphNode node = new JAVAGraphNode(innerClass.getName(), graph, innerClass);
+					JAVANode node = new JAVANode(innerClass.getName(), graph, innerClass);
 					parent.connectTo(node);
 					newClassList.add(innerClass);
 				}
 				for (JAVAFieldModel fieldModel : classModel.getJavaFields()) {
-					JAVAGraphNode node = new JAVAGraphNode(fieldModel.getName(), graph, fieldModel);
+					JAVANode node = new JAVANode(fieldModel.getName(), graph, fieldModel);
 					parent.connectTo(node);
 					newGraphNodeList.add(node);
 				}
 				for (JAVAMethodModel methodModel : classModel.getJavaMethods()) {
-					JAVAGraphNode node = new JAVAGraphNode(methodModel.getName(), graph, methodModel);
+					JAVANode node = new JAVANode(methodModel.getName(), graph, methodModel);
 					parent.connectTo(node);
 					newGraphNodeList.add(node);
 				}

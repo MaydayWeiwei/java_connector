@@ -1,4 +1,4 @@
-package org.openflexo.technologyadapter.java.view.library;
+package org.openflexo.technologyadapter.java.view.drawing;
 
 import java.util.logging.Logger;
 
@@ -24,7 +24,7 @@ public class JAVAMouseClickControl implements MouseClickControl<JAVADrawingContr
 	@Override
 	public boolean isApplicable(DrawingTreeNode<?, ?> node, JAVADrawingController controller, MouseControlContext context) {
 		if (context.isControlDown()) {
-			Object obj = ((JAVAGraphNode) node.getDrawable()).getModel();
+			Object obj = ((JAVANode) node.getDrawable()).getModel();
 			if (obj instanceof RepositoryFolder<?>) {
 				RepositoryFolder<JAVAResource> repository = (RepositoryFolder<JAVAResource>) obj;
 				JAVARepositoryConstructor constructor = new JAVARepositoryConstructor(repository, repositoryView);

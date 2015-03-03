@@ -1,4 +1,4 @@
-package org.openflexo.technologyadapter.java.view.library;
+package org.openflexo.technologyadapter.java.view.drawing;
 
 import java.awt.BorderLayout;
 import java.util.ArrayList;
@@ -52,9 +52,9 @@ public class JAVARepositoryConstructor {
 			e.printStackTrace();
 		}
 		List<RepositoryFolder<JAVAResource>> repositoryList = new ArrayList<RepositoryFolder<JAVAResource>>();
-		List<JAVAGraphNode> graphNodeList = new ArrayList<JAVAGraphNode>();
+		List<JAVANode> graphNodeList = new ArrayList<JAVANode>();
 		JAVAGraph graph = new JAVAGraph();
-		JAVAGraphNode node = new JAVAGraphNode(resourceRepository.getName(), graph, resourceRepository);
+		JAVANode node = new JAVANode(resourceRepository.getName(), graph, resourceRepository);
 		repositoryList.add(resourceRepository);
 		graphNodeList.add(node);
 		completeDrawing(graph, graphNodeList, repositoryList, 1, 0);
@@ -63,20 +63,20 @@ public class JAVARepositoryConstructor {
 		return circularDrawing;
 	}
 
-	private void completeDrawing(JAVAGraph graph, List<JAVAGraphNode> graphNodeList, List<RepositoryFolder<JAVAResource>> repositoryList,
+	private void completeDrawing(JAVAGraph graph, List<JAVANode> graphNodeList, List<RepositoryFolder<JAVAResource>> repositoryList,
 			int size, int height) {
 
 		List<RepositoryFolder<JAVAResource>> newRepositoryList = new ArrayList<RepositoryFolder<JAVAResource>>();
-		List<JAVAGraphNode> newGraphNodeList = new ArrayList<JAVAGraphNode>();
+		List<JAVANode> newGraphNodeList = new ArrayList<JAVANode>();
 
 		if (size > 0 && height < 2) {
 			for (int i = 0; i < size; i++) {
-				JAVAGraphNode parent = graphNodeList.get(i);
+				JAVANode parent = graphNodeList.get(i);
 				RepositoryFolder<JAVAResource> repository = repositoryList.get(i);
 				for (JAVAResource resource : repository.getResources()) {
 					try {
 						JAVAFileModel fileModel = (JAVAFileModel) resource.getResourceData(null);
-						JAVAGraphNode node = new JAVAGraphNode(resource.getName(), graph, fileModel);
+						JAVANode node = new JAVANode(resource.getName(), graph, fileModel);
 						parent.connectTo(node);
 					} catch (Exception e) {
 						final String msg = "Error during get JAVA resource";
@@ -85,7 +85,7 @@ public class JAVARepositoryConstructor {
 
 				}
 				for (RepositoryFolder<JAVAResource> folder : repository.getChildren()) {
-					JAVAGraphNode node = new JAVAGraphNode(folder.getName(), graph, folder);
+					JAVANode node = new JAVANode(folder.getName(), graph, folder);
 					parent.connectTo(node);
 					newGraphNodeList.add(node);
 					newRepositoryList.add(folder);

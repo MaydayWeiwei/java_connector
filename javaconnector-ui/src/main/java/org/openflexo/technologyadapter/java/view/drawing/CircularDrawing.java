@@ -36,7 +36,7 @@
  * 
  */
 
-package org.openflexo.technologyadapter.java.view.library;
+package org.openflexo.technologyadapter.java.view.drawing;
 
 import java.awt.Color;
 import java.awt.Image;
@@ -178,9 +178,9 @@ public class CircularDrawing extends DrawingImpl<JAVAGraph> {
 				return graphRepresentation;
 			}
 		});
-		final ShapeGRBinding<JAVAGraphNode> nodeBinding = bindShape(JAVAGraphNode.class, "node", new ShapeGRProvider<JAVAGraphNode>() {
+		final ShapeGRBinding<JAVANode> nodeBinding = bindShape(JAVANode.class, "node", new ShapeGRProvider<JAVANode>() {
 			@Override
-			public ShapeGraphicalRepresentation provideGR(JAVAGraphNode drawable, FGEModelFactory factory) {
+			public ShapeGraphicalRepresentation provideGR(JAVANode drawable, FGEModelFactory factory) {
 				final Object model = drawable.getModel();
 				if (model instanceof RepositoryFolder<?>)
 					return folderRepresentation;
@@ -221,15 +221,15 @@ public class CircularDrawing extends DrawingImpl<JAVAGraph> {
 			@Override
 			public void visit(JAVAGraph graph) {
 				drawGeometricObject(circle1Binding, graph);
-				for (JAVAGraphNode node : graph.getNodes()) {
+				for (JAVANode node : graph.getNodes()) {
 					drawShape(nodeBinding, node);
 				}
 			}
 		});
 
-		nodeBinding.addToWalkers(new GRStructureVisitor<JAVAGraphNode>() {
+		nodeBinding.addToWalkers(new GRStructureVisitor<JAVANode>() {
 			@Override
-			public void visit(JAVAGraphNode node) {
+			public void visit(JAVANode node) {
 				System.out.println("Walking for edges ");
 				for (JAVAEdge edge : node.getInputEdges()) {
 					drawConnector(edgeBinding, edge, edge.getStartNode(), edge.getEndNode(), node.getGraph());

@@ -36,7 +36,7 @@
  * 
  */
 
-package org.openflexo.technologyadapter.java.view.library;
+package org.openflexo.technologyadapter.java.view.drawing;
 
 import japa.parser.ParseException;
 
@@ -53,9 +53,9 @@ import org.openflexo.foundation.resource.RepositoryFolder;
 import org.openflexo.technologyadapter.java.model.JAVAFileModel;
 import org.openflexo.technologyadapter.java.rm.JAVAResource;
 
-public class JAVAGraphNode extends Observable {
+public class JAVANode extends Observable {
 
-	private static final Logger LOGGER = Logger.getLogger(JAVAGraphNode.class.getPackage().getName());
+	private static final Logger LOGGER = Logger.getLogger(JAVANode.class.getPackage().getName());
 
 	private String name;
 	private Object model;
@@ -71,7 +71,7 @@ public class JAVAGraphNode extends Observable {
 	private static final double CENTER_Y = 300;
 	private static final double RADIUS = 130;
 
-	public JAVAGraphNode(String name, JAVAGraph graph, Object model) {
+	public JAVANode(String name, JAVAGraph graph, Object model) {
 		inputEdges = new ArrayList<JAVAEdge>();
 		outputEdges = new ArrayList<JAVAEdge>();
 		this.name = name;
@@ -160,7 +160,7 @@ public class JAVAGraphNode extends Observable {
 		notifyObservers();
 	}
 
-	public void connectTo(JAVAGraphNode toNode) {
+	public void connectTo(JAVANode toNode) {
 		JAVAEdge newEdge = new JAVAEdge(this, toNode);
 		addToOutputEdges(newEdge);
 		toNode.addToInputEdges(newEdge);
@@ -204,7 +204,7 @@ public class JAVAGraphNode extends Observable {
 
 	public double getTeta() {
 		if (teta == null) {
-			List<JAVAGraphNode> siblings = getSiblingNodes();
+			List<JAVANode> siblings = getSiblingNodes();
 			int index = siblings.indexOf(this);
 			teta = getStartAngle() + getParentAngle() / siblings.size() * index;
 		}
@@ -217,8 +217,8 @@ public class JAVAGraphNode extends Observable {
 			startAngle = 0;
 		}
 		else {
-			JAVAGraphNode parentNode = getInputEdges().get(0).getStartNode();
-			List<JAVAGraphNode> parentSiblings = parentNode.getSiblingNodes();
+			JAVANode parentNode = getInputEdges().get(0).getStartNode();
+			List<JAVANode> parentSiblings = parentNode.getSiblingNodes();
 			int parentIndex = parentSiblings.indexOf(parentNode);
 			parentAngle = 2 * Math.PI / (parentSiblings.size());
 			startAngle = 2 * Math.PI * parentIndex / parentSiblings.size();
@@ -266,7 +266,7 @@ public class JAVAGraphNode extends Observable {
 	private void moveObject() {
 		// TODO move file possible, move folder impossible
 		if (depth != null && depth.intValue() == 1 && getDepth() == 2) {
-			JAVAGraphNode newParent = inputEdges.get(0).getStartNode().getInputEdges().get(0).getStartNode();
+			JAVANode newParent = inputEdges.get(0).getStartNode().getInputEdges().get(0).getStartNode();
 			Object newParentObj = newParent.getModel();
 			RepositoryFolder<JAVAResource> parentRepository = (RepositoryFolder<JAVAResource>) newParentObj;
 			JAVAFileModel fileModel = (JAVAFileModel) model;
@@ -275,7 +275,7 @@ public class JAVAGraphNode extends Observable {
 			fileModel.setFileModel(new File(parentRepo.getAbsolutePath() + "/" + file.getName()));
 		}
 		else if (depth != null && getDepth() == 1 && depth.intValue() == 2) {
-			JAVAGraphNode closetNode = getParentNode();
+			JAVANode closetNode = getParentNode();
 			Object newParentObj = closetNode.getModel();
 			RepositoryFolder<JAVAResource> parentRepository = (RepositoryFolder<JAVAResource>) newParentObj;
 			JAVAFileModel fileModel = (JAVAFileModel) model;
@@ -286,12 +286,12 @@ public class JAVAGraphNode extends Observable {
 
 	}
 
-	private JAVAGraphNode getParentNode() {
-		List<JAVAGraphNode> siblings = getSiblingNodes();
-		JAVAGraphNode parentNode = null;
+	private JAVANode getParentNode() {
+		List<JAVANode> siblings = getSiblingNodes();
+		JAVANode parentNode = null;
 		double minDistance = 1000;
 		if (siblings != null) {
-			for (JAVAGraphNode node : siblings) {
+			for (JAVANode node : siblings) {
 				if (node.getModel() instanceof RepositoryFolder<?>) {
 					double currentDiatance = Math.sqrt((dragX - node.getX()) * (dragX - node.getX()) + (dragY - node.getY())
 							* (dragY - node.getY()));
@@ -310,18 +310,18 @@ public class JAVAGraphNode extends Observable {
 			return 0;
 		}
 		else {
-			JAVAGraphNode parentNode = getInputEdges().get(0).getStartNode();
+			JAVANode parentNode = getInputEdges().get(0).getStartNode();
 			return parentNode.getDepth() + 1;
 		}
 	}
 
-	public List<JAVAGraphNode> getSiblingNodes() {
+	public List<JAVANode> getSiblingNodes() {
 		if (getInputEdges().size() == 0) {
 			return Collections.singletonList(this);
 		}
 		else {
-			JAVAGraphNode parentNode = getInputEdges().get(0).getStartNode();
-			List<JAVAGraphNode> returned = new ArrayList<JAVAGraphNode>();
+			JAVANode parentNode = getInputEdges().get(0).getStartNode();
+			List<JAVANode> returned = new ArrayList<JAVANode>();
 			for (JAVAEdge e : getInputEdges().get(0).getStartNode().getOutputEdges()) {
 				returned.add(e.getEndNode());
 			}
