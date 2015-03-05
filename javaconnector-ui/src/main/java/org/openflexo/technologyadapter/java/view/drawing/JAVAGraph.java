@@ -38,16 +38,21 @@
 
 package org.openflexo.technologyadapter.java.view.drawing;
 
+import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Observable;
 
-public class JAVAGraph extends Observable {
+import org.openflexo.toolbox.HasPropertyChangeSupport;
+
+public class JAVAGraph implements HasPropertyChangeSupport {
 
 	private List<JAVANode> nodes;
 	private JAVANode rootNode;
 
+	private PropertyChangeSupport pcSupport;
+
 	public JAVAGraph() {
+		pcSupport = new PropertyChangeSupport(this);
 		nodes = new ArrayList<JAVANode>();
 	}
 
@@ -57,20 +62,17 @@ public class JAVAGraph extends Observable {
 
 	public void setNodes(List<JAVANode> nodes) {
 		this.nodes = nodes;
-		setChanged();
-		notifyObservers();
+		getPropertyChangeSupport().firePropertyChange("nodes", null, nodes);
 	}
 
 	public void addToNodes(JAVANode aNode) {
 		nodes.add(aNode);
-		setChanged();
-		notifyObservers();
+		getPropertyChangeSupport().firePropertyChange("nodes", null, nodes);
 	}
 
 	public void removeFromNodes(JAVANode aNode) {
 		nodes.remove(aNode);
-		setChanged();
-		notifyObservers();
+		getPropertyChangeSupport().firePropertyChange("nodes", null, nodes);
 	}
 
 	public JAVANode getRootNode() {
@@ -79,7 +81,16 @@ public class JAVAGraph extends Observable {
 
 	public void setRootNode(JAVANode rootNode) {
 		this.rootNode = rootNode;
-		setChanged();
-		notifyObservers();
+		getPropertyChangeSupport().firePropertyChange("rootNode", null, rootNode);
+	}
+
+	@Override
+	public String getDeletedProperty() {
+		return null;
+	}
+
+	@Override
+	public PropertyChangeSupport getPropertyChangeSupport() {
+		return pcSupport;
 	}
 }

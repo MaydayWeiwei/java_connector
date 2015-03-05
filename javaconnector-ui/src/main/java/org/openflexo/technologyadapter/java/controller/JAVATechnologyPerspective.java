@@ -47,12 +47,12 @@ public class JAVATechnologyPerspective extends TechnologyPerspective<JAVATechnol
 	public boolean hasModuleViewForObject(FlexoObject object) {
 		if (object instanceof TechnologyObject) {
 			TechnologyAdapterControllerService tacService = getController().getApplicationContext().getTechnologyAdapterControllerService();
-			JAVAAdapterController tac = tacService.getTechnologyAdapterController(technologyAdapter);
+			JAVAAdapterController tac = tacService.getTechnologyAdapterController(getTechnologyAdapter());
 			return tac.hasModuleViewForObject((TechnologyObject<JAVATechnologyAdapter>) object, getController());
 		}
 		else if (object instanceof RepositoryFolder<?>) {
 			TechnologyAdapterControllerService tacService = getController().getApplicationContext().getTechnologyAdapterControllerService();
-			JAVAAdapterController tac = tacService.getTechnologyAdapterController(technologyAdapter);
+			JAVAAdapterController tac = tacService.getTechnologyAdapterController(getTechnologyAdapter());
 			return tac.hasModuleViewForObject((RepositoryFolder<JAVAResource>) object, getController());
 		}
 		return false;
@@ -60,7 +60,7 @@ public class JAVATechnologyPerspective extends TechnologyPerspective<JAVATechnol
 
 	public final ModuleView<?> getModuleViewForRepositoryFolder(RepositoryFolder<JAVAResource> object) {
 		TechnologyAdapterControllerService tacService = getController().getApplicationContext().getTechnologyAdapterControllerService();
-		JAVAAdapterController tac = tacService.getTechnologyAdapterController(technologyAdapter);
+		JAVAAdapterController tac = tacService.getTechnologyAdapterController(getTechnologyAdapter());
 		if (tac != null) {
 			return tac.createModuleViewForRepository(object, getController(), this);
 		}

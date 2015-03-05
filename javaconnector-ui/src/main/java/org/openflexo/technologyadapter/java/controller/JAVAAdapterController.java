@@ -116,7 +116,7 @@ public class JAVAAdapterController extends TechnologyAdapterController<JAVATechn
 	@Override
 	public TechnologyPerspective<JAVATechnologyAdapter> getTechnologyPerspective(FlexoController controller) {
 		JAVATechnologyPerspective returned = new JAVATechnologyPerspective(getTechnologyAdapter(), controller);
-		technologyPerspectives.put(controller, returned);
+		getTechnologyPerspectives().put(controller, returned);
 		return returned;
 	}
 

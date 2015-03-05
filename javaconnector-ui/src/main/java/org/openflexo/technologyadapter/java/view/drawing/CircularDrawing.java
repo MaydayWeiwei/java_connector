@@ -230,7 +230,7 @@ public class CircularDrawing extends DrawingImpl<JAVAGraph> {
 		nodeBinding.addToWalkers(new GRStructureVisitor<JAVANode>() {
 			@Override
 			public void visit(JAVANode node) {
-				System.out.println("Walking for edges ");
+				System.out.println("Visiting node " + node);
 				for (JAVAEdge edge : node.getInputEdges()) {
 					drawConnector(edgeBinding, edge, edge.getStartNode(), edge.getEndNode(), node.getGraph());
 				}

@@ -40,20 +40,21 @@ package org.openflexo.technologyadapter.java.view.drawing;
 
 import japa.parser.ParseException;
 
+import java.beans.PropertyChangeSupport;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Observable;
 import java.util.logging.Logger;
 
 import org.openflexo.fge.geom.FGEPoint;
 import org.openflexo.foundation.resource.RepositoryFolder;
 import org.openflexo.technologyadapter.java.model.JAVAFileModel;
 import org.openflexo.technologyadapter.java.rm.JAVAResource;
+import org.openflexo.toolbox.HasPropertyChangeSupport;
 
-public class JAVANode extends Observable {
+public class JAVANode implements HasPropertyChangeSupport {
 
 	private static final Logger LOGGER = Logger.getLogger(JAVANode.class.getPackage().getName());
 
@@ -71,7 +72,10 @@ public class JAVANode extends Observable {
 	private static final double CENTER_Y = 300;
 	private static final double RADIUS = 130;
 
+	private PropertyChangeSupport pcSupport;
+
 	public JAVANode(String name, JAVAGraph graph, Object model) {
+		pcSupport = new PropertyChangeSupport(this);
 		inputEdges = new ArrayList<JAVAEdge>();
 		outputEdges = new ArrayList<JAVAEdge>();
 		this.name = name;
@@ -122,20 +126,17 @@ public class JAVANode extends Observable {
 
 	public void setInputEdges(List<JAVAEdge> inputEdges) {
 		this.inputEdges = inputEdges;
-		setChanged();
-		notifyObservers();
+		getPropertyChangeSupport().firePropertyChange("inputEdges", null, inputEdges);
 	}
 
-	public void addToInputEdges(JAVAEdge aNode) {
-		inputEdges.add(aNode);
-		setChanged();
-		notifyObservers();
+	public void addToInputEdges(JAVAEdge aEdge) {
+		inputEdges.add(aEdge);
+		getPropertyChangeSupport().firePropertyChange("inputEdges", null, inputEdges);
 	}
 
-	public void removeFromInputEdges(JAVAEdge aNode) {
-		inputEdges.remove(aNode);
-		setChanged();
-		notifyObservers();
+	public void removeFromInputEdges(JAVAEdge aEdge) {
+		inputEdges.remove(aEdge);
+		getPropertyChangeSupport().firePropertyChange("inputEdges", null, inputEdges);
 	}
 
 	public List<JAVAEdge> getOutputEdges() {
@@ -144,26 +145,25 @@ public class JAVANode extends Observable {
 
 	public void setOutputEdges(List<JAVAEdge> outputEdges) {
 		this.outputEdges = outputEdges;
-		setChanged();
-		notifyObservers();
+		getPropertyChangeSupport().firePropertyChange("outputEdges", null, outputEdges);
 	}
 
-	public void addToOutputEdges(JAVAEdge aNode) {
-		outputEdges.add(aNode);
-		setChanged();
-		notifyObservers();
+	public void addToOutputEdges(JAVAEdge aEdge) {
+		outputEdges.add(aEdge);
+		getPropertyChangeSupport().firePropertyChange("outputEdges", null, outputEdges);
 	}
 
-	public void removeFromOutputEdges(JAVAEdge aNode) {
-		outputEdges.remove(aNode);
-		setChanged();
-		notifyObservers();
+	public void removeFromOutputEdges(JAVAEdge aEdge) {
+		outputEdges.remove(aEdge);
+		getPropertyChangeSupport().firePropertyChange("outputEdges", null, outputEdges);
 	}
 
 	public void connectTo(JAVANode toNode) {
 		JAVAEdge newEdge = new JAVAEdge(this, toNode);
 		addToOutputEdges(newEdge);
 		toNode.addToInputEdges(newEdge);
+		getPropertyChangeSupport().firePropertyChange("outputEdges", null, outputEdges);
+		toNode.getPropertyChangeSupport().firePropertyChange("inputEdges", null, toNode.getInputEdges());
 	}
 
 	public double getX() {
@@ -258,52 +258,54 @@ public class JAVANode extends Observable {
 	private void updateDepth(FGEPoint newPosition) {
 		if (dragX != null && dragY != null && model instanceof JAVAFileModel) {
 			depth = (int) Math.round(Math.sqrt((dragX - CENTER_X) * (dragX - CENTER_X) + (dragY - CENTER_Y) * (dragY - CENTER_Y)) / RADIUS);
-			moveObject();
+			moveNode();
 		}
 
 	}
 
-	private void moveObject() {
-		// TODO move file possible, move folder impossible
+	private void moveNode() {
 		if (depth != null && depth.intValue() == 1 && getDepth() == 2) {
-			JAVANode newParent = inputEdges.get(0).getStartNode().getInputEdges().get(0).getStartNode();
-			Object newParentObj = newParent.getModel();
-			RepositoryFolder<JAVAResource> parentRepository = (RepositoryFolder<JAVAResource>) newParentObj;
-			JAVAFileModel fileModel = (JAVAFileModel) model;
-			File parentRepo = parentRepository.getFile();
-			File file = fileModel.getFileModel();
-			fileModel.setFileModel(new File(parentRepo.getAbsolutePath() + "/" + file.getName()));
+			JAVANode oldParent = inputEdges.get(0).getStartNode();
+			JAVANode newParent = oldParent.getInputEdges().get(0).getStartNode();
+			moveObject(oldParent, newParent);
 		}
-		else if (depth != null && getDepth() == 1 && depth.intValue() == 2) {
-			JAVANode closetNode = getParentNode();
-			Object newParentObj = closetNode.getModel();
-			RepositoryFolder<JAVAResource> parentRepository = (RepositoryFolder<JAVAResource>) newParentObj;
-			JAVAFileModel fileModel = (JAVAFileModel) model;
-			File parentRepo = parentRepository.getFile();
-			File file = fileModel.getFileModel();
-			fileModel.setFileModel(new File(parentRepo.getAbsolutePath() + "/" + file.getName()));
-		}
-
 	}
 
-	private JAVANode getParentNode() {
-		List<JAVANode> siblings = getSiblingNodes();
-		JAVANode parentNode = null;
-		double minDistance = 1000;
-		if (siblings != null) {
-			for (JAVANode node : siblings) {
-				if (node.getModel() instanceof RepositoryFolder<?>) {
-					double currentDiatance = Math.sqrt((dragX - node.getX()) * (dragX - node.getX()) + (dragY - node.getY())
-							* (dragY - node.getY()));
-					if (currentDiatance < minDistance) {
-						parentNode = node;
-						minDistance = currentDiatance;
-					}
-				}
-			}
-		}
-		return parentNode;
+	private void moveObject(JAVANode from, JAVANode to) {
+		Object newParentObj = to.getModel();
+		RepositoryFolder<JAVAResource> parentRepository = (RepositoryFolder<JAVAResource>) newParentObj;
+		JAVAFileModel fileModel = (JAVAFileModel) model;
+		File parentRepo = parentRepository.getFile();
+		File file = fileModel.getFileModel();
+		fileModel.setFileModel(new File(parentRepo.getAbsolutePath() + "/" + file.getName()));
+		JAVAEdge edge = this.getInputEdges().get(0);
+		from.removeFromOutputEdges(edge);
+		this.removeFromInputEdges(edge);
+		to.connectTo(this);
+		from.getPropertyChangeSupport().firePropertyChange("outputEdges", null, from.getInputEdges());
+		to.getPropertyChangeSupport().firePropertyChange("outputEdges", null, to.getOutputEdges());
+		this.getPropertyChangeSupport().firePropertyChange("inputEdges", null, this.getInputEdges());
+		graph.getPropertyChangeSupport().firePropertyChange("nodes", null, graph.getNodes());
 	}
+
+	// private JAVANode getParentNode() {
+	// List<JAVANode> siblings = getSiblingNodes();
+	// JAVANode parentNode = null;
+	// double minDistance = 1000;
+	// if (siblings != null) {
+	// for (JAVANode node : siblings) {
+	// if (node.getModel() instanceof RepositoryFolder<?>) {
+	// double currentDiatance = Math.sqrt((dragX - node.getX()) * (dragX - node.getX()) + (dragY - node.getY())
+	// * (dragY - node.getY()));
+	// if (currentDiatance < minDistance) {
+	// parentNode = node;
+	// minDistance = currentDiatance;
+	// }
+	// }
+	// }
+	// }
+	// return parentNode;
+	// }
 
 	public int getDepth() {
 		if (getInputEdges().size() == 0) {
@@ -352,6 +354,16 @@ public class JAVANode extends Observable {
 
 	public void setLabelY(double labelY) {
 		this.labelY = labelY;
+	}
+
+	@Override
+	public String getDeletedProperty() {
+		return null;
+	}
+
+	@Override
+	public PropertyChangeSupport getPropertyChangeSupport() {
+		return pcSupport;
 	}
 
 }
