@@ -38,15 +38,20 @@
 
 package org.openflexo.technologyadapter.java.view.drawing;
 
-import java.util.Observable;
+import java.beans.PropertyChangeSupport;
 
-public class JAVAEdge extends Observable {
+import org.openflexo.toolbox.HasPropertyChangeSupport;
+
+public class JAVAEdge implements HasPropertyChangeSupport {
 
 	private final JAVANode startNode;
 	private final JAVANode endNode;
 
+	private PropertyChangeSupport pcSupport;
+
 	public JAVAEdge(JAVANode startNode, JAVANode endNode) {
 		super();
+		pcSupport = new PropertyChangeSupport(this);
 		this.startNode = startNode;
 		this.endNode = endNode;
 	}
@@ -57,5 +62,15 @@ public class JAVAEdge extends Observable {
 
 	public JAVANode getEndNode() {
 		return endNode;
+	}
+
+	@Override
+	public String getDeletedProperty() {
+		return null;
+	}
+
+	@Override
+	public PropertyChangeSupport getPropertyChangeSupport() {
+		return pcSupport;
 	}
 }
